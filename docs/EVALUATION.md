@@ -91,8 +91,8 @@ fitting it would be 97%, but we don't think that is the honest reading of the ba
 - **It is still weakest for London, Mumbai, Chennai and Manila** (4, 4, 3 and 4 of 8). Where Qloo's data for older audiences is thin,
   the songs and tastes it returns are generic: American singers, chain restaurants, modern DJs.
 - **The film fix helped some people and not others.** A search on the favourites alone gave *A Hard Day's Night* (Liverpool), *Anand*
-  (Mumbai) and a 1960 Japanese film (Tokyo). For the Philippines, Nigeria and Osaka it returned world arthouse cinema that
-  has nothing to do with the person (*Wedding in Galilee*, *Adoption*, *The Boys from Fengkuei*). That is what Qloo's taste graph connects to
+  (Mumbai) and a 1960 Japanese film (Tokyo). For the Philippines and Osaka it returned world arthouse cinema that
+  has little to do with the person (*Adoption*, *Wedding in Galilee*, *The Boys from Fengkuei*). That is what Qloo's taste graph connects to
   those favourites. The filler "best-known films" search still supplies the film for Chennai.
 - **The repeats are gone across countries.** *The Sound of Music* (4 times in the first run) and *Rocky* (3) no longer appear. Items that
   repeat now do so within one country (Mexico, the Philippines, Japan), which is correct.
@@ -101,8 +101,8 @@ fitting it would be 97%, but we don't think that is the honest reading of the ba
 - **Places and tastes improved in the third run.** Somewhere you'd go to see now fills the place slots (a market in Guadalajara, a house
   museum in Cebu, the Jewel Tower in London), the cemetery museum and the bookshop are gone, and tastes lean toward their own cooking. Foreign
   cooking still shows up where the pool has little else (an Italian eatery for Chennai).
-- **The film slot is now the weakest.** Five of twelve films were loose and two were misses: *Adoption*, *Wedding in Galilee* and *The Boys from
-  Fengkuei* are world cinema that Qloo links to the favourites and that has nothing to do with the person.
+- **The film slot is now the weakest.** Five of twelve films were loose and two were misses. *Adoption* and *Wedding in Galilee* are world cinema
+  that Qloo links to the favourites and that has nothing to do with the person; *The Boys from Fengkuei* (Taiwanese, for Osaka) is a loose fit.
 
 ## What changed between the runs
 
