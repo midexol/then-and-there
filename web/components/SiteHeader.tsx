@@ -7,6 +7,14 @@ import { Landmarks } from "./Scenery";
 import { ButtonLink } from "./ui";
 
 export const HEADER_H = 84;
+
+/** The logo goes home. When you're already on the home page, that means gliding back to the top. */
+export function goHome(e: React.MouseEvent) {
+  if (window.location.pathname === "/") {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
 const PIN = "M74 162 C60 136 24 110 24 70 A50 50 0 1 1 124 70 C124 110 88 136 74 162 Z";
 
 /** The brand mark in fixed colours, for sitting on the dark hero and the menu page in both themes. */
@@ -116,7 +124,17 @@ function MenuPage({ visible, onClose, returnFocus }: { visible: boolean; onClose
 
       <div className="relative mx-auto flex min-h-full w-full max-w-6xl flex-col px-5 pb-10 pt-3 sm:px-8">
         <div className="flex items-center justify-between" style={{ minHeight: HEADER_H - 20 }}>
-          <LightWordmark />
+          <Link
+            href="/"
+            aria-label="Then & There home"
+            onClick={(e) => {
+              onClose();
+              goHome(e);
+            }}
+            className="inline-flex min-h-12 items-center"
+          >
+            <LightWordmark />
+          </Link>
           <button
             ref={closeRef}
             type="button"
@@ -212,7 +230,7 @@ export function SiteHeader({ landing }: { landing: boolean }) {
         style={overlay ? undefined : { background: "color-mix(in srgb, var(--ground) 94%, transparent)" }}
       >
         <div className="flex items-center justify-between gap-3 pl-5 pr-3" style={{ minHeight: HEADER_H - 20 }}>
-          <Link href="/" aria-label="Then & There home" className="inline-flex min-h-12 items-center">
+          <Link href="/" aria-label="Then & There home" onClick={goHome} className="inline-flex min-h-12 items-center">
             {overlay ? <LightWordmark /> : <Wordmark size={26} />}
           </Link>
 

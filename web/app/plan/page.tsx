@@ -80,9 +80,9 @@ function Plan() {
               <Pill>{copy.plan.length(s.items.length)}</Pill>
             </div>
           </div>
-          <div className="hidden sm:block">
+          <Link href="/" aria-label="Then & There home" className="hidden sm:block">
             <Logo size={44} />
-          </div>
+          </Link>
         </div>
 
         {(thin || s.notes.length > 0) && (
