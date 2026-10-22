@@ -133,8 +133,22 @@ Before the first real run, `bash scripts/probe.sh` checks what Qloo returns for 
 
 ## Deploy
 
-- **API:** Render (`render.yaml`), Railway or Fly. It has to be a long-running process, because the Qloo harness doesn't run serverless. Set `QLOO_API_KEY`, `QLOO_BASE_URL` and `QLOO_TRUSTED_BASE_URL` (both `https://hackathon.api.qloo.com` for a hackathon key), the optional `LLM_*` variables, and `ALLOWED_ORIGIN` (your web URL).
-- **Web:** a static export (`npm run build` → `web/out`) for Vercel or any static host. Set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_SITE_URL`.
+Step by step, with a checklist and troubleshooting, in [docs/DEPLOY.md](docs/DEPLOY.md). In short:
+
+- **API:** Render (`render.yaml`), Railway or Fly. It has to be a long-running process, because the Qloo harness doesn't run serverless. Set `QLOO_API_KEY`, `QLOO_BASE_URL` and `QLOO_TRUSTED_BASE_URL` (both `https://hackathon.api.qloo.com` for a hackathon key), the optional `LLM_*` variables, and `ALLOWED_ORIGIN` (your web URL). `GET /api/health` reports `mode: live` when the key is in place.
+- **Web:** a static export (`npm run build` → `web/out`) for Vercel or any static host. Set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_SITE_URL` before building, since they are baked in at build time.
+
+## Quality checks
+
+Lighthouse on the production build (local, headless Edge):
+
+| Page | Accessibility | Best practices | SEO |
+|---|---|---|---|
+| Landing | 100 | 100 | 100 |
+| Onboarding (`/new`) | 100 | 100 | 100 |
+| Privacy (`/about`) | 100 | 100 | 100 |
+
+Cumulative layout shift on the landing is 0.006. Performance scores measured on a slow development machine swung between 37 and 74 and aren't reliable; measure the deployed site with PageSpeed Insights. The 12-person evaluation is described above and in [docs/EVALUATION.md](docs/EVALUATION.md).
 
 ## Screens
 
