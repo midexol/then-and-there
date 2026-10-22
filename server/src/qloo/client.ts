@@ -119,7 +119,7 @@ export class QlooClient {
   }
 
   /** Calls a tool with cache + bounded retry. Throws QlooError only for `error` envelopes. */
-  async call(tool: QlooTool, args: Record<string, unknown>, callOpts: { retryOnTimeout?: boolean } = {}): Promise<QlooEnvelope> {
+  async call(tool: QlooTool, args: Record<string, unknown>, callOpts: { retryOnTimeout?: boolean; timeoutMs?: number } = {}): Promise<QlooEnvelope> {
     const key = stableKey(tool, args);
     const hit = this.cache.get(key);
     if (hit) return hit;
@@ -133,7 +133,7 @@ export class QlooClient {
       this.calls++;
       let env: QlooEnvelope;
       try {
-        env = await this.throttled(() => withTimeout(this.transport.call(tool, args), this.opts.timeoutMs ?? 30_000));
+        env = await this.throttled(() => withTimeout(this.transport.call(tool, args), callOpts.timeoutMs ?? this.opts.timeoutMs ?? 30_000));
       } catch (e) {
         env = { status: "error", error: { code: /timeout after/.test(String(e)) ? "QLOO_TIMEOUT" : "transport", retryable: true, recovery: String(e) } };
       }

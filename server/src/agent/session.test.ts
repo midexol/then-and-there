@@ -604,3 +604,11 @@ test("films found from the favourites come before the best-known ones, and the t
   assert.match(f.why, /chosen to go with/);
   assert.equal(f.provenance.operation, "insights");
 });
+
+test("a call can be given more time than the default, for a cold start", async () => {
+  const slow: QlooTransport = { mode: "mock", call: () => new Promise((resolve) => setTimeout(() => resolve({ status: "ok" as const, results: [] }), 120)) };
+  const client = () => new QlooClient(slow, { timeoutMs: 30, retries: 0, minGapMs: 0 });
+  await assert.rejects(() => client().call("qloo_capabilities", { a: 1 }, { retryOnTimeout: false }), (e: Error & { timedOut?: boolean }) => e.timedOut === true, "the default limit is too short for a 120 ms call");
+  const env = await client().call("qloo_capabilities", { a: 2 }, { retryOnTimeout: false, timeoutMs: 1000 });
+  assert.equal(env.status, "ok", "with its own allowance the same call succeeds");
+});

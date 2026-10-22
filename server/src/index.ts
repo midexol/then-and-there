@@ -19,13 +19,27 @@ app.listen({ port, host: "0.0.0.0" }).then(() => {
   // The first live call starts the `qloo mcp` harness, which can take close to a minute on a slow host. Do it now,
   // in the background, so the first caregiver's lookup isn't the one that waits. Never blocks startup or crashes it.
   if (transport.mode === "live") {
-    const t0 = Date.now();
-    qloo
-      .call("qloo_capabilities", {})
-      .then(() => app.log.info(`Qloo harness warm in ${Math.round((Date.now() - t0) / 1000)}s`))
-      .catch(() => app.log.warn("Qloo warm-up failed; the first request will start the harness instead"));
+    void warmUp();
   }
 });
+
+/**
+ * A cold harness can take about a minute to answer its first call, longer than a normal call is allowed, so the warm-up
+ * gets two minutes per try and up to three tries, ten seconds apart. Failing every try only means the first request pays.
+ */
+async function warmUp() {
+  const t0 = Date.now();
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      await qloo.call("qloo_capabilities", {}, { timeoutMs: 120_000, retryOnTimeout: false });
+      app.log.info(`Qloo harness warm in ${Math.round((Date.now() - t0) / 1000)}s`);
+      return;
+    } catch {
+      if (attempt < 3) await new Promise((r) => setTimeout(r, 10_000));
+    }
+  }
+  app.log.warn("Qloo warm-up failed; the first request will start the harness instead");
+}
 
 const shutdown = async () => {
   await app.close();
