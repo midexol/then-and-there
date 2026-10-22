@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+dist/
+.env
+.env.*
+!.env.example
+probe-out/
+*.log
+.DS_Store
+
+# local-only: working copies, logs, tooling
+then-and-there.zip
+then-and-there-extracted/
+trace.mts
+*.tsbuildinfo
+.claude/
+.agents/
+skills-lock.json

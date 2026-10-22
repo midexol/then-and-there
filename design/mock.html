@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Then & There · design reference</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Reference mock for FRONTEND.md §3.1 (Home), §3.4 (Session plan) and §3.5 (Session stage). Example content only. */
+:root{
+  --ground:#F3F4F0; --cloth:#E4E8F3; --indigo:#24336E; --indigo-deep:#121A3D; --ink:#1B1D24; --ink-soft:#565B6B;
+  --gold:#D9981C; --line:#CBD1E2; --ok:#2F7A55;
+  --font-display:"Young Serif", Georgia, "Times New Roman", serif;
+  --font-body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.6}
+.frames{display:flex;flex-wrap:wrap;gap:40px;padding:40px 20px;justify-content:center;align-items:flex-start}
+.label{font-size:14px;color:var(--ink-soft);margin:0 0 10px}
+.phone{width:390px;max-width:100%;border:1px solid var(--line);border-radius:28px;overflow:hidden;background:var(--ground)}
+.band{height:28px;display:block;width:100%}
+.home{padding:20px 20px 28px}
+.home .brand{font-family:var(--font-display);font-size:22px;color:var(--indigo);margin:6px 0 18px}
+.home h1{font-family:var(--font-display);font-weight:400;font-size:32px;line-height:1.15;margin:0 0 20px;color:var(--ink)}
+.people{display:grid;gap:12px}
+.person{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:76px;padding:14px 18px;border-radius:18px;background:var(--cloth);border:2px solid transparent}
+.person b{display:block;font-family:var(--font-display);font-weight:400;font-size:22px;color:var(--indigo);line-height:1.2}
+.person span{font-size:15px;color:var(--ink-soft)}
+.person .go{font-weight:700;color:var(--indigo);white-space:nowrap}
+.person.new{background:transparent;border:2px dashed var(--line);justify-content:center;font-weight:700;color:var(--indigo)}
+.ex{font-size:15px;color:var(--ink-soft);margin:22px 0 10px}
+.small{font-size:14px;color:var(--ink-soft);margin-top:22px}
+/* plan */
+.plan{padding:20px 20px 28px}
+.plan h1{font-family:var(--font-display);font-weight:400;font-size:32px;line-height:1.15;margin:4px 0 4px;color:var(--indigo)}
+.plan .sub{color:var(--ink-soft);font-size:16px;margin:0 0 16px}
+.actions{display:flex;gap:10px;margin-bottom:22px}
+.btn{font:inherit;font-weight:700;font-size:17px;border-radius:999px;padding:12px 20px;min-height:48px;border:2px solid var(--indigo);background:var(--indigo);color:#fff}
+.btn.ghost{background:transparent;color:var(--indigo)}
+ol.items{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.item{display:grid;grid-template-columns:32px 1fr;gap:12px;background:var(--cloth);border-radius:18px;padding:16px}
+.n{font-family:var(--font-display);font-size:24px;color:var(--indigo);line-height:1}
+.kind{font-size:14px;color:var(--ink-soft)}
+.t{font-family:var(--font-display);font-size:21px;line-height:1.25;margin:2px 0 6px}
+.why{font-size:15px;color:var(--ink-soft);margin:0 0 8px}
+.ask{font-size:16px;margin:0 0 10px;padding-left:12px;border-left:3px solid var(--gold)}
+.ask small{display:block;font-size:13px;color:var(--ink-soft)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.link{font-weight:700;font-size:15px;color:var(--indigo);text-decoration:underline;text-underline-offset:3px}
+.chip{font-size:13px;border:1px solid var(--line);border-radius:6px;padding:2px 8px;color:var(--indigo);background:var(--ground)}
+.swap{margin-left:auto;font:inherit;font-size:15px;font-weight:700;color:var(--indigo);background:none;border:1px solid var(--line);border-radius:999px;padding:6px 14px;min-height:40px}
+.foot{font-size:14px;color:var(--ink-soft);margin-top:18px}
+/* stage */
+.stage{background:var(--indigo-deep);color:var(--ground);min-height:780px;display:flex;flex-direction:column}
+.stage .inner{flex:1;display:flex;flex-direction:column;justify-content:center;padding:28px 26px;gap:18px;text-align:center}
+.stage .eyebrow{font-size:18px;color:#C5CCE6;margin:0}
+.stage h2{font-family:var(--font-display);font-weight:400;font-size:46px;line-height:1.05;margin:0}
+.stage .artist{font-size:22px;color:#DCE1F2;margin:-6px 0 0}
+.thread{height:4px;width:64px;background:var(--gold);border-radius:4px;margin:2px auto}
+.stage .q{font-size:22px;line-height:1.4;margin:6px 0}
+.play{align-self:center;font:inherit;font-weight:700;font-size:20px;border-radius:999px;padding:14px 26px;min-height:60px;border:2px solid #F3F4F0;background:transparent;color:#F3F4F0}
+.spark{margin:10px 0 0;font-size:18px;color:#C5CCE6}
+.resp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.resp button{font:inherit;font-size:18px;font-weight:700;min-height:76px;border-radius:16px;border:2px solid #3A4680;background:#1B2552;color:#F3F4F0}
+.resp button.on{border-color:var(--gold);background:#2B2A3A;color:#FFE2A6}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:14px 22px 22px;font-size:18px;color:#C5CCE6}
+.nav b{color:#F3F4F0}
+</style>
+</head>
+<body>
+<div class="frames">
+  <div>
+    <p class="label">Home (first visit, with examples)</p>
+    <div class="phone">
+      <svg class="band" id="b0" viewBox="0 0 390 28" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="home">
+        <div class="brand">Then & There</div>
+        <h1>Who are we spending time with today?</h1>
+        <div class="people">
+          <div class="person new">+ Plan a first session</div>
+        </div>
+        <p class="ex">Or try an example</p>
+        <div class="people">
+          <div class="person"><div><b>Grandma Rosa</b><span>Grew up in Mexico City · 1950s</span></div><span class="go">Open</span></div>
+          <div class="person"><div><b>Grandpa Ken</b><span>Grew up in Liverpool · 1960s</span></div><span class="go">Open</span></div>
+          <div class="person"><div><b>Mama Adunni</b><span>Grew up in Ibadan · 1960s</span></div><span class="go">Open</span></div>
+        </div>
+        <p class="small">Then & There plans reminiscence activities. It is not medical care. Names stay on this device.</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="label">Session plan (caregiver, light)</p>
+    <div class="phone">
+      <svg class="band" id="b1" viewBox="0 0 390 28" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="plan">
+        <h1>Grandma Rosa's session</h1>
+        <p class="sub">30 minutes · 8 things · built from Pedro Infante, tamales, Mexico City</p>
+        <div class="actions"><button class="btn">Start session</button><button class="btn ghost">Print card</button></div>
+        <ol class="items">
+          <li class="item"><span class="n">1</span><div>
+            <div class="kind">Warm-up song</div>
+            <div class="t">Amorcito corazón — Pedro Infante</div>
+            <p class="why">Often loved by people 55+ who love bolero</p>
+            <p class="ask"><small>Suggested question</small>“Where were you when you first heard this?”</p>
+            <div class="row"><a class="link" href="#">Listen on YouTube</a><span class="chip">From Qloo</span><button class="swap">Swap</button></div>
+          </div></li>
+          <li class="item"><span class="n">2</span><div>
+            <div class="kind">A place</div>
+            <div class="t">Palacio de Bellas Artes, Mexico City</div>
+            <p class="why">Popular with people who share these tastes in Mexico City</p>
+            <p class="ask"><small>Suggested question</small>“Did you ever go to a show at Bellas Artes?”</p>
+            <div class="row"><a class="link" href="#">See photos</a><span class="chip">From Qloo</span><button class="swap">Swap</button></div>
+          </div></li>
+          <li class="item"><span class="n">3</span><div>
+            <div class="kind">A taste</div>
+            <div class="t">Tamales and champurrado</div>
+            <p class="why">One of their favourites, plus what people from Mexico City pair with it</p>
+            <p class="ask"><small>Suggested question</small>“Who made the best tamales in your family?”</p>
+            <div class="row"><span class="chip">From Qloo</span><button class="swap">Swap</button></div>
+          </div></li>
+        </ol>
+        <p class="foot">These are things often familiar to people with similar tastes and background, not facts about Grandma Rosa.</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p class="label">Session stage (shown to the older person)</p>
+    <div class="phone stage">
+      <svg class="band" id="b2" viewBox="0 0 390 28" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="inner">
+        <p class="eyebrow">A song from the 1950s</p>
+        <h2 lang="es">Amorcito corazón</h2>
+        <p class="artist">Pedro Infante</p>
+        <div class="thread" aria-hidden="true"></div>
+        <p class="q">“Where were you when you first heard it?”</p>
+        <button class="play">▶ Play on YouTube</button>
+        <p class="spark">Did this spark something?</p>
+        <div class="resp"><button class="on">Yes</button><button>A little</button><button>Not really</button></div>
+      </div>
+      <div class="nav"><span>‹ Back</span><b>1 of 8</b><span>Next ›</span></div>
+      <svg class="band" id="b3" viewBox="0 0 390 28" preserveAspectRatio="none" aria-hidden="true"></svg>
+    </div>
+  </div>
+</div>
+<script>
+// IndigoBand: resist-dye circles and dots, generated (never an image).
+function band(id, color, opacity){
+  var s=document.getElementById(id), ns='http://www.w3.org/2000/svg', out='';
+  for(var x=0;x<=390;x+=26){
+    out+='<circle cx="'+(x+13)+'" cy="14" r="9" fill="none" stroke="'+color+'" stroke-width="2"/>';
+    out+='<circle cx="'+(x+13)+'" cy="14" r="3" fill="'+color+'"/>';
+    out+='<circle cx="'+x+'" cy="4" r="1.6" fill="'+color+'"/><circle cx="'+x+'" cy="24" r="1.6" fill="'+color+'"/>';
+  }
+  s.innerHTML='<g opacity="'+opacity+'">'+out+'</g>';
+}
+band('b0','#24336E',.18); band('b1','#24336E',.18); band('b2','#AFC0F5',.35); band('b3','#AFC0F5',.35);
+</script>
+</body>
+</html>
