@@ -90,14 +90,14 @@ method and caveats are in [docs/EVALUATION.md](docs/EVALUATION.md); re-run it wi
 | Dated items (films) inside the era window | **12 of 12** |
 | Caregiver's avoid topics and built-in hard topics | **0 hits** |
 | Gentle questions (never test, never health) | **0 of 96 flagged** |
-| Build time | **13–23 s** (on a day Qloo was quick; it can be minutes when it isn't) |
-| Items that fit the region or favourites (read by hand) | **about 65%** (up from 59% after three fixes), **short of the 85% bar** |
+| Build time | **15–35 s** (on a day Qloo was quick; it can be minutes when it isn't) |
+| Items that fit the region or favourites (read by hand) | **about 71%** (up from 59% over three rounds of fixes), **short of the 85% bar** |
 
-The last row is the honest one. Mexico City, Guadalajara, Ibadan and Lagos were 7 to 8 of 8, and Tokyo and Osaka rose to 6 after the fixes.
-London, Mumbai, Chennai and Manila are still weak: Qloo's places and tastes there are often generic venues and chains. The evaluation
-was run twice. It exposed a silent failure (Qloo can't match "Mumbai, India" but can match "Mumbai", so the session now retries with the
-city and says so) and three quality problems that we fixed and re-measured: generic films, foreign songs and brands, and the same names
-repeating across countries.
+The last row is the honest one. Mexico City, Guadalajara, Ibadan and Lagos were 7 to 8 of 8, and Tokyo and Osaka reached 6. London, Mumbai, Chennai
+and Manila are still weakest (3 to 4 of 8), where Qloo's data for older audiences is thin; the film slot is now the weakest part everywhere.
+The evaluation was run three times. It exposed a silent failure (Qloo can't match "Mumbai, India" but can match "Mumbai", so the session now
+retries with the city and says so) and quality problems that we fixed and re-measured: generic films, foreign songs and brands, the same names
+repeating across countries, and generic venues in the place and taste slots.
 
 ## Responsible data handling
 

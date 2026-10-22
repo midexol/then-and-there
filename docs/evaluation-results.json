@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-10-22T02:02:08.595Z",
+  "ranAt": "2026-10-22T02:17:15.020Z",
   "api": "local",
   "results": [
     {
@@ -31,15 +31,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 23,
+      "secs": 22,
       "stepDoneAt": {
-        "resolve": 4,
+        "resolve": 3,
         "songs": 14,
         "films": 15,
         "tastes": 15,
         "places": 16,
-        "rank": 23,
-        "compose": 23
+        "rank": 22,
+        "compose": 22
       },
       "era": {
         "from": 1955,
@@ -67,7 +67,7 @@
           "subtitle": "Historic Mexico City plaza renowned for mariachi performances, with a mariachi museum and surrounding bars…",
           "year": null,
           "why": "Popular in Mexico City with people 55+.",
-          "prompt": "What did people wear to go there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
           "qlooId": "26D23F8E-DFDE-4731-B5A4-BCD864D3A4D4",
           "operation": "recommend"
@@ -91,7 +91,7 @@
           "subtitle": "Film · 1957",
           "year": 1957,
           "why": "From 1957. From the years they were growing up, chosen to go with Pedro Infante and bolero.",
-          "prompt": "Who would you go to the cinema with?",
+          "prompt": "Who were the film stars everyone talked about?",
           "promptSource": "template",
           "qlooId": "6A88C097-26A5-4129-8FBF-7467AA1EBFDA",
           "operation": "insights"
@@ -103,7 +103,7 @@
           "subtitle": "Juan Gabriel was a Mexican singer, songwriter, and performer renowned for his prolific output and influence…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Mexico City who like Pedro Infante and bolero.",
-          "prompt": "What was playing on the radio at home?",
+          "prompt": "Where would you hear music like this?",
           "promptSource": "template",
           "qlooId": "9B287499-0738-4E38-AC3D-3DA10E361689",
           "operation": "recommend"
@@ -115,7 +115,7 @@
           "subtitle": "Art museum in a 16th-century hacienda showcasing the largest collection of Frida Kahlo works, plus Diego…",
           "year": null,
           "why": "Popular in Mexico City with people 55+.",
-          "prompt": "What was it like there?",
+          "prompt": "What did people wear to go there?",
           "promptSource": "template",
           "qlooId": "345705D9-D5BA-4DE0-A53D-FE7DFC2FA447",
           "operation": "recommend"
@@ -139,7 +139,7 @@
           "subtitle": "Vicente Fernández was a legendary Mexican singer, actor, and film producer, widely regarded as one of the…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Mexico City who like Pedro Infante and bolero.",
-          "prompt": "Shall we sing along to one together?",
+          "prompt": "Which of their songs would you like to finish with?",
           "promptSource": "template",
           "qlooId": "D4248DCF-581B-4FD5-BE66-B265E327AE16",
           "operation": "recommend"
@@ -188,15 +188,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 16,
+      "secs": 17,
       "stepDoneAt": {
         "resolve": 2,
-        "songs": 11,
-        "films": 11,
-        "places": 12,
+        "songs": 12,
+        "films": 13,
+        "places": 13,
         "tastes": 13,
-        "rank": 16,
-        "compose": 16
+        "rank": 17,
+        "compose": 17
       },
       "era": {
         "from": 1945,
@@ -220,13 +220,13 @@
         {
           "slot": 2,
           "kind": "place",
-          "title": "Museo Panteón de Belén",
-          "subtitle": "Historic cemetery museum in Guadalajara offering guided tours of notable graves and funerary art.",
+          "title": "Restaurante Terra Madre",
+          "subtitle": "Mexican restaurant and bar with terraces in Plaza Tapatía, daily live music, traditional regional dishes…",
           "year": null,
           "why": "Popular in Guadalajara with people 55+.",
-          "prompt": "What did people wear to go there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
-          "qlooId": "CE39DE2F-E455-4E19-8522-DFA39E5BECA1",
+          "qlooId": "4CA16B2C-686E-47A1-9271-246C67B2B3D6",
           "operation": "recommend"
         },
         {
@@ -236,7 +236,7 @@
           "subtitle": "Grupo Bimbo is a Mexican multinational food company known for its bakery products, operating in over 33…",
           "year": null,
           "why": "A name often liked in Guadalajara by people 55+.",
-          "prompt": "Who in your family liked this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
           "qlooId": "B61A9813-9452-44B1-8E66-D74552C2CF26",
           "operation": "recommend"
@@ -248,7 +248,7 @@
           "subtitle": "Film · 1957",
           "year": 1957,
           "why": "From 1957. From the years they were growing up, chosen to go with Jorge Negrete and mariachi.",
-          "prompt": "Who were the film stars everyone talked about?",
+          "prompt": "Who would you go to the cinema with?",
           "promptSource": "template",
           "qlooId": "6A88C097-26A5-4129-8FBF-7467AA1EBFDA",
           "operation": "insights"
@@ -260,7 +260,7 @@
           "subtitle": "Vicente Fernández was a legendary Mexican singer, actor, and film producer, widely regarded as one of the…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Guadalajara who like Jorge Negrete and mariachi.",
-          "prompt": "What was playing on the radio at home?",
+          "prompt": "Where would you hear music like this?",
           "promptSource": "template",
           "qlooId": "D4248DCF-581B-4FD5-BE66-B265E327AE16",
           "operation": "recommend"
@@ -268,25 +268,25 @@
         {
           "slot": 6,
           "kind": "place",
-          "title": "Jose Cuervo Express",
-          "subtitle": "Luxurious scenic train tours at sunrise or sunset from Guadalajara to Tequila, featuring onboard cocktails…",
+          "title": "Mercado Libertad - San Juan de Dios",
+          "subtitle": "Sprawling indoor market in Guadalajara offering hundreds of stalls selling food, clothing, handicrafts…",
           "year": null,
           "why": "Popular in Guadalajara with people 55+.",
           "prompt": "What did people wear to go there?",
           "promptSource": "template",
-          "qlooId": "25F9848D-DA5A-441F-82C0-B39BEF7C23E3",
+          "qlooId": "40E6E23E-85F7-4D3F-AC59-5FE5F9CD46C4",
           "operation": "recommend"
         },
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Tajín",
-          "subtitle": "Tajín is a Mexican brand known for its popular chili-lime seasoning used on fruits, snacks, and various…",
+          "title": "La Insurgente",
+          "subtitle": "Casual Guadalajara eatery serving Mexican classics—tacos, quesadillas and tostadas—and craft cocktails with…",
           "year": null,
           "why": "A name often liked in Guadalajara by people 55+.",
-          "prompt": "Who in your family liked this?",
+          "prompt": "Where would you buy this?",
           "promptSource": "template",
-          "qlooId": "BEC28A68-C3A9-488D-9530-15469121EAEC",
+          "qlooId": "8758C2DB-D330-41CA-B68B-32EAC34E434A",
           "operation": "recommend"
         },
         {
@@ -345,15 +345,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 17,
+      "secs": 19,
       "stepDoneAt": {
         "resolve": 2,
-        "songs": 11,
-        "films": 11,
-        "places": 12,
-        "tastes": 12,
-        "rank": 17,
-        "compose": 17
+        "songs": 12,
+        "films": 12,
+        "tastes": 13,
+        "places": 13,
+        "rank": 19,
+        "compose": 19
       },
       "era": {
         "from": 1955,
@@ -369,7 +369,7 @@
           "subtitle": null,
           "year": null,
           "why": "A favourite you added, to start somewhere comfortable.",
-          "prompt": "What does this music make you think of?",
+          "prompt": "Where would you hear music like this?",
           "promptSource": "template",
           "qlooId": "996272B0-CB79-48D3-8B83-8ED34F2DE9AF",
           "operation": "describe"
@@ -393,7 +393,7 @@
           "subtitle": "Casual Liverpool eatery serving halal Indian and Middle Eastern dishes with vegetarian, vegan and organic…",
           "year": null,
           "why": "A name often liked in Liverpool by people 55+.",
-          "prompt": "Where would you buy this?",
+          "prompt": "Who in your family liked this?",
           "promptSource": "template",
           "qlooId": "1B3D7048-701D-4B0B-9DD0-6BFB5DA76615",
           "operation": "recommend"
@@ -417,7 +417,7 @@
           "subtitle": "Formed in Muswell Hill, London in 1963 by brothers Ray and Dave Davies with Pete Quaife and Mick Avory, The…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Liverpool who like The Beatles and Cilla Black.",
-          "prompt": "What was playing on the radio at home?",
+          "prompt": "Where would you hear music like this?",
           "promptSource": "template",
           "qlooId": "286449D4-5320-4CF0-BA14-5293C448F906",
           "operation": "recommend"
@@ -453,7 +453,7 @@
           "subtitle": "The Monkees are an American pop rock band originally formed in 1965 for a television series of the same name.",
           "year": null,
           "why": "Often enjoyed by people 55+ in Liverpool who like The Beatles and Cilla Black.",
-          "prompt": "Which of their songs would you like to finish with?",
+          "prompt": "Shall we sing along to one together?",
           "promptSource": "template",
           "qlooId": "C397656B-DF38-44D8-92F8-A624401F1D9A",
           "operation": "recommend"
@@ -502,15 +502,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 17,
+      "secs": 21,
       "stepDoneAt": {
         "resolve": 2,
-        "songs": 11,
-        "films": 11,
-        "tastes": 12,
-        "places": 13,
-        "rank": 17,
-        "compose": 17
+        "songs": 12,
+        "films": 12,
+        "tastes": 13,
+        "places": 15,
+        "rank": 21,
+        "compose": 21
       },
       "era": {
         "from": 1945,
@@ -534,25 +534,25 @@
         {
           "slot": 2,
           "kind": "place",
-          "title": "Thy Barber",
-          "subtitle": "Classic men's barber offering hand-tailored haircuts and beard trims in a relaxed Shoreditch setting near…",
+          "title": "The Magic Circle",
+          "subtitle": "Intimate magic society HQ with a small theatre, museum, library and licensed bar hosting live magic shows and…",
           "year": null,
           "why": "Popular in London with people 55+.",
-          "prompt": "What did people wear to go there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
-          "qlooId": "11802B26-44D4-4D68-9B3A-043F68455D77",
+          "qlooId": "7C08F018-6FAE-45F0-8766-098C0E42DD93",
           "operation": "recommend"
         },
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Prezzo",
-          "subtitle": "Prezzo is a UK-based Italian restaurant chain offering authentic Italian dishes like pasta, pizza, and panini…",
+          "title": "Gourmet Burger Kitchen",
+          "subtitle": "Gourmet Burger Kitchen (GBK) is a UK-based restaurant chain known for its handcrafted gourmet burgers and…",
           "year": null,
           "why": "A name often liked in London by people 55+.",
-          "prompt": "Where would you buy this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "B10D4A02-7C84-45DC-9634-84A62FDBAEA6",
+          "qlooId": "731D533A-E06E-46ED-B03E-2E788FAB6DE6",
           "operation": "recommend"
         },
         {
@@ -574,7 +574,7 @@
           "subtitle": "Barbra Streisand is an American singer, actress, and filmmaker whose career spans over six decades.",
           "year": null,
           "why": "Often enjoyed by people 55+ in London who like Vera Lynn and Cliff Richard.",
-          "prompt": "Did anyone you know sing or dance to this?",
+          "prompt": "What was playing on the radio at home?",
           "promptSource": "template",
           "qlooId": "8BD89B89-9966-40B8-9E53-4A2E09C59994",
           "operation": "recommend"
@@ -582,25 +582,25 @@
         {
           "slot": 6,
           "kind": "place",
-          "title": "The Magic Circle",
-          "subtitle": "Intimate magic society HQ with a small theatre, museum, library and licensed bar hosting live magic shows and…",
+          "title": "Jewel Tower",
+          "subtitle": "Surviving 14th‑century remnant of the Palace of Westminster with ribbed‑vaulted interior and exhibits on…",
           "year": null,
           "why": "Popular in London with people 55+.",
-          "prompt": "What would you see on the way there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
-          "qlooId": "7C08F018-6FAE-45F0-8766-098C0E42DD93",
+          "qlooId": "D9B5B57A-24F7-40E1-86AD-15666790BC91",
           "operation": "recommend"
         },
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Gourmet Burger Kitchen",
-          "subtitle": "Gourmet Burger Kitchen (GBK) is a UK-based restaurant chain known for its handcrafted gourmet burgers and…",
+          "title": "Ahmad Tea",
+          "subtitle": "Ahmad Tea is a UK-based family tea company offering a wide range of quality English teas, including black…",
           "year": null,
           "why": "A name often liked in London by people 55+.",
           "prompt": "Where would you buy this?",
           "promptSource": "template",
-          "qlooId": "731D533A-E06E-46ED-B03E-2E788FAB6DE6",
+          "qlooId": "0CC57FD1-971C-47FC-9961-F633A4DF4159",
           "operation": "recommend"
         },
         {
@@ -610,7 +610,7 @@
           "subtitle": "Bette Midler is an American singer, actress, and comedian whose career spans several decades.",
           "year": null,
           "why": "Often enjoyed by people 55+ in London who like Vera Lynn and Cliff Richard.",
-          "prompt": "Which of their songs would you like to finish with?",
+          "prompt": "Shall we sing along to one together?",
           "promptSource": "template",
           "qlooId": "E53A6C99-DB5E-4E60-AFC6-6EA33E25F596",
           "operation": "recommend"
@@ -661,11 +661,11 @@
       "matchedAnchors": 3,
       "secs": 17,
       "stepDoneAt": {
-        "resolve": 2,
-        "songs": 10,
-        "places": 11,
-        "films": 11,
-        "tastes": 12,
+        "resolve": 4,
+        "songs": 12,
+        "places": 13,
+        "films": 13,
+        "tastes": 13,
         "rank": 17,
         "compose": 17
       },
@@ -683,7 +683,7 @@
           "subtitle": null,
           "year": null,
           "why": "A favourite you added, to start somewhere comfortable.",
-          "prompt": "Where would you hear music like this?",
+          "prompt": "What does this music make you think of?",
           "promptSource": "template",
           "qlooId": "133D9EC6-8089-4362-82BA-0A240CD2A210",
           "operation": "describe"
@@ -707,7 +707,7 @@
           "subtitle": "Upscale ice cream lounge and cafe in Ibadan offering artisanal desserts, drive-through, delivery, and cozy…",
           "year": null,
           "why": "A name often liked in Ibadan by people 55+.",
-          "prompt": "When would you have this?",
+          "prompt": "Where would you buy this?",
           "promptSource": "template",
           "qlooId": "33034CFD-1BD3-461F-AC86-F31B24875E3F",
           "operation": "recommend"
@@ -719,7 +719,7 @@
           "subtitle": "Film · 1980",
           "year": 1980,
           "why": "From 1980. From the years they were growing up, chosen to go with King Sunny Ade and highlife.",
-          "prompt": "Who would you go to the cinema with?",
+          "prompt": "Who were the film stars everyone talked about?",
           "promptSource": "template",
           "qlooId": "80B6188F-5B26-40D2-A645-6D2353FE30EF",
           "operation": "insights"
@@ -767,7 +767,7 @@
           "subtitle": "Fela Kuti was a Nigerian musician and activist who pioneered the Afrobeat genre, blending traditional African…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Ibadan who like King Sunny Ade and highlife.",
-          "prompt": "Which of their songs would you like to finish with?",
+          "prompt": "Shall we sing along to one together?",
           "promptSource": "template",
           "qlooId": "679CEADA-31C3-4A06-99D0-D7384D6693BF",
           "operation": "recommend"
@@ -816,15 +816,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 14,
+      "secs": 18,
       "stepDoneAt": {
         "resolve": 1,
-        "songs": 10,
-        "films": 11,
-        "places": 11,
-        "tastes": 12,
-        "rank": 14,
-        "compose": 14
+        "songs": 12,
+        "films": 12,
+        "places": 12,
+        "tastes": 13,
+        "rank": 18,
+        "compose": 18
       },
       "era": {
         "from": 1955,
@@ -860,13 +860,13 @@
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Dano Nigeria",
-          "subtitle": "Dano Nigeria is a brand offering nourishing dairy products, including milk and milkshakes, aimed at providing…",
+          "title": "Onyx Restaurant & Bar",
+          "subtitle": "Lively Lagos restaurant and bar offering halal West African grills, seafood, small plates, cocktails, and…",
           "year": null,
           "why": "A name often liked in Lagos by people 55+.",
           "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "AA97BFDC-059F-40C8-AD21-3D6659793F11",
+          "qlooId": "2A3AF230-6CF0-4744-AFCC-92B45A038ED8",
           "operation": "recommend"
         },
         {
@@ -876,7 +876,7 @@
           "subtitle": "Film · 1969",
           "year": 1969,
           "why": "From 1969. From the years they were growing up, chosen to go with Fela Kuti and Victor Olaiya.",
-          "prompt": "Who were the film stars everyone talked about?",
+          "prompt": "Who would you go to the cinema with?",
           "promptSource": "template",
           "qlooId": "12BE15CF-45A2-443C-9710-7C1F5F0C79A9",
           "operation": "insights"
@@ -888,7 +888,7 @@
           "subtitle": "Tony Allen (1940–2020) was a Nigerian drummer, composer and bandleader widely regarded as a principal…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Lagos who like Fela Kuti and Victor Olaiya.",
-          "prompt": "What does this music make you think of?",
+          "prompt": "Where would you hear music like this?",
           "promptSource": "template",
           "qlooId": "414E4FFF-EB76-4102-B9BB-1BEFF4EA0C29",
           "operation": "recommend"
@@ -900,7 +900,7 @@
           "subtitle": "Moderately expensive Ikeja eatery offering diverse small plates, cocktails, coffee and vegan options, with…",
           "year": null,
           "why": "Popular in Lagos with people 55+.",
-          "prompt": "What would you see on the way there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
           "qlooId": "8F885551-4598-4384-A796-1C78830BBFBF",
           "operation": "recommend"
@@ -908,13 +908,13 @@
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Onyx Restaurant & Bar",
-          "subtitle": "Lively Lagos restaurant and bar offering halal West African grills, seafood, small plates, cocktails, and…",
+          "title": "Dano Nigeria",
+          "subtitle": "Dano Nigeria is a brand offering nourishing dairy products, including milk and milkshakes, aimed at providing…",
           "year": null,
           "why": "A name often liked in Lagos by people 55+.",
-          "prompt": "Where would you buy this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "2A3AF230-6CF0-4744-AFCC-92B45A038ED8",
+          "qlooId": "AA97BFDC-059F-40C8-AD21-3D6659793F11",
           "operation": "recommend"
         },
         {
@@ -976,10 +976,10 @@
       "secs": 19,
       "stepDoneAt": {
         "resolve": 2,
-        "songs": 13,
-        "films": 13,
-        "places": 13,
-        "tastes": 13,
+        "songs": 15,
+        "films": 15,
+        "places": 15,
+        "tastes": 15,
         "rank": 19,
         "compose": 19
       },
@@ -999,7 +999,7 @@
           "subtitle": null,
           "year": null,
           "why": "A favourite you added, to start somewhere comfortable.",
-          "prompt": "What was playing on the radio at home?",
+          "prompt": "What does this music make you think of?",
           "promptSource": "template",
           "qlooId": "D32E8668-E3B1-4919-BFA5-6870900EAC80",
           "operation": "describe"
@@ -1007,25 +1007,25 @@
         {
           "slot": 2,
           "kind": "place",
-          "title": "The Clearing House",
-          "subtitle": "Sophisticated European fare in a high‑ceilinged, arched‑window dining room with a classic checkered floor and…",
+          "title": "Bademiya Kebab Restaurant",
+          "subtitle": "Boutique bookstore in a historic Fort Mumbai building offering curated multilingual titles, regular literary…",
           "year": null,
           "why": "Popular in Mumbai with people 55+.",
-          "prompt": "What was it like there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
-          "qlooId": "11389571-CA77-4C8E-B36B-939C8A83B80B",
+          "qlooId": "DE7CEA33-B704-4582-AE12-AE996A525AF3",
           "operation": "recommend"
         },
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Granth Book Store",
-          "subtitle": "Cozy, curated independent bookstore with an in-store café and serene browsing atmosphere, offering…",
+          "title": "Masque",
+          "subtitle": "Modern Indian tasting-menu restaurant using foraged ingredients in a converted industrial mill space.",
           "year": null,
           "why": "A name often liked in Mumbai by people 55+.",
-          "prompt": "Where would you buy this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "2D9B11B7-AEF1-4F54-9123-23C25F942A06",
+          "qlooId": "F10F2240-DA2D-456E-82D6-7278CCC19CCD",
           "operation": "recommend"
         },
         {
@@ -1035,7 +1035,7 @@
           "subtitle": "Film · 1971",
           "year": 1971,
           "why": "From 1971. From the years they were growing up, chosen to go with Lata Mangeshkar and Raj Kapoor.",
-          "prompt": "Who were the film stars everyone talked about?",
+          "prompt": "Where did you go to the pictures?",
           "promptSource": "template",
           "qlooId": "5F6ABA81-8099-4C6C-A794-578EBD7720FD",
           "operation": "insights"
@@ -1047,7 +1047,7 @@
           "subtitle": "Zakir Hussain is a renowned Indian tabla player and composer, celebrated for his virtuosity in Indian…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Mumbai who like Lata Mangeshkar and Raj Kapoor.",
-          "prompt": "Did anyone you know sing or dance to this?",
+          "prompt": "Where would you hear music like this?",
           "promptSource": "template",
           "qlooId": "AEFA1E61-36EF-4468-9CC7-93BC6E4B57E6",
           "operation": "recommend"
@@ -1055,25 +1055,25 @@
         {
           "slot": 6,
           "kind": "place",
-          "title": "Blue Sea Mumbai",
-          "subtitle": "Seafront banquet and catering venue in Worli with indoor and outdoor event spaces, scenic sea-link views, and…",
+          "title": "The Clearing House",
+          "subtitle": "Sophisticated European fare in a high‑ceilinged, arched‑window dining room with a classic checkered floor and…",
           "year": null,
           "why": "Popular in Mumbai with people 55+.",
-          "prompt": "What would you see on the way there?",
+          "prompt": "What was it like there?",
           "promptSource": "template",
-          "qlooId": "3DCAA5DB-557E-408A-9F2F-95950574A893",
+          "qlooId": "11389571-CA77-4C8E-B36B-939C8A83B80B",
           "operation": "recommend"
         },
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Gustoso",
-          "subtitle": "Upscale Italian and pizza restaurant in Mumbai offering artisanal pizzas, small plates, cocktails, and…",
+          "title": "Frozen Bottle",
+          "subtitle": "Popular Mazgaon dessert café specializing in premium milkshakes, sundaes, and handcrafted ice-cream desserts…",
           "year": null,
           "why": "A name often liked in Mumbai by people 55+.",
-          "prompt": "Who in your family liked this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "E36DB704-6898-4F86-B775-2FB50B775209",
+          "qlooId": "F14B1217-146B-49E2-ABD1-E481B1AE0671",
           "operation": "recommend"
         },
         {
@@ -1132,15 +1132,15 @@
       ],
       "notes": [],
       "matchedAnchors": 2,
-      "secs": 13,
+      "secs": 15,
       "stepDoneAt": {
-        "resolve": 2,
-        "songs": 4,
-        "places": 6,
-        "tastes": 7,
-        "films": 9,
-        "rank": 13,
-        "compose": 13
+        "resolve": 4,
+        "songs": 5,
+        "places": 7,
+        "tastes": 8,
+        "films": 11,
+        "rank": 15,
+        "compose": 15
       },
       "era": {
         "from": 1965,
@@ -1156,7 +1156,7 @@
           "subtitle": "Arjun Vagale is an Indian DJ and music producer renowned for his contributions to the techno and electronic…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Chennai who like Rajinikanth and Dosa.",
-          "prompt": "What was playing on the radio at home?",
+          "prompt": "Did anyone you know sing or dance to this?",
           "promptSource": "template",
           "qlooId": "90103438-E81C-499A-BE76-958DC0B851CB",
           "operation": "recommend"
@@ -1168,7 +1168,7 @@
           "subtitle": "Three-floor beachfront family restaurant with a rooftop terrace serving international cuisine, halal and…",
           "year": null,
           "why": "Popular in Chennai with people 55+.",
-          "prompt": "What would you see on the way there?",
+          "prompt": "What did people wear to go there?",
           "promptSource": "template",
           "qlooId": "6E81C101-D80C-4770-B476-B3FEA19C3579",
           "operation": "recommend"
@@ -1176,13 +1176,13 @@
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Fusilli Reasons",
-          "subtitle": "Laid-back vegetarian Italian eatery specializing in garlic breads, diverse pastas, and nachos; offers quick…",
+          "title": "Copper Kitchen Porur",
+          "subtitle": "Authentic North and South Indian non-veg cuisine specializing in Chettinad, Tandoor, Andhra, and seafood…",
           "year": null,
           "why": "A name often liked in Chennai by people 55+.",
-          "prompt": "Who in your family liked this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "C4F66115-F451-484E-8DCF-5784CFF7E2BB",
+          "qlooId": "572763BB-FF3E-481C-813E-9795E56AB3F8",
           "operation": "recommend"
         },
         {
@@ -1204,7 +1204,7 @@
           "subtitle": "Mahesh is a music artist whose detailed information including genre, biography, and discography is not widely…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Chennai who like Rajinikanth and Dosa.",
-          "prompt": "Where would you hear music like this?",
+          "prompt": "What was playing on the radio at home?",
           "promptSource": "template",
           "qlooId": "D1D51A64-3F0B-4225-9FC8-8A656D55451F",
           "operation": "recommend"
@@ -1216,7 +1216,7 @@
           "subtitle": "Independent Chennai-based publisher and bookshop showcasing handcrafted, illustrated art books, letterpress…",
           "year": null,
           "why": "Popular in Chennai with people 55+.",
-          "prompt": "What would you see on the way there?",
+          "prompt": "What did people wear to go there?",
           "promptSource": "template",
           "qlooId": "F4428951-3515-41AB-9BA4-58B2AD260690",
           "operation": "recommend"
@@ -1224,13 +1224,13 @@
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Superstar Pizza",
-          "subtitle": "Casual pizza-focused fast-food spot in Besant Nagar serving specialty pizzas, garlic breads and sides with…",
+          "title": "Fusilli Reasons",
+          "subtitle": "Laid-back vegetarian Italian eatery specializing in garlic breads, diverse pastas, and nachos; offers quick…",
           "year": null,
           "why": "A name often liked in Chennai by people 55+.",
           "prompt": "Who in your family liked this?",
           "promptSource": "template",
-          "qlooId": "1155526F-D7F2-42FA-8420-098C3A8DEB9E",
+          "qlooId": "C4F66115-F451-484E-8DCF-5784CFF7E2BB",
           "operation": "recommend"
         },
         {
@@ -1289,15 +1289,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 22,
+      "secs": 20,
       "stepDoneAt": {
-        "resolve": 4,
+        "resolve": 3,
         "songs": 14,
-        "films": 15,
+        "films": 14,
         "places": 15,
         "tastes": 15,
-        "rank": 22,
-        "compose": 22
+        "rank": 20,
+        "compose": 20
       },
       "era": {
         "from": 1965,
@@ -1313,7 +1313,7 @@
           "subtitle": null,
           "year": null,
           "why": "A favourite you added, to start somewhere comfortable.",
-          "prompt": "What was playing on the radio at home?",
+          "prompt": "Did anyone you know sing or dance to this?",
           "promptSource": "template",
           "qlooId": "BF497671-0D4D-459F-90B8-6F962F131F67",
           "operation": "describe"
@@ -1325,7 +1325,7 @@
           "subtitle": "Charming café and restaurant set in a historic Spanish-era house, offering baked goods, small plates, wines…",
           "year": null,
           "why": "Popular in Manila with people 55+.",
-          "prompt": "Did you ever go there? Who did you go with?",
+          "prompt": "What was it like there?",
           "promptSource": "template",
           "qlooId": "C5FBE366-C423-4889-9886-EB9C240E03A1",
           "operation": "recommend"
@@ -1337,7 +1337,7 @@
           "subtitle": "Oishi is a popular snack brand in the Philippines known for a variety of chips, granola balls, and other…",
           "year": null,
           "why": "A name often liked in Manila by people 55+.",
-          "prompt": "Where would you buy this?",
+          "prompt": "When would you have this?",
           "promptSource": "template",
           "qlooId": "E55AA375-D6C3-40E1-B8FE-F5922EC80012",
           "operation": "recommend"
@@ -1349,7 +1349,7 @@
           "subtitle": "Film · 1975",
           "year": 1975,
           "why": "From 1975. From the years they were growing up, chosen to go with Pilita Corrales and Nora Aunor.",
-          "prompt": "Where did you go to the pictures?",
+          "prompt": "Who were the film stars everyone talked about?",
           "promptSource": "template",
           "qlooId": "E8494B12-A8E0-43C7-B6F7-FEA1183EDF51",
           "operation": "insights"
@@ -1369,25 +1369,25 @@
         {
           "slot": 6,
           "kind": "place",
-          "title": "Plaza Ibarra",
-          "subtitle": "Quaint Quezon City event venue with elegant function rooms, grand lighted staircase, on-site catering and a…",
+          "title": "Oriental Palace Seafood Restaurant",
+          "subtitle": "Casual Chinese restaurant in Quezon City known for seafood specialties (raw and steamed crab), Cantonese…",
           "year": null,
           "why": "Popular in Manila with people 55+.",
-          "prompt": "Did you ever go there? Who did you go with?",
+          "prompt": "What was it like there?",
           "promptSource": "template",
-          "qlooId": "E132E317-AB71-4E7B-90CB-9C4212238C2D",
+          "qlooId": "A193CD07-03DA-4EB1-8EEC-2F78EE9038E0",
           "operation": "recommend"
         },
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Hard Rock Cafe Manila",
-          "subtitle": "Rock 'n' roll-themed live-music restaurant serving American classics and burgers with a high-energy bar…",
+          "title": "Figaro Coffee",
+          "subtitle": "Established in 1993, this Filipino coffeehouse chain serves as a pioneer of the local cafe culture.",
           "year": null,
           "why": "A name often liked in Manila by people 55+.",
-          "prompt": "What did it taste like?",
+          "prompt": "Where would you buy this?",
           "promptSource": "template",
-          "qlooId": "A08028BD-A5C1-409E-92FF-CED2FEFE58F8",
+          "qlooId": "77F40838-492A-4E2A-8AE7-566533475922",
           "operation": "recommend"
         },
         {
@@ -1446,15 +1446,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 20,
+      "secs": 17,
       "stepDoneAt": {
-        "resolve": 5,
-        "songs": 14,
-        "films": 16,
-        "places": 16,
-        "tastes": 16,
-        "rank": 20,
-        "compose": 20
+        "resolve": 2,
+        "songs": 12,
+        "films": 13,
+        "places": 13,
+        "tastes": 14,
+        "rank": 17,
+        "compose": 17
       },
       "era": {
         "from": 1975,
@@ -1470,7 +1470,7 @@
           "subtitle": null,
           "year": null,
           "why": "A favourite you added, to start somewhere comfortable.",
-          "prompt": "What does this music make you think of?",
+          "prompt": "What was playing on the radio at home?",
           "promptSource": "template",
           "qlooId": "AFC883F1-00FA-490B-B415-6B9FFDA0AE51",
           "operation": "describe"
@@ -1482,7 +1482,7 @@
           "subtitle": "Historic cross marking the introduction of Christianity to the Philippines, housed in an octagonal…",
           "year": null,
           "why": "Popular in Cebu City with people 55+.",
-          "prompt": "What would you see on the way there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
           "qlooId": "73462AB9-311F-4AFE-BFC3-3EB1F299A933",
           "operation": "recommend"
@@ -1490,13 +1490,13 @@
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Oishi",
-          "subtitle": "Oishi is a popular snack brand in the Philippines known for a variety of chips, granola balls, and other…",
+          "title": "Figaro Coffee",
+          "subtitle": "Established in 1993, this Filipino coffeehouse chain serves as a pioneer of the local cafe culture.",
           "year": null,
           "why": "A name often liked in Cebu City by people 55+.",
-          "prompt": "When would you have this?",
+          "prompt": "Where would you buy this?",
           "promptSource": "template",
-          "qlooId": "E55AA375-D6C3-40E1-B8FE-F5922EC80012",
+          "qlooId": "77F40838-492A-4E2A-8AE7-566533475922",
           "operation": "recommend"
         },
         {
@@ -1506,7 +1506,7 @@
           "subtitle": "Film · 1987",
           "year": 1987,
           "why": "From 1987. From the years they were growing up, chosen to go with Rico J. Puno and Dolphy.",
-          "prompt": "Where did you go to the pictures?",
+          "prompt": "Who would you go to the cinema with?",
           "promptSource": "template",
           "qlooId": "2318CBF3-2DD2-455B-B499-003124B15010",
           "operation": "insights"
@@ -1518,7 +1518,7 @@
           "subtitle": "The Bloomfields are a rock band known for their energetic and melodic style, blending elements of classic…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Cebu City who like Rico J. Puno and Dolphy.",
-          "prompt": "Where would you hear music like this?",
+          "prompt": "Did anyone you know sing or dance to this?",
           "promptSource": "template",
           "qlooId": "3BC8012C-E899-4BB6-A7D8-5DDAC4F0A5C5",
           "operation": "recommend"
@@ -1526,25 +1526,25 @@
         {
           "slot": 6,
           "kind": "place",
-          "title": "Cebu's Original Lechon Belly - Commissary",
-          "subtitle": "Specializes in Cebu-style boneless lechon belly slow-roasted over open charcoal using a proprietary deboning…",
+          "title": "Casa Gorordo Museum",
+          "subtitle": "Restored 1850s mestizo-style house museum in Cebu’s historic Parian showcasing colonial-era domestic life…",
           "year": null,
           "why": "Popular in Cebu City with people 55+.",
           "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
-          "qlooId": "58552849-1006-414B-B0AC-DE9936B35B8E",
+          "qlooId": "DC7BA118-5197-42E8-8915-00255B5DFC55",
           "operation": "recommend"
         },
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Good Cup Coffee Co.",
-          "subtitle": "Specialty coffee roastery and café in Cebu City offering roasted-to-order single-origin beans, pour-overs…",
+          "title": "Oishi",
+          "subtitle": "Oishi is a popular snack brand in the Philippines known for a variety of chips, granola balls, and other…",
           "year": null,
           "why": "A name often liked in Cebu City by people 55+.",
-          "prompt": "Who in your family liked this?",
+          "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "A5D67CC5-3AC8-4FAF-BF81-72168A7D6202",
+          "qlooId": "E55AA375-D6C3-40E1-B8FE-F5922EC80012",
           "operation": "recommend"
         },
         {
@@ -1554,7 +1554,7 @@
           "subtitle": "MYMP, short for Make Your Momma Proud, is a Filipino acoustic band that gained popularity in the early 2000s.",
           "year": null,
           "why": "Often enjoyed by people 55+ in Cebu City who like Rico J. Puno and Dolphy.",
-          "prompt": "Shall we sing along to one together?",
+          "prompt": "Which of their songs would you like to finish with?",
           "promptSource": "template",
           "qlooId": "F2A3F4B0-C6F6-42D4-B1EB-3CC01965B55F",
           "operation": "recommend"
@@ -1603,15 +1603,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 18,
+      "secs": 20,
       "stepDoneAt": {
         "resolve": 2,
-        "songs": 12,
-        "films": 12,
-        "tastes": 13,
-        "places": 14,
-        "rank": 18,
-        "compose": 18
+        "songs": 14,
+        "films": 14,
+        "tastes": 15,
+        "places": 15,
+        "rank": 20,
+        "compose": 20
       },
       "era": {
         "from": 1955,
@@ -1639,7 +1639,7 @@
           "subtitle": "Small urban park in Shirokane's upscale neighborhood offering green spaces, recreational facilities, and…",
           "year": null,
           "why": "Popular in Tokyo with people 55+.",
-          "prompt": "What was it like there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
           "qlooId": "235CF953-B8C3-4153-AD40-BD73F4D28D8C",
           "operation": "recommend"
@@ -1647,13 +1647,13 @@
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Mister Donut",
-          "subtitle": "Mister Donut is Japan's largest donut franchise chain offering a variety of donuts, pies, drinks, and dim sum…",
+          "title": "Calbee",
+          "subtitle": "Calbee is a Japanese snack food brand known for its potato chips, prawn crackers, and other popular snack…",
           "year": null,
           "why": "A name often liked in Tokyo by people 55+.",
-          "prompt": "What did it taste like?",
+          "prompt": "Where would you buy this?",
           "promptSource": "template",
-          "qlooId": "9E921C97-C797-4E33-9B24-9DB9FE1F8F90",
+          "qlooId": "706CC94B-E654-4096-9986-835F43DADE80",
           "operation": "recommend"
         },
         {
@@ -1663,7 +1663,7 @@
           "subtitle": "Film · 1960",
           "year": 1960,
           "why": "From 1960. From the years they were growing up, chosen to go with Misora Hibari and Kurosawa Akira: Tsukuru to iu koto wa subarashii.",
-          "prompt": "Who would you go to the cinema with?",
+          "prompt": "Where did you go to the pictures?",
           "promptSource": "template",
           "qlooId": "ED4F2E65-CC1B-4B2C-8280-5646B8A98606",
           "operation": "insights"
@@ -1683,25 +1683,25 @@
         {
           "slot": 6,
           "kind": "place",
-          "title": "Ruby Jack’s Premium Seafood & Steak",
-          "subtitle": "Sophisticated modern steakhouse offering premium steak cuts and American-style seafood with cocktails, wine…",
+          "title": "Tour d'Argent Tokyo",
+          "subtitle": "Historic and prestigious French grand maison offering exquisite duck specialties in a luxurious, elegant…",
           "year": null,
           "why": "Popular in Tokyo with people 55+.",
-          "prompt": "What was it like there?",
+          "prompt": "Did you ever go there? Who did you go with?",
           "promptSource": "template",
-          "qlooId": "4640CA26-D637-4E0D-8C4E-2A6F4F4C5D27",
+          "qlooId": "27B29969-1614-46B3-8AB0-DB922204B90D",
           "operation": "recommend"
         },
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Calbee",
-          "subtitle": "Calbee is a Japanese snack food brand known for its potato chips, prawn crackers, and other popular snack…",
+          "title": "Mister Donut",
+          "subtitle": "Mister Donut is Japan's largest donut franchise chain offering a variety of donuts, pies, drinks, and dim sum…",
           "year": null,
           "why": "A name often liked in Tokyo by people 55+.",
           "prompt": "Who in your family liked this?",
           "promptSource": "template",
-          "qlooId": "706CC94B-E654-4096-9986-835F43DADE80",
+          "qlooId": "9E921C97-C797-4E33-9B24-9DB9FE1F8F90",
           "operation": "recommend"
         },
         {
@@ -1760,15 +1760,15 @@
       ],
       "notes": [],
       "matchedAnchors": 3,
-      "secs": 18,
+      "secs": 35,
       "stepDoneAt": {
         "resolve": 2,
-        "songs": 11,
-        "films": 12,
-        "tastes": 13,
-        "places": 13,
-        "rank": 18,
-        "compose": 18
+        "songs": 26,
+        "films": 26,
+        "tastes": 27,
+        "places": 30,
+        "rank": 35,
+        "compose": 35
       },
       "era": {
         "from": 1975,
@@ -1796,7 +1796,7 @@
           "subtitle": "Art-focused creative venue in a renovated century-old wooden house offering gallery exhibitions, cafe dining…",
           "year": null,
           "why": "Popular in Osaka with people 55+.",
-          "prompt": "What was it like there?",
+          "prompt": "What would you see on the way there?",
           "promptSource": "template",
           "qlooId": "3736EBD4-19E4-4F38-838F-2230FF2B5FE1",
           "operation": "recommend"
@@ -1804,13 +1804,13 @@
         {
           "slot": 3,
           "kind": "taste",
-          "title": "Mister Donut",
-          "subtitle": "Mister Donut is Japan's largest donut franchise chain offering a variety of donuts, pies, drinks, and dim sum…",
+          "title": "Calbee",
+          "subtitle": "Calbee is a Japanese snack food brand known for its potato chips, prawn crackers, and other popular snack…",
           "year": null,
           "why": "A name often liked in Osaka by people 55+.",
-          "prompt": "Where would you buy this?",
+          "prompt": "Who in your family liked this?",
           "promptSource": "template",
-          "qlooId": "9E921C97-C797-4E33-9B24-9DB9FE1F8F90",
+          "qlooId": "706CC94B-E654-4096-9986-835F43DADE80",
           "operation": "recommend"
         },
         {
@@ -1832,7 +1832,7 @@
           "subtitle": "少年ナイフ (Shonen Knife) is a Japanese all-female pop punk band formed in Osaka in 1981.",
           "year": null,
           "why": "Often enjoyed by people 55+ in Osaka who like Kyu Sakamoto and Mifune: The Last Samurai.",
-          "prompt": "What does this music make you think of?",
+          "prompt": "What was playing on the radio at home?",
           "promptSource": "template",
           "qlooId": "C4FE6B9E-B52F-41E7-ABF4-6C603D0F65E9",
           "operation": "recommend"
@@ -1852,13 +1852,13 @@
         {
           "slot": 7,
           "kind": "taste",
-          "title": "Calbee",
-          "subtitle": "Calbee is a Japanese snack food brand known for its potato chips, prawn crackers, and other popular snack…",
+          "title": "Mister Donut",
+          "subtitle": "Mister Donut is Japan's largest donut franchise chain offering a variety of donuts, pies, drinks, and dim sum…",
           "year": null,
           "why": "A name often liked in Osaka by people 55+.",
           "prompt": "What did it taste like?",
           "promptSource": "template",
-          "qlooId": "706CC94B-E654-4096-9986-835F43DADE80",
+          "qlooId": "9E921C97-C797-4E33-9B24-9DB9FE1F8F90",
           "operation": "recommend"
         },
         {
@@ -1868,7 +1868,7 @@
           "subtitle": "Yukihiro Takahashi is a Japanese musician, singer, and drummer, best known as a member of the influential…",
           "year": null,
           "why": "Often enjoyed by people 55+ in Osaka who like Kyu Sakamoto and Mifune: The Last Samurai.",
-          "prompt": "Which of their songs would you like to finish with?",
+          "prompt": "Shall we sing along to one together?",
           "promptSource": "template",
           "qlooId": "399ED6E2-C612-4541-BCF2-14D8CE0D1A49",
           "operation": "recommend"

@@ -1,10 +1,10 @@
 # Evaluation
 
 Run on **22 Oct 2026** against the real Qloo hackathon API (live mode, no mock data), through the same HTTP API the app uses.
-It was run **twice**: a first run, then a second run after three changes made because of what the first run showed (see
-[What changed between the runs](#what-changed-between-the-runs)). This page reports the **second** run, with the first alongside
-where it matters. The raw results of the second run, with every item for all 12 people, are in
-[`evaluation-results.json`](evaluation-results.json).
+It was run **three times**: a first run, a second after three changes made because of what the first showed, and a third after a
+further change to places and tastes (see [What changed between the runs](#what-changed-between-the-runs)). This page reports the
+**third** run, with the earlier ones alongside where it matters. The raw results of the third run, with every item for all 12
+people, are in [`evaluation-results.json`](evaluation-results.json).
 
 To run it yourself (the script never sees the Qloo key; it only calls our API):
 
@@ -43,8 +43,8 @@ Twelve invented people, two each from six countries, born between the 1930s and 
 | 90% or more of dated items inside the era window | **12 of 12** | Pass (see note 2) |
 | 100% avoid-safe | **0 hits** on the caregiver's topic, **0** on the built-in hard topics | Pass |
 | 100% gentle questions | **0 of 96** questions test memory or touch health | Pass |
-| A session in under 60 seconds | **13–23 seconds** per person (median about 18) | Pass on this day (see note 3) |
-| 85% or more of items fit the region or the anchors, judged by hand | **about 65%** (62 of 96), up from about 59% | **Not met** |
+| A session in under 60 seconds | **15–35 seconds** per person (median about 19) | Pass on this day (see note 3) |
+| 85% or more of items fit the region or the anchors, judged by hand | **about 71%** (68 of 96), up from about 59% and 65% | **Not met** |
 
 1. "From Qloo" is checked here by the provenance fields every item carries. The guarantee itself is code: `assertQlooOnly`
    drops any item whose id never appeared in a Qloo response, and a unit test enforces it.
@@ -65,31 +65,31 @@ Each item was marked:
 - **Loose**: plausible and safe, but generic (for example a well-known film that isn't tied to this person) or only loosely tied.
 - **Miss**: clearly the wrong place, era, audience or kind of thing.
 
-| | Fits (first run → second) | Loose | Miss | What stood out in the second run |
+| | Fits (run 1 → 2 → 3) | Loose | Miss | What stood out in the third run |
 |---|---|---|---|---|
-| mx-1 Mexico City | 8 → **8** | 0 | 0 | Plaza Garibaldi, Museo Dolores Olmedo, Tajín, Vicente Fernández, and a 1957 Mexican film |
-| mx-2 Guadalajara | 7 → **7** | 1 | 0 | A cemetery museum surfaced as a place: local, but a sombre subject |
-| uk-1 Liverpool | 5 → **6** | 2 | 0 | *A Hard Day's Night* is now the film. A Southport chocolate shop and a halal eatery are loose |
-| uk-2 London | 2 → **2** | 6 | 0 | Unchanged. Chain restaurants, a barber, and American singers for a Vera Lynn fan |
-| ng-1 Ibadan | 7 → **7** | 1 | 0 | Local places and Fela and Femi Kuti. The film (*Whitey*, 1980) is loose |
-| ng-2 Lagos | 7 → **7** | 1 | 0 | Local places, Tony Allen, Femi Kuti. A British film (*Kes*) is loose |
-| in-1 Mumbai | 3 → **3** | 4 | 1 | *Anand* (1971) replaced *The Sound of Music*. A bookshop still appears in a taste slot (miss) |
-| in-2 Chennai | 2 → **2** | 5 | 1 | The two Brazilian acts are gone, replaced by Indian DJs and composers (loose). One unknown artist remains (miss) |
-| ph-1 Manila | 4 → **3** | 4 | 1 | Worse: a Hungarian arthouse film (miss) and an American chain restaurant replaced a Filipino coffee chain |
-| ph-2 Cebu | 5 → **5** | 2 | 1 | A Palestinian film (*Wedding in Galilee*) is a miss. Magellan's Cross and a Cebu lechon place fit |
-| jp-1 Tokyo | 3 → **6** | 2 | 0 | A 1960 Naruse film, Yoko Ono, Calbee. The UK tea brand is gone |
-| jp-2 Osaka | 4 → **6** | 2 | 0 | Calbee, Shonen Knife, Yukihiro Takahashi. The UK tea brand is gone |
-| **Total** | **57 → 62** | **30** | **4** | |
+| mx-1 Mexico City | 8 → 8 → **8** | 0 | 0 | Plaza Garibaldi, Museo Dolores Olmedo, Tajín, Vicente Fernández, and a 1957 Mexican film |
+| mx-2 Guadalajara | 7 → 7 → **8** | 0 | 0 | Mercado Libertad and a Guadalajara eatery serving Mexican classics replaced a cemetery museum and a tourist train |
+| uk-1 Liverpool | 5 → 6 → **6** | 2 | 0 | *A Hard Day's Night* is the film. A Southport chocolate shop and a halal eatery are loose |
+| uk-2 London | 2 → 2 → **4** | 4 | 0 | The Magic Circle and the Jewel Tower (a 14th-century remnant of the Palace of Westminster) now fill the place slots. American singers and a 2001 burger chain remain |
+| ng-1 Ibadan | 7 → 7 → **7** | 1 | 0 | Local places and Fela and Femi Kuti. The film (*Whitey*, 1980) is loose |
+| ng-2 Lagos | 7 → 7 → **7** | 1 | 0 | Local places, Tony Allen, Femi Kuti. A British film (*Kes*) is loose |
+| in-1 Mumbai | 3 → 3 → **4** | 4 | 0 | The bookshop is gone from the taste slots. *Anand* (1971) is the film. One place shows a description that doesn't match its name (a kebab restaurant described as a bookstore): Qloo's data |
+| in-2 Chennai | 2 → 2 → **3** | 4 | 1 | North and South Indian cooking is now a taste. An Italian eatery and one unknown artist remain |
+| ph-1 Manila | 4 → 3 → **4** | 3 | 1 | A Filipino coffee chain is back. A Hungarian arthouse film (miss) and a Chinese seafood restaurant remain |
+| ph-2 Cebu | 5 → 5 → **5** | 2 | 1 | Casa Gorordo Museum and Magellan's Cross fit. A Palestinian film (*Wedding in Galilee*) is a miss |
+| jp-1 Tokyo | 3 → 6 → **6** | 2 | 0 | A 1960 Naruse film, Yoko Ono, Calbee. A French grand maison as a place, and Miles Davis, are loose |
+| jp-2 Osaka | 4 → 6 → **6** | 2 | 0 | Calbee, Shonen Knife, Yukihiro Takahashi. A Taiwanese film and a theme-park chophouse are loose |
+| **Total** | **57 → 62 → 68** | **25** | **3** | |
 
-So about **65% fit** (up from 59%), 31% are loose and 4% are misses (down from 7). If "loose but plausible" counted as fitting it would
-be 96%, but we don't think that is the honest reading of the bar.
+So about **71% fit** (up from 59% and 65%), 26% are loose and 3% are misses (down from 7%). If "loose but plausible" counted as
+fitting it would be 97%, but we don't think that is the honest reading of the bar.
 
 ### What the pattern says
 
 - **It works well where Qloo's data is deep for older audiences and local places**: Mexico City, Guadalajara, Ibadan and Lagos were
   7 to 8 of 8 in both runs, and Tokyo and Osaka moved up to 6.
-- **It is still weak for London, Mumbai, Chennai and Manila.** The places and tastes there are often chain restaurants, venues and
-  shops that happen to be in the city, not things that belong to a person's world.
+- **It is still weakest for London, Mumbai, Chennai and Manila** (4, 4, 3 and 4 of 8). Where Qloo's data for older audiences is thin,
+  the songs and tastes it returns are generic: American singers, chain restaurants, modern DJs.
 - **The film fix helped some people and not others.** A search on the favourites alone gave *A Hard Day's Night* (Liverpool), *Anand*
   (Mumbai) and a 1960 Japanese film (Tokyo). For the Philippines, Nigeria and Osaka it returned world arthouse cinema that
   has nothing to do with the person (*Wedding in Galilee*, *Adoption*, *The Boys from Fengkuei*). That is what Qloo's taste graph connects to
@@ -98,11 +98,16 @@ be 96%, but we don't think that is the honest reading of the bar.
   repeat now do so within one country (Mexico, the Philippines, Japan), which is correct.
 - **Songs are better matched.** Foreign acts (Brazilian psytrance for Chennai, an American pop group for Tokyo) mostly moved down, and
   a 2020s pop group for someone born in the 1960s was removed. London still gets American singers because the whole pool is American.
-- **Places and tastes are the weakest slot.** Nothing in this round addressed them.
+- **Places and tastes improved in the third run.** Somewhere you'd go to see now fills the place slots (a market in Guadalajara, a house
+  museum in Cebu, the Jewel Tower in London), the cemetery museum and the bookshop are gone, and tastes lean toward their own cooking. Foreign
+  cooking still shows up where the pool has little else (an Italian eatery for Chennai).
+- **The film slot is now the weakest.** Five of twelve films were loose and two were misses: *Adoption*, *Wedding in Galilee* and *The Boys from
+  Fengkuei* are world cinema that Qloo links to the favourites and that has nothing to do with the person.
 
 ## What changed between the runs
 
-The first run (59% fit) showed three problems, so three changes were made and the whole evaluation re-run:
+The first run (59% fit) showed three problems, so three changes were made and the whole evaluation re-run (65%). The places and tastes
+were the weakest slot, so a fourth change followed and it was re-run again (71%):
 
 1. **Films from the favourites, not a location filter.** The old search filtered films by country and returned the same global classics
    (*The Godfather*, *Star Wars*) for every country. Searching on the favourites alone, with the year window, returns films from the
@@ -113,6 +118,11 @@ The first run (59% fit) showed three problems, so three changes were made and th
    years is left out.
 3. **Repeats across countries move down.** The server remembers which countries it has offered each artist, brand and film to and ranks it
    lower for other countries. This is kept in memory only, so results for one region can depend slightly on what was built before it.
+4. **Places and tastes that belong to the person's world.** Places you'd go to see (a plaza, museum, temple, market, waterfront) rank before
+   restaurants, and a barber, banquet hall or event venue ranks last. Tastes lean toward cooking described as theirs and away from cooking
+   described as from elsewhere, and prefer brands that existed in their young years. A bookshop with a café is no longer a taste, and
+   places of mourning (a cemetery museum had come up) are never offered. All of it reads Qloo's own descriptions; no place or cuisine is
+   hard-coded.
 
 ## Other things the evaluation found, and fixed
 
@@ -135,9 +145,11 @@ The first run (59% fit) showed three problems, so three changes were made and th
 
 ## What could raise the fit rate further (not done)
 
-- **Places and tastes.** Prefer places that Qloo's description ties to the city's own culture (a plaza, a museum, a market) over generic
-  venues, and keep non-food shops out of the taste slot (a bookshop appeared for Mumbai).
 - **Films.** When the favourites-only film search returns cinema from a different culture, fall back to the best-known films of that
-  country's own era instead.
+  country's own era instead, or prefer films whose description names the person's country.
+- **Songs where the pool is foreign.** London and Tokyo still get American acts because that is most of what Qloo returns for an older
+  audience there. A second search for artists from the favourites' own country could widen the pool.
+- **Descriptions that don't match names.** One Mumbai place carried a bookstore description under a kebab restaurant's name. That is
+  Qloo's data; the app can't tell.
 - **Favourites Qloo did not match.** One Chennai favourite wasn't found; local-language search could recover some of these.
-- **A fresh pair of eyes.** Re-judge the same 96 items with someone from each region.
+- **A fresh pair of eyes.** Re-judge the same 96 items with someone from each region. The same reviewer made the changes and judged them.
