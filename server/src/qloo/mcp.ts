@@ -76,8 +76,11 @@ export class McpTransport implements QlooTransport {
       const text = String((e as { stdout?: string }).stdout ?? "") + String((e as { message?: string }).message ?? "");
       const auth = /401|unauthori[sz]ed|api[_ ]?key/i.test(text);
       const limited = /429|too many requests|rate[_ -]?limit/i.test(text);
-      const code = auth ? "QLOO_AUTH" : limited ? "QLOO_RATE_LIMIT" : "insights_failed";
-      return { status: "error", error: { code, retryable: !auth, recovery: auth ? "Qloo rejected the credentials." : limited ? "Rate limited (429)." : "Insights request failed." } };
+      // execFile kills the child when its time runs out. Report that as a timeout, so the client doesn't repeat a request
+      // that was already too slow (each repeat is another full wait).
+      const timedOut = (e as { killed?: boolean }).killed === true || (e as { code?: string }).code === "ETIMEDOUT";
+      const code = auth ? "QLOO_AUTH" : limited ? "QLOO_RATE_LIMIT" : timedOut ? "insights_timeout" : "insights_failed";
+      return { status: "error", error: { code, retryable: !auth, recovery: auth ? "Qloo rejected the credentials." : limited ? "Rate limited (429)." : timedOut ? "Insights request timed out." : "Insights request failed." } };
     }
   }
 

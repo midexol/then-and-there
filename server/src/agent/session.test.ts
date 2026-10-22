@@ -497,7 +497,7 @@ test("a country-only region builds quickly without places and says why", async (
   assert.ok(!session.notes.some((n) => /Add another favourite/.test(n)), "must not blame the favourites");
 });
 
-test("films never hold a session back: one attempt per search, and a fixed time budget", async () => {
+test("films never hold a session back: no repeat after a timeout, a retry after a rate limit, and a fixed budget", async () => {
   const { classicFilms } = await import("./session.js");
   const ctx = {
     input: { birthDecade: "1940s", region: "Liverpool, UK", anchors: [] } as unknown as ProfileInput,
@@ -508,17 +508,30 @@ test("films never hold a session back: one attempt per search, and a fixed time 
     signalTags: [],
     seenIds: new Set<string>(),
   };
-  // A search that errors: tried once per query (2 queries), not retried.
-  let tries = 0;
-  const failing: QlooTransport = { mode: "live", call: async () => (tries++, { status: "error" as const, error: { code: "insights_failed", retryable: true } }) };
-  const quick = new QlooClient(failing, { baseDelayMs: 1, minGapMs: 0 });
-  assert.deepEqual(await classicFilms(quick, ctx), []);
-  assert.equal(tries, 2, "two searches, one attempt each");
+  const film = { entity_id: "f1", name: "A Film", subtype: "urn:entity:movie", properties: { release_year: 1960 }, tags: [] };
 
-  // A search that never answers: the budget ends the wait and the session carries on without era films.
+  // A search that times out is tried once per query (2 queries) and reported as slow.
+  let tries = 0;
+  const timesOut: QlooTransport = { mode: "live", call: async () => (tries++, { status: "error" as const, error: { code: "insights_timeout", retryable: true } }) };
+  let slow = 0;
+  assert.deepEqual(await classicFilms(new QlooClient(timesOut, { baseDelayMs: 1, minGapMs: 0 }), ctx, 5_000, () => slow++), []);
+  assert.equal(tries, 2, "two searches, no repeat after a timeout");
+  assert.equal(slow, 1, "the caller is told the film search was slow");
+
+  // A rate limit is retried after its pause and then succeeds.
+  let calls = 0;
+  const limitedOnce: QlooTransport = {
+    mode: "live",
+    call: async () => (++calls <= 2 ? { status: "error" as const, error: { code: "QLOO_RATE_LIMIT", retryable: true, recovery: "Rate limited (429)." } } : { status: "ok" as const, results: [film] }),
+  };
+  const got = await classicFilms(new QlooClient(limitedOnce, { baseDelayMs: 1, minGapMs: 0 }), ctx, 20_000);
+  assert.ok(got.length >= 1, "films arrive after the rate limit clears");
+
+  // A search that never answers: the budget ends the wait.
   const hanging: QlooTransport = { mode: "live", call: () => new Promise<never>(() => {}) };
-  const slow = new QlooClient(hanging, { timeoutMs: 400, minGapMs: 0 });
   const t0 = Date.now();
-  assert.deepEqual(await classicFilms(slow, ctx, 60), []);
+  let slow2 = 0;
+  assert.deepEqual(await classicFilms(new QlooClient(hanging, { timeoutMs: 400, minGapMs: 0 }), ctx, 60, () => slow2++), []);
   assert.ok(Date.now() - t0 < 300, "returned at the budget, not at the request timeout");
+  assert.equal(slow2, 1);
 });

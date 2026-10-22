@@ -191,15 +191,16 @@ export function assertQlooOnly(items: SessionItem[], seenIds: Set<string>): Sess
  */
 export const FILM_BUDGET_MS = 30_000;
 
-export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS): Promise<QEntity[]> {
+export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void): Promise<QEntity[]> {
   const country = ctx.input.region.split(",").pop()?.trim() || ctx.input.region;
   const base = { type: "movie", signals: ctx.signalIds, year_min: ctx.era.from, year_max: ctx.era.to, take: 15 };
+  let slow = false;
   const run = async (extra: Record<string, unknown>) => {
     try {
-      // One attempt each. A year-filtered search that doesn't come back is slow for a reason a retry won't fix, and the
-      // retries (plus the queue behind them) once held every session back for two minutes.
-      return okEntities(await qloo.call("qloo_insights", { ...base, ...extra }, { maxRetries: 0, retryOnTimeout: false }));
-    } catch {
+      // A search that times out is not repeated (a retry costs another full wait). A rate limit still is, after its pause.
+      return okEntities(await qloo.call("qloo_insights", { ...base, ...extra }, { retryOnTimeout: false }));
+    } catch (e) {
+      if (e instanceof QlooError && e.timedOut) slow = true;
       return [] as QEntity[]; // films are one slot of eight; a failed lookup shouldn't sink the session
     }
   };
@@ -207,9 +208,10 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
   // budget: after it, the session is built with whatever films the plain recommend call found.
   let timer: ReturnType<typeof setTimeout> | undefined;
   const budget = new Promise<QEntity[][]>((resolve) => {
-    timer = setTimeout(() => resolve([[], []]), budgetMs);
+    timer = setTimeout(() => ((slow = true), resolve([[], []])), budgetMs);
   });
   const [local, famous] = await Promise.race([Promise.all([run({ filter_location: country }), run({ signal_location: ctx.input.region })]), budget]).finally(() => clearTimeout(timer));
+  if (slow) onSlow?.();
   const out: QEntity[] = [];
   for (let i = 0; i < Math.max(local.length, famous.length); i++) {
     if (local[i]) out.push({ ...local[i]!, via: "insights" });
@@ -333,7 +335,8 @@ export async function buildSession(
   let busy = 0;
   let rejected = 0; // calls Qloo refused outright (not retryable): typically a place it can't match
   let placesTooBig = false; // the region is a whole country: Qloo timed out filtering places by it
-  const classics = qloo.mode === "live" ? classicFilms(qloo, ctx) : Promise.resolve([] as QEntity[]);
+  let filmsSlow = false; // the era-film search timed out or ran out of its budget
+  const classics = qloo.mode === "live" ? classicFilms(qloo, ctx, FILM_BUDGET_MS, () => (filmsSlow = true)) : Promise.resolve([] as QEntity[]);
   const raw = await Promise.all(
     jobs.map(async (j) => {
       try {
@@ -433,7 +436,9 @@ export async function buildSession(
         ? `“${input.region}” is too big an area for Qloo to pick places in, so this session has none. Enter a city or town (a place they actually lived) to add them.`
         : noLocal
           ? `Qloo has little on “${input.region}” yet, so there are no places or tastes. Try a nearby larger city.`
-          : `We found ${items.length} strong matches. Add another favourite to get a fuller session.`,
+          : filmsSlow && !items.some((i) => i.kind === "film")
+            ? "Films from their era were slow to load this time, so this session has none. Planning it again usually brings them back."
+            : `We found ${items.length} strong matches. Add another favourite to get a fuller session.`,
     );
   }
   if (qloo.mode === "mock") notes.push("Demo data: this server is running without a Qloo key.");
