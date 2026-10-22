@@ -24,6 +24,8 @@ export type BuildContext = {
   signalIds: string[];
   signalTags: string[];
   seenIds: Set<string>;
+  /** The place name Qloo actually matched, when it wasn't the one the caregiver typed (see the location fallback in buildSession). */
+  queryRegion?: string;
 };
 export type BuildResult = { session: Session; pools: Pools; ctx: BuildContext };
 export type Emit = (e: SseEvent) => void;
@@ -171,7 +173,7 @@ export function makeItem(e: QEntity, kind: ItemKind, slot: number, ctx: BuildCon
       qlooType: target,
       signals: ctx.anchorNames.slice(0, 5),
       demographic: DEMOGRAPHIC,
-      location: ctx.input.region,
+      location: ctx.queryRegion ?? ctx.input.region,
     },
     links: linksFor(e, target),
     alternates: 0,
@@ -362,7 +364,35 @@ export async function buildSession(
       throw new SessionError("thin_data", `We couldn't build a session for “${input.region}”. Check the place name and favourites, or try a nearby city.`, false);
     throw new SessionError("qloo_busy", "Qloo is busy right now.", true);
   }
-  const [artistsRaw, moviesRaw, placesRaw, brandsRaw] = raw as [QEntity[], QEntity[], QEntity[], QEntity[]];
+  let [artistsRaw, moviesRaw, placesRaw, brandsRaw] = raw as [QEntity[], QEntity[], QEntity[], QEntity[]];
+
+  // Qloo's location lookup knows some places only by a shorter name: "Mumbai, India" matches nothing (status ok, zero
+  // results) while "Mumbai" works. If every located search came back empty, try the city on its own, say so, and use
+  // that name from here on. Not a list of places: it applies to any "City, Country" the lookup can't match.
+  const city = input.region.split(",")[0]?.trim();
+  if (city && city !== input.region.trim() && !artistsRaw.length && !placesRaw.length && !brandsRaw.length) {
+    const retryJobs = jobs; // songs, films, places, tastes
+    for (const j of retryJobs) step(j.key, "start", { label: `Trying “${city}” on its own` });
+    const again = await Promise.all(
+      retryJobs.map(async (j) => {
+        const args = { ...j.args, signal_location: city, ...(j.args.filter_location ? { filter_location: city } : {}) };
+        try {
+          const env = j.key === "places" ? await recommendPlaces(qloo, args, () => (placesTooBig = true)) : await qloo.call("qloo_recommend", args);
+          return okEntities(env);
+        } catch {
+          return [] as QEntity[];
+        }
+      }),
+    );
+    retryJobs.forEach((j, i) => step(j.key, "done", { count: again[i]!.length }));
+    if (again.some((l) => l.length)) {
+      ctx.queryRegion = city;
+      [artistsRaw, , placesRaw, brandsRaw] = again as [QEntity[], QEntity[], QEntity[], QEntity[]];
+      moviesRaw = [...moviesRaw, ...again[1]!];
+      for (const l of again) l.forEach((e) => seenIds.add(e.id));
+      notes.push(`Qloo didn't recognise “${input.region}” as typed, so its songs, films, places and tastes were searched for “${city}” instead.`);
+    }
+  }
 
   // --- filter ------------------------------------------------------------------------------
   const taken = new Set<string>(warmUp ? [warmUp.id, fold(warmUp.name)] : []);
@@ -392,7 +422,7 @@ export async function buildSession(
             options: rankable.map((e) => e.id),
             option_type: optionType[g],
             demographic: DEMOGRAPHIC,
-            signal_location: input.region,
+            signal_location: ctx.queryRegion ?? input.region,
             ...(ctx.signalIds.length ? { signals: ctx.signalIds } : {}),
           });
           const ranked = okEntities(env).map((e) => e.id);

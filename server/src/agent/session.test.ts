@@ -535,3 +535,37 @@ test("films never hold a session back: no repeat after a timeout, a retry after 
   assert.ok(Date.now() - t0 < 300, "returned at the budget, not at the request timeout");
   assert.equal(slow2, 1);
 });
+
+class UnmatchedCityCountry implements QlooTransport {
+  readonly mode = "mock" as const;
+  calls: { tool: QlooTool; args: Record<string, unknown> }[] = [];
+  private inner = new MockTransport();
+  call(tool: QlooTool, args: Record<string, unknown>) {
+    this.calls.push({ tool, args });
+    // Like Qloo for "Mumbai, India": a located search with a comma matches nothing, but the bare city works.
+    if (tool === "qloo_recommend" && typeof args.signal_location === "string" && args.signal_location.includes(","))
+      return Promise.resolve({ status: "ok" as const, results: [] });
+    return this.inner.call(tool, args);
+  }
+}
+
+test("a 'City, Country' Qloo can't match is retried as the city alone, and the session says so", async () => {
+  const t = new UnmatchedCityCountry();
+  const qloo = new QlooClient(t, { minGapMs: 0 });
+  const input = await resolved(new QlooClient(new MockTransport()), "Mexico City, Mexico", "1940s", [["Pedro Infante", "music"], ["bolero", "music"], ["tamales", "food"]]);
+  const { session } = await buildSession(input, { qloo }, noop);
+  assert.equal(session.items.length, 8, "a full session after the retry");
+  assert.ok(session.notes.some((n) => n.includes("Mexico City, Mexico") && n.includes("“Mexico City” instead")), "the note names what was typed and the city that was used");
+  const retried = t.calls.filter((c) => c.tool === "qloo_recommend" && c.args.signal_location === "Mexico City");
+  assert.ok(retried.length >= 4, "songs, films, places and tastes were searched again with the city alone");
+  assert.ok(session.items.every((i) => i.provenance.location === "Mexico City" || i.provenance.operation === "describe" || !i.provenance.location), "provenance records the name Qloo matched");
+});
+
+test("a place Qloo matches as typed is not retried", async () => {
+  const spy = new SpyTransport();
+  const qloo = new QlooClient(spy, { minGapMs: 0 });
+  const input = await resolved(qloo, "Mexico City, Mexico", "1940s", [["Pedro Infante", "music"], ["bolero", "music"], ["tamales", "food"]]);
+  const { session } = await buildSession(input, { qloo }, noop);
+  assert.ok(!spy.calls.some((c) => c.args.signal_location === "Mexico City"), "no city-only retry when the full name worked");
+  assert.ok(!session.notes.some((n) => /instead/.test(n)));
+});
