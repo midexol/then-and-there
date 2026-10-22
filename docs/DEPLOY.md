@@ -11,24 +11,21 @@ The Qloo key can't be rotated or regenerated, so it only ever goes into Render's
 
 ## 1. API on Render
 
-1. In Render: **New → Blueprint**, connect GitHub, and choose `midexol/then-and-there`. Render reads `render.yaml` and proposes a web service called `then-and-there-api` with root directory `server`.
-2. When it asks for the secret values, fill in:
-
-   | Variable | Value |
-   |---|---|
-   | `QLOO_API_KEY` | your hackathon key (secret) |
-   | `ALLOWED_ORIGIN` | `*` for now; step 4 narrows it |
-   | `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` | leave empty. Without them the app uses its built-in suggested questions |
-
-   `QLOO_BASE_URL` and `QLOO_TRUSTED_BASE_URL` are already set in the blueprint to `https://hackathon.api.qloo.com`. A hackathon key returns 401 on any other host.
-3. Pick the plan. **Starter (about $7 a month) is recommended while judges are looking.** The free plan sleeps after 15 minutes of silence, and waking it costs the first visitor a cold start of the service plus about 50 seconds for the Qloo harness. The landing page already pings `/api/health` when it opens, which starts the wake-up early, but a paid plan avoids it altogether.
-4. Deploy. When it's live, open `https://<your-service>.onrender.com/api/health`. You want:
+1. Open https://dashboard.render.com/blueprints, or use **New → Blueprint**. Connect your GitHub account when asked, and allow Render to read `midexol/then-and-there` (it is a private repo, so Render has to be granted access to it).
+2. Choose the repo and the `main` branch. Render reads `render.yaml` and shows one web service, `then-and-there-api`, on the **Starter** plan.
+3. It asks for one value: **`QLOO_API_KEY`**. Paste your hackathon key there. Nothing else is needed; the Qloo host, the allowed origin and the Node version are already in the blueprint.
+4. Click **Apply**. The first build takes a few minutes (it installs, compiles the TypeScript and starts the server).
+5. When the service shows **Live**, open `https://<your-service>.onrender.com/api/health`. You want:
 
    ```json
    {"qloo":"ready","mode":"live","llm":"missing"}
    ```
 
-   `"mode":"mock"` means the key wasn't picked up (check `QLOO_API_KEY`). `llm: "missing"` is expected.
+   `"mode":"mock"` means the key wasn't picked up. `llm: "missing"` is expected.
+
+**Plan.** The blueprint uses **Starter (about $7 a month)**, which never sleeps. The **free** plan works too but sleeps after 15 minutes idle, and waking it costs the first visitor about a minute (the service starting, then the Qloo connection). The landing page pings `/api/health` when it opens, which starts the wake-up early, but a paid plan avoids it altogether. To use free, change `plan: starter` to `plan: free` in `render.yaml`, or change the plan in the Render dashboard.
+
+**Optional language model.** To have suggested questions written by a model instead of the built-in set, add `LLM_BASE_URL`, `LLM_API_KEY` and `LLM_MODEL` in the service's Environment tab (any OpenAI-compatible endpoint). Leave them out and everything still works.
 
 ## 2. Web app on Vercel
 
@@ -50,7 +47,7 @@ These `NEXT_PUBLIC_*` values are baked in at build time, so changing one means r
 
 ## 3. Close the loop
 
-Back in Render, set `ALLOWED_ORIGIN` to the Vercel URL (for example `https://then-and-there.vercel.app`, no trailing slash). Render restarts the service. If you use a custom domain too, list both, comma-separated.
+This step is optional hardening: the blueprint allows any origin (`*`), which is fine for a public API with no cookies or logins. To narrow it, in Render set `ALLOWED_ORIGIN` to the Vercel URL (for example `https://then-and-there.vercel.app`, no trailing slash). Render restarts the service. If you use a custom domain too, list both, comma-separated.
 
 ## 4. Check it end to end
 

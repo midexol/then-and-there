@@ -612,3 +612,19 @@ test("a call can be given more time than the default, for a cold start", async (
   const env = await client().call("qloo_capabilities", { a: 2 }, { retryOnTimeout: false, timeoutMs: 1000 });
   assert.equal(env.status, "ok", "with its own allowance the same call succeeds");
 });
+
+test("a blank ALLOWED_ORIGIN means any origin, not nobody", async () => {
+  const { buildApp } = await import("../app.js");
+  for (const blank of ["", "   "]) {
+    const app = buildApp({ qloo: new QlooClient(new MockTransport()), allowedOrigin: blank });
+    const res = await app.inject({ method: "GET", url: "/api/health", headers: { origin: "https://some-app.vercel.app" } });
+    assert.equal(res.statusCode, 200);
+    assert.ok(res.headers["access-control-allow-origin"], `browsers are let in when ALLOWED_ORIGIN is ${JSON.stringify(blank)}`);
+    await app.close();
+  }
+  const strict = buildApp({ qloo: new QlooClient(new MockTransport()), allowedOrigin: "https://good.example" });
+  const res = await strict.inject({ method: "GET", url: "/api/health", headers: { origin: "https://evil.example" } });
+  assert.notEqual(res.headers["access-control-allow-origin"], "https://evil.example", "a named origin still keeps others out");
+  await strict.close();
+});
+

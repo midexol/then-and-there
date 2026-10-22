@@ -57,7 +57,7 @@ function bucketLimiter(perMinute: number) {
 
 export function buildApp(deps: { qloo: QlooClient; llm?: Llm | null; allowedOrigin?: string; logger?: boolean }) {
   const app = Fastify({ logger: deps.logger ?? false, bodyLimit: 32 * 1024 });
-  const origins = (deps.allowedOrigin ?? "*").split(",").map((o) => o.trim());
+  const origins = (deps.allowedOrigin?.trim() || "*").split(",").map((o) => o.trim()).filter(Boolean); // blank means any origin
   app.register(cors, { origin: origins.includes("*") ? true : origins, methods: ["GET", "POST"] });
 
   const sessions = new Map<string, Entry>();

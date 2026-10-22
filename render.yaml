@@ -3,6 +3,9 @@ services:
   - type: web
     name: then-and-there-api
     runtime: node
+    # Starter (about $7 a month) never sleeps. The free plan sleeps after 15 minutes idle, and waking it costs the first
+    # visitor about a minute. Change this to `free` to avoid the charge; docs/DEPLOY.md explains the trade-off.
+    plan: starter
     rootDir: server
     buildCommand: npm ci && npm run build
     startCommand: npm start
@@ -10,6 +13,7 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 22.19.0
+      # The only value Render asks you for. Paste it in the dashboard; it is never stored in the repo.
       - key: QLOO_API_KEY
         sync: false
       # Hackathon keys only work on this host; both must be set to the same URL.
@@ -17,11 +21,9 @@ services:
         value: https://hackathon.api.qloo.com
       - key: QLOO_TRUSTED_BASE_URL
         value: https://hackathon.api.qloo.com
-      - key: LLM_BASE_URL
-        sync: false
-      - key: LLM_API_KEY
-        sync: false
-      - key: LLM_MODEL
-        sync: false
+      # Which web origins may call this API. `*` works for a public, cookie-less API. Once the web app is live you can
+      # narrow it to its exact URL, e.g. https://then-and-there.vercel.app (comma-separate several).
       - key: ALLOWED_ORIGIN
-        sync: false
+        value: "*"
+      # Optional, for written suggested questions (any OpenAI-compatible endpoint). Add them in the Render dashboard
+      # if you want them: LLM_BASE_URL, LLM_API_KEY, LLM_MODEL. Without them the built-in questions are used.
