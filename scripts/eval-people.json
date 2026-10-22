@@ -1,0 +1,31 @@
+[
+  { "id": "mx-1", "region": "Mexico City, Mexico", "decade": "1940s", "avoid": ["hospital"],
+    "anchors": [["Pedro Infante", "music"], ["bolero", "music"], ["tamales", "food"]] },
+  { "id": "mx-2", "region": "Guadalajara, Mexico", "decade": "1930s", "avoid": ["politics"],
+    "anchors": [["Jorge Negrete", "music"], ["mariachi", "music"], ["pozole", "food"]] },
+
+  { "id": "uk-1", "region": "Liverpool, UK", "decade": "1940s", "avoid": ["hospital"],
+    "anchors": [["The Beatles", "music"], ["Cilla Black", "music"], ["tea", "food"]] },
+  { "id": "uk-2", "region": "London, UK", "decade": "1930s", "avoid": ["politics"],
+    "anchors": [["Vera Lynn", "music"], ["Cliff Richard", "music"], ["fish and chips", "food"]] },
+
+  { "id": "ng-1", "region": "Ibadan, Nigeria", "decade": "1950s", "avoid": ["election"],
+    "anchors": [["King Sunny Adé", "music"], ["highlife", "music"], ["amala", "food"]] },
+  { "id": "ng-2", "region": "Lagos, Nigeria", "decade": "1940s", "avoid": ["hospital"],
+    "anchors": [["Fela Kuti", "music"], ["Victor Olaiya", "music"], ["jollof rice", "food"]] },
+
+  { "id": "in-1", "region": "Mumbai, India", "decade": "1940s", "avoid": ["politics"],
+    "anchors": [["Lata Mangeshkar", "music"], ["Raj Kapoor", "film_tv"], ["samosa", "food"]] },
+  { "id": "in-2", "region": "Chennai, India", "decade": "1950s", "avoid": ["hospital"],
+    "anchors": [["Rajinikanth", "film_tv"], ["M. S. Subbulakshmi", "music"], ["dosa", "food"]] },
+
+  { "id": "ph-1", "region": "Manila, Philippines", "decade": "1950s", "avoid": ["typhoon"],
+    "anchors": [["Pilita Corrales", "music"], ["Nora Aunor", "film_tv"], ["adobo", "food"]] },
+  { "id": "ph-2", "region": "Cebu City, Philippines", "decade": "1960s", "avoid": ["politics"],
+    "anchors": [["Rico J. Puno", "music"], ["Dolphy", "film_tv"], ["lechon", "food"]] },
+
+  { "id": "jp-1", "region": "Tokyo, Japan", "decade": "1940s", "avoid": ["hospital"],
+    "anchors": [["Hibari Misora", "music"], ["Akira Kurosawa", "film_tv"], ["sushi", "food"]] },
+  { "id": "jp-2", "region": "Osaka, Japan", "decade": "1960s", "avoid": ["politics"],
+    "anchors": [["Kyu Sakamoto", "music"], ["Toshiro Mifune", "film_tv"], ["ramen", "food"]] }
+]
