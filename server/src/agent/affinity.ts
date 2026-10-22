@@ -78,3 +78,24 @@ export function emergedAfter(text: string | undefined, era: EraWindow): boolean 
   const year = Number(m[2]);
   return m[1]!.toLowerCase() === "born" ? year >= era.to - 10 : year > era.to;
 }
+
+// "Italian and pizza restaurant", "European fare", "serving American cuisine": which cooking is it?
+const CUISINE = new RegExp(
+  "\\b([A-Z][a-z]+(?:-[A-Z][a-z]+)?)(?:\\s+(?:and|&)\\s+[A-Za-z-]+)?\\s+(?:[a-z-]+\\s+){0,2}?(?:restaurants?|eateries|eatery|cuisine|fare|pizzeria|bistro|food|kitchen|grill|diner|caf[e\u00e9]s?|bakery|steakhouse|burgers?|pizza)\\b",
+);
+
+/** 1: the cooking is theirs (or the place is named). -1: it's from somewhere else (an Italian pizzeria in Mumbai). 0: can't tell. */
+export function cuisineBelongs(text: string | undefined, hints: LocalHints): 1 | 0 | -1 {
+  if (!text) return 0;
+  const w = CUISINE.exec(text)?.[1];
+  if (!w) return 0;
+  const f = fold(w);
+  if (hints.places.includes(f) || hints.demonyms.has(f) || hints.places.some((p) => demonymOfPlace(f, p))) return 1;
+  return -1;
+}
+
+/** The year a business says it was established, if its description says so ("Established in 1993"). */
+export function foundedYear(text: string | undefined): number | undefined {
+  const m = text ? /\b(?:established|founded|since|started|launched)\b[^.]{0,40}?\b((?:18|19|20)\d{2})\b/i.exec(text) : null;
+  return m ? Number(m[1]) : undefined;
+}

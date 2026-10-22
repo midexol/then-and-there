@@ -286,7 +286,7 @@ test("places: plazas and museums beat hotels and pubs, but hotels still fill a s
   assert.deepEqual(sorted.slice(0, 2).sort(), ["Museo Dolores Olmedo", "Plaza Garibaldi"]);
   assert.deepEqual(sorted.slice(-2).sort(), ["Hilton Mexico City Santa Fe", "Orisun Hall of Residence"]);
   assert.ok(sorted.indexOf("Handyman Pub") > sorted.indexOf("Chuchito Perez"));
-  assert.equal(placeLean(p("Museo del Prado", "Art museum with the largest collection of paintings in the country, set in a restored hacienda. Near a hotel.")), -2, "a museum that mentions a hotel isn't demoted");
+  assert.equal(placeLean(p("Museo del Prado", "Art museum with the largest collection of paintings in the country, set in a restored hacienda. Near a hotel.")), -5, "a museum that mentions a hotel isn't demoted");
 });
 
 test("film safety: unsuitable genres are dropped even when the film has no scary tags", async () => {

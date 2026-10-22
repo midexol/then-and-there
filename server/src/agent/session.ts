@@ -6,7 +6,7 @@ import { clip, entities, type QEntity } from "../qloo/normalize.js";
 import type { EraWindow, ItemKind, ProfileInput, QlooTarget, Session, SessionItem, SseEvent, StepKey } from "../types.js";
 import { eraDistance, eraWindow, inEra } from "./era.js";
 import { chooseQuestion, type Llm } from "./prompts.js";
-import { belongs, emergedAfter, localHints, type LocalHints } from "./affinity.js";
+import { belongs, cuisineBelongs, emergedAfter, foundedYear, localHints, type LocalHints } from "./affinity.js";
 import { countryKey, recentlyServed, repeatLean, type RecentlyServed } from "./diversity.js";
 import { entityIsSafe, fold } from "./safety.js";
 
@@ -117,11 +117,20 @@ const LODGING = /\b(hotels?|hostels?|motels?|resorts?|inns?|lodg\w+|suites?|gues
 const LANDMARK =
   /\b(plazas?|squares?|parks?|gardens?|museo|museums?|mercado|markets?|cathedral|church|basilica|palace|castle|galler(?:y|ies)|theat(?:re|er)s?|cinema|stadium|beach|lake|river|monument|historic|landmark|library|promenade|pier|zoo|bandstand|temple|mosque|shrine|cultural cent(?:re|er)|town hall|concert hall)\b/i;
 const NIGHTLIFE = /\b(pubs?|bars?|nightclub|club|casino|lounge|mall|shopping)\b/i;
-/** Lower is better. Added to the rank position when a place pool is sorted. */
+// More of what you'd have gone to see, in any culture: a temple, a bazaar, a fort, a concert hall, a waterfront.
+const HERITAGE = /\b(temples?|shrines?|mosques?|synagogues?|bazaars?|souks?|forts?|heritage|botanical|aquarium|opera|concert hall|cultural|arts? cent(?:re|er)|exhibitions?|waterfront|old town|ruins?)\b/i;
+// Somewhere you use, not somewhere you go to remember: a barber, a banquet hall, an event venue.
+const NOT_A_PLACE_TO_GO = /\b(barbers?|hair ?salons?|salons?|spa|banquets?|catering|function rooms?|event (?:venue|space|hall)s?|wedding venue|conference|gym|fitness|clinic|bank|showroom|workshop|office)\b/i;
+/**
+ * Lower is better. Added to the rank position when a place pool is sorted. Somewhere you'd have gone to see comes first,
+ * then restaurants and cafés (which also fill the taste slots), then nightlife, then venues and services, then hotels.
+ */
 export function placeLean(e: QEntity): number {
   const t = fold(`${e.name} ${(e.description ?? "").slice(0, 90)}`);
   if (LODGING.test(t)) return 8;
-  if (LANDMARK.test(t)) return -2;
+  if (NOT_A_PLACE_TO_GO.test(t)) return 5;
+  if (LANDMARK.test(t) || HERITAGE.test(t)) return -5;
+  if (FOOD_LEAD.test(t)) return 2;
   return NIGHTLIFE.test(t) ? 3 : 0;
 }
 // A shop or platform that merely lists food ("deals on fashion, food, electronics") isn't a food brand.
@@ -130,13 +139,32 @@ export const isFoodBrand = (e: QEntity) => FOOD_BRAND.test(textOf(e)) && !NOT_FO
 /** Somewhere to eat or drink. A landmark that has a café in it, or a hotel with a restaurant, is not one. */
 export function isFoodPlace(e: QEntity): boolean {
   const lead = fold(`${e.name} ${(e.description ?? "").slice(0, 80)}`);
+  // What it is comes first in the description: "independent bookstore with an in-store cafe" is a bookstore.
+  if (NOT_FOOD_LEAD.test(fold(`${e.name} ${(e.description ?? "").slice(0, 50)}`))) return false;
   if (!FOOD_LEAD.test(lead)) return false;
   if (/\bfarm\b/.test(lead) && !/\brestaurants?\b/.test(lead)) return false; // a farm with a café is a farm
   return placeLean(e) >= 0 && placeLean(e) < 8;
 }
+const NOT_FOOD_LEAD = /\b(book ?stores?|book ?shops?|bookshop|publishers?|publishing|barbers?|salons?|boutiques?|clothing|pharmacy|gym|fitness|clinic|bank|supermarket|hypermarket|galler(?:y|ies)|museum)\b/i;
 const isAlcohol = (e: QEntity) => ALCOHOL.test(textOf(e));
-/** Alcohol after everything else, even after food places. */
-const tasteLean = (e: QEntity) => (isAlcohol(e) ? 100 : 0);
+/**
+ * Alcohol after everything else, even after food places. Otherwise: cooking described as theirs rises and cooking from
+ * elsewhere falls (an Italian pizzeria in Mumbai isn't a taste from home), and a brand that existed in their young
+ * years rises over one founded after them.
+ */
+function tasteLean(e: QEntity, ctx: BuildContext): number {
+  if (isAlcohol(e)) return 100;
+  let lean = 0;
+  if (ctx.local) {
+    const c = cuisineBelongs(`${e.name}. ${e.description ?? ""}`, ctx.local);
+    lean += c === 1 ? -4 : c === -1 ? 6 : 0;
+  }
+  if (targetOfTaste(e) === "brand") {
+    const founded = foundedYear(e.description);
+    if (founded) lean += founded <= ctx.era.to ? -4 : 3;
+  }
+  return lean;
+}
 /** Food and drink brands, then places to eat (pubs and bars after plain restaurants); alcohol last. */
 export function tastePool(brands: QEntity[], places: QEntity[]): QEntity[] {
   const eat = places.filter(isFoodPlace).sort((a, b) => placeLean(a) - placeLean(b));
@@ -456,7 +484,7 @@ export async function buildSession(
       const origin = (e: QEntity) => ((g === "artist" || (g === "taste" && targetOfTaste(e) === "brand")) && ctx.local ? ORIGIN_LEAN[belongs(e.description, ctx.local)] : 0);
       // Something already offered to people in other countries is probably not specific to this one (places are exempt).
       const repeat = (e: QEntity) => (g === "place" ? 0 : repeatLean(recent.elsewhere(e.id, country)));
-      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) + (e.pick === "favourites" ? FAVOURITE_FILM_LEAN : 0) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0) + origin(e) + repeat(e);
+      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) + (e.pick === "favourites" ? FAVOURITE_FILM_LEAN : 0) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e, ctx) : 0) + origin(e) + repeat(e);
       // Qloo ranked the first ten; the rest keep their recommendation position. Sorting the whole pool lets a nudge pass
       // over a repeated or off-theme item in favour of one further down.
       const score = (e: QEntity) => (order.get(e.id) ?? pool.indexOf(e)) + lean(e);

@@ -4,6 +4,8 @@ import type { QEntity } from "../qloo/normalize.js";
 export const BUILT_IN_AVOID = [
   "war", "wars", "battle", "funeral", "death", "dead", "dying", "murder", "killer", "prison", "jail",
   "massacre", "genocide", "bomb", "bombing", "horror", "slaughter", "suicide", "abuse", "torture",
+  // Places of mourning aren't somewhere to go back to in a reminiscence session (a cemetery museum came up for Guadalajara).
+  "cemetery", "cemeteries", "graveyard", "crematorium", "mortuary",
 ];
 
 const ADULT_RATINGS = /^(r|nc-17|x|xxx|18|18\+|r18|r-18|adult)$/i;
