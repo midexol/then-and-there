@@ -252,3 +252,6 @@ html { scroll-padding-top: 88px; }
   .build-bar { transition: none; }
   .dots i { opacity: 0.7; }
 }
+
+/* The big faint wordmark in the footer is decoration, so it is drawn here and is not text in the page. */
+.footer-watermark::before { content: "then & there"; color: rgba(255, 255, 255, 0.08); }

@@ -69,7 +69,9 @@ export default function Home() {
     router.push(`/build/?p=${p.id}`);
   };
 
-  const landing = hydrated && profiles.length === 0;
+  // The landing is what the static HTML contains and what a first-time visitor sees at once. Someone with saved people
+  // sees their list as soon as the browser has read them, instead of the whole page popping in after a blank first paint.
+  const landing = !hydrated || profiles.length === 0;
   return (
     <div className="relative overflow-x-clip">
       {!landing && <IndigoBand height={30} />}
@@ -83,7 +85,7 @@ export default function Home() {
           </div>
         )}
 
-        {!hydrated ? null : profiles.length > 0 ? (
+        {hydrated && profiles.length > 0 ? (
           <>
             <h1 className="mt-10 text-[2rem] leading-[1.15]">{copy.home.title}</h1>
             <p className="mt-2 text-ink-soft">{copy.home.sub}</p>

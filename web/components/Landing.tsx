@@ -420,9 +420,7 @@ export function SiteFooter() {
           </div>
         </div>
       </div>
-      <div className="display pointer-events-none mt-10 select-none overflow-hidden whitespace-nowrap text-center leading-[0.8] !text-white/[0.08] md:mt-14" style={{ fontSize: "clamp(3.2rem, 15.5vw, 15rem)" }} aria-hidden>
-        then &amp; there
-      </div>
+      <div className="footer-watermark display pointer-events-none mt-10 select-none overflow-hidden whitespace-nowrap text-center leading-[0.8] md:mt-14" style={{ fontSize: "clamp(3.2rem, 15.5vw, 15rem)" }} aria-hidden />
       <div className="border-t border-white/15">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-5 py-5 text-[0.85rem] text-white/70 md:flex-row md:justify-between">
           <p>{copy.notMedical}</p>
