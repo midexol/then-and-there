@@ -7,6 +7,7 @@ import type { EraWindow, ItemKind, ProfileInput, QlooTarget, Session, SessionIte
 import { eraDistance, eraWindow, inEra } from "./era.js";
 import { chooseQuestion, type Llm } from "./prompts.js";
 import { belongs, emergedAfter, localHints, type LocalHints } from "./affinity.js";
+import { countryKey, recentlyServed, repeatLean, type RecentlyServed } from "./diversity.js";
 import { entityIsSafe, fold } from "./safety.js";
 
 // The harness parses this locally: "over 55" maps to the 55_and_older bucket; "55 and older" does not map.
@@ -289,10 +290,12 @@ const ORIGIN_LEAN: Record<-1 | 0 | 1, number> = { [-1]: 6, 0: 0, 1: -4 };
 
 export async function buildSession(
   input: ProfileInput,
-  deps: { qloo: QlooClient; llm?: Llm | null },
+  deps: { qloo: QlooClient; llm?: Llm | null; recent?: RecentlyServed },
   emit: Emit,
 ): Promise<BuildResult> {
   const { qloo } = deps;
+  const recent = deps.recent ?? recentlyServed;
+  const country = countryKey(input.region);
   const era = eraWindow(input.birthDecade);
   const seenIds = new Set<string>();
   const step = (key: StepKey, state: "start" | "done", extra: { label?: string; count?: number } = {}) =>
@@ -448,9 +451,13 @@ export async function buildSession(
       // have gone, and alcohol last. Without the nudge, ranking would undo the earlier ordering.
       // Artists and brands also lean toward what is described as theirs and away from what is described as from elsewhere.
       const origin = (e: QEntity) => ((g === "artist" || (g === "taste" && targetOfTaste(e) === "brand")) && ctx.local ? ORIGIN_LEAN[belongs(e.description, ctx.local)] : 0);
-      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0) + origin(e);
-      const score = (e: QEntity) => (order.get(e.id) ?? 99) + lean(e);
-      pools[g] = [...head].sort((a, b) => score(a) - score(b)).concat(pool.slice(10));
+      // Something already offered to people in other countries is probably not specific to this one (places are exempt).
+      const repeat = (e: QEntity) => (g === "place" ? 0 : repeatLean(recent.elsewhere(e.id, country)));
+      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0) + origin(e) + repeat(e);
+      // Qloo ranked the first ten; the rest keep their recommendation position. Sorting the whole pool lets a nudge pass
+      // over a repeated or off-theme item in favour of one further down.
+      const score = (e: QEntity) => (order.get(e.id) ?? pool.indexOf(e)) + lean(e);
+      pools[g] = [...pool].sort((a, b) => score(a) - score(b));
     }),
   );
   step("rank", "done");
@@ -487,6 +494,10 @@ export async function buildSession(
     );
   }
   if (qloo.mode === "mock") notes.push("Demo data: this server is running without a Qloo key.");
+
+  // Remember what was offered, so the same generic names rank lower for people in other countries. The favourite they
+  // chose themselves isn't "offered", and places are local by nature.
+  recent.record(items.filter((i) => i.provenance.operation !== "describe" && i.kind !== "place" && i.provenance.qlooType !== "place").map((i) => i.provenance.qlooId), country);
 
   const session: Session = { id: randomUUID(), createdAt: new Date().toISOString(), eraWindow: era, items, notes: uniq(notes) };
   if (items.length === 0) throw new SessionError("thin_data", "We couldn't find enough matches. Check the place name, or try different favourites.", false);
