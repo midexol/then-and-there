@@ -185,16 +185,19 @@ export function assertQlooOnly(items: SessionItem[], seenIds: Set<string>): Sess
   return items.filter((i) => i.provenance.source === "qloo" && seenIds.has(i.provenance.qlooId));
 }
 
-/**
- * Films from inside the era window. The MCP recommend tool can't filter by release year, and for a 55+
- * audience it returns only recent hits, so films come from Insights with a year filter instead: some made
- * in the place they grew up (filter by country) and some of the best-known ones (location as a signal).
- * Local films come first. Live mode only; the mock transport has in-era films already.
- */
 export const FILM_BUDGET_MS = 30_000;
 
+/**
+ * Films from inside the era window. The MCP recommend tool can't filter by release year, and for a 55+ audience it
+ * returns only recent hits, so films come from Insights with a year filter instead. Two searches, mixed together:
+ *  - the favourites alone ("films like what they love, from those years"), which finds films that belong to their
+ *    world: in testing it returned Sholay and Mughal-E-Azam for a Mumbai favourite list, A Hard Day's Night for a
+ *    Liverpool one, and Japanese films from the 1950s and 60s for a Tokyo one;
+ *  - the best-known films of the era in their place (location as a signal), as filler.
+ * A location *filter* on films is deliberately not used: tested, it returned the same global classics (The Godfather,
+ * Star Wars) for every country. Their own favourites come first. Live mode only; the mock transport has in-era films.
+ */
 export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void): Promise<QEntity[]> {
-  const country = ctx.input.region.split(",").pop()?.trim() || ctx.input.region;
   const base = { type: "movie", signals: ctx.signalIds, year_min: ctx.era.from, year_max: ctx.era.to, take: 15 };
   let slow = false;
   const run = async (extra: Record<string, unknown>) => {
@@ -212,11 +215,13 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
   const budget = new Promise<QEntity[][]>((resolve) => {
     timer = setTimeout(() => ((slow = true), resolve([[], []])), budgetMs);
   });
-  const [local, famous] = await Promise.race([Promise.all([run({ filter_location: country }), run({ signal_location: ctx.input.region })]), budget]).finally(() => clearTimeout(timer));
+  // Without a favourite Qloo can look up by id there is nothing to search "like", so only the filler search runs.
+  const mineSearch = ctx.signalIds.length ? run({}) : Promise.resolve([] as QEntity[]);
+  const [mine, famous] = await Promise.race([Promise.all([mineSearch, run({ signal_location: ctx.input.region })]), budget]).finally(() => clearTimeout(timer));
   if (slow) onSlow?.();
   const out: QEntity[] = [];
-  for (let i = 0; i < Math.max(local.length, famous.length); i++) {
-    if (local[i]) out.push({ ...local[i]!, via: "insights" });
+  for (let i = 0; i < Math.max(mine.length, famous.length); i++) {
+    if (mine[i]) out.push({ ...mine[i]!, via: "insights" });
     if (famous[i]) out.push({ ...famous[i]!, via: "insights" });
   }
   return out;

@@ -155,9 +155,9 @@ class ModernMoviesTransport implements QlooTransport {
     if (tool === "qloo_recommend" && args.target_type === "movie")
       return { status: "ok" as const, results: [film("m1", "Modern Hit", 2019), film("m2", "Another Hit", 2020)] };
     if (tool === "qloo_insights")
-      return args.filter_location
-        ? { status: "ok" as const, results: [film("c1", "El Bolero de Raquel", 1957), film("c-late", "Too Late", 1990)] }
-        : { status: "ok" as const, results: [film("c2", "A Famous Classic", 1965)] };
+      return args.signal_location
+        ? { status: "ok" as const, results: [film("c2", "A Famous Classic", 1965)] }
+        : { status: "ok" as const, results: [film("c1", "El Bolero de Raquel", 1957), film("c-late", "Too Late", 1990)] };
     return this.inner.call(tool, args);
   }
 }
@@ -177,7 +177,9 @@ test("live mode fills the film slot from year-filtered Insights, honestly labell
   const insights = transport.calls.filter((c) => c.tool === "qloo_insights");
   assert.equal(insights.length, 2);
   for (const c of insights) assert.deepEqual([c.args.year_min, c.args.year_max], [1955, 1975]);
-  assert.ok(insights.some((c) => c.args.filter_location === "Mexico"), "local films filter by country");
+  assert.ok(insights.some((c) => !c.args.signal_location && !c.args.filter_location && Array.isArray(c.args.signals) && c.args.signals.length > 0), "one search is the favourites alone");
+  assert.ok(insights.some((c) => c.args.signal_location === "Mexico City, Mexico"), "one search is the best-known films, with the place as a signal");
+  assert.ok(!insights.some((c) => c.args.filter_location), "no location filter on films: it returns the same global classics everywhere");
 });
 
 test("mock mode never calls Insights", async () => {
@@ -504,7 +506,7 @@ test("films never hold a session back: no repeat after a timeout, a retry after 
     era: eraWindow("1940s"),
     regionShort: "Liverpool",
     anchorNames: [],
-    signalIds: [],
+    signalIds: ["sig1"],
     signalTags: [],
     seenIds: new Set<string>(),
   };
@@ -568,4 +570,14 @@ test("a place Qloo matches as typed is not retried", async () => {
   const { session } = await buildSession(input, { qloo }, noop);
   assert.ok(!spy.calls.some((c) => c.args.signal_location === "Mexico City"), "no city-only retry when the full name worked");
   assert.ok(!session.notes.some((n) => /instead/.test(n)));
+});
+
+test("with no favourite Qloo can look up by id, only the best-known-films search runs", async () => {
+  const { classicFilms } = await import("./session.js");
+  const calls: Record<string, unknown>[] = [];
+  const t: QlooTransport = { mode: "live", call: async (_tool, args) => (calls.push(args), { status: "ok" as const, results: [] }) };
+  const ctx = { input: { birthDecade: "1940s", region: "Liverpool, UK", anchors: [] } as unknown as ProfileInput, era: eraWindow("1940s"), regionShort: "Liverpool", anchorNames: [], signalIds: [], signalTags: [], seenIds: new Set<string>() };
+  await classicFilms(new QlooClient(t, { minGapMs: 0 }), ctx);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0]!.signal_location, "Liverpool, UK");
 });
