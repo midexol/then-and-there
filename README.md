@@ -21,7 +21,7 @@ The session agent (`server/src/agent/session.ts`) runs in this order:
 
 1. **Resolve.** Each favourite becomes a Qloo entity or tag (`qloo_describe`, `qloo_find_tags`). Ambiguous matches ask *"Which one did you mean?"* instead of guessing.
 2. **Era window.** The window is the birth-decade midpoint + 10 to + 30 years, weighted toward + 14, where the musical reminiscence bump peaks. Someone born in the 1940s gets **1955–1975**.
-3. **Expand.** Four `qloo_recommend` calls run in parallel: artists, movies, places (filtered to where they grew up) and brands. Each call carries the favourites as signals, the region as `signal_location` and `"people over 55"` as the demographic (the harness maps that to Qloo's `55_and_older` bucket). Alongside them, two year-filtered `qloo insights` searches find films from inside the era window (see *Films* under limitations). Calls are throttled (two at a time, with a shared pause after a rate limit) and cached by request hash.
+3. **Expand.** Four `qloo_recommend` calls run in parallel: artists, movies, places (filtered to where they grew up) and brands. Each call carries the favourites as signals, the region as `signal_location` and `"people over 55"` as the demographic (the harness maps that to Qloo's `55_and_older` bucket). Songs and brands then lean toward what Qloo describes as belonging to their world and away from what it describes as from elsewhere, and an act that began after their years is left out (`server/src/agent/affinity.ts`). Alongside them, two year-filtered `qloo insights` searches find films from inside the era window (see *Films* under limitations). Calls are throttled (two at a time, with a shared pause after a rate limit) and cached by request hash.
 4. **Filter.** Films outside the era window are dropped, along with adult ratings, a built-in list of upsetting themes (war, funerals and so on), the caregiver's private topics to avoid, duplicates, and anything marked "Not really" before.
 5. **Rank.** `qloo_rank` re-scores each shortlist against the same profile. Films are then pulled gently toward the peak year.
 6. **Compose.** The session follows an 8-slot arc: song → place → taste → film → song → place → taste → closing song. A favourite artist opens it, to start somewhere comfortable. Leftover candidates become **Swap** alternates.
@@ -101,6 +101,7 @@ can't match "Mumbai, India" but can match "Mumbai"; the session now retries with
 
 - **Sent to Qloo:** favourites, the age group "55 and older", and the region they grew up in.
 - **Never sent anywhere:** names or nicknames, birth dates, health information, or the caregiver's topics to avoid. `parseProfile` rebuilds the request from known fields only, so a stray `name` field is dropped. A test proves that neither names nor avoid topics reach Qloo.
+- Each favourite also carries Qloo's own short description of it (`blurb`), so our server can tell which nationality counts as "theirs" ("Mexican singer", "Japanese singer"). It stays on our server and is never sent to Qloo or the LLM.
 - Profiles live in the browser's `localStorage`. Export and delete are in the review screen.
 - Results are **aggregate affinities**. The copy says "often enjoyed by people 55+ who like…", never "she will remember".
 - The Qloo key lives only in the server's environment. The browser never talks to Qloo or the LLM.

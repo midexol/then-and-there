@@ -43,7 +43,7 @@ export async function resolveAnchors(anchors: { text: string; kind: AnchorKind }
 export function toProfileInput(p: Profile) {
   const anchors = p.anchors
     .filter((a: AnchorChip) => a.status === "matched" && a.match)
-    .map((a) => ({ kind: a.kind, label: a.match!.name, ...(a.tag ? { tag: a.tag } : { qlooId: a.match!.qlooId }) }));
+    .map((a) => ({ kind: a.kind, label: a.match!.name, ...(a.tag ? { tag: a.tag } : { qlooId: a.match!.qlooId }), ...(a.match!.subtitle ? { blurb: a.match!.subtitle } : {}) }));
   return {
     birthDecade: p.birthDecade,
     region: p.region,

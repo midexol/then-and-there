@@ -6,6 +6,7 @@ import { clip, entities, type QEntity } from "../qloo/normalize.js";
 import type { EraWindow, ItemKind, ProfileInput, QlooTarget, Session, SessionItem, SseEvent, StepKey } from "../types.js";
 import { eraDistance, eraWindow, inEra } from "./era.js";
 import { chooseQuestion, type Llm } from "./prompts.js";
+import { belongs, emergedAfter, localHints, type LocalHints } from "./affinity.js";
 import { entityIsSafe, fold } from "./safety.js";
 
 // The harness parses this locally: "over 55" maps to the 55_and_older bucket; "55 and older" does not map.
@@ -24,6 +25,8 @@ export type BuildContext = {
   signalIds: string[];
   signalTags: string[];
   seenIds: Set<string>;
+  /** Nationality and place words that mean "theirs", learned from the favourites and the region (see affinity.ts). */
+  local?: LocalHints;
   /** The place name Qloo actually matched, when it wasn't the one the caregiver typed (see the location fallback in buildSession). */
   queryRegion?: string;
 };
@@ -281,6 +284,9 @@ export function composeArc(pools: Pools, ctx: BuildContext, warmUp?: QEntity): S
   return items;
 }
 
+/** Rank positions to move an item by: described as theirs rises a few places, described as from elsewhere falls. */
+const ORIGIN_LEAN: Record<-1 | 0 | 1, number> = { [-1]: 6, 0: 0, 1: -4 };
+
 export async function buildSession(
   input: ProfileInput,
   deps: { qloo: QlooClient; llm?: Llm | null },
@@ -305,6 +311,7 @@ export async function buildSession(
     signalIds: uniq([...boost.filter((b) => !isTag(b)), ...anchorIds]).slice(0, 10),
     signalTags: uniq([...boost.filter(isTag), ...anchorTags]).slice(0, 10),
     seenIds,
+    local: localHints(input.region, input.anchors.map((a) => a.blurb).filter((b): b is string => !!b)),
   };
   let warmUp: QEntity | undefined;
   const firstMusic = input.anchors.find((a) => a.kind === "music" && a.qlooId && !isTag(a.qlooId));
@@ -405,7 +412,8 @@ export async function buildSession(
   // Tastes are food and drink brands, then places to eat; the two best places are held back for the place slots.
   const { taste, place } = allocatePlaces(brandsRaw, placesRaw, ctx, taken);
   const pools: Pools = {
-    artist: filterPool(artistsRaw, ctx, taken),
+    // An act that began after their years can't be part of what they grew up with.
+    artist: filterPool(artistsRaw.filter((e) => !emergedAfter(e.description, era)), ctx, taken),
     movie: filterPool(moviesRaw, ctx, taken),
     taste,
     place,
@@ -438,7 +446,9 @@ export async function buildSession(
       }
       // Qloo's rank order, nudged by what suits a reminiscence session: films near the peak year, places you'd
       // have gone, and alcohol last. Without the nudge, ranking would undo the earlier ordering.
-      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0);
+      // Artists and brands also lean toward what is described as theirs and away from what is described as from elsewhere.
+      const origin = (e: QEntity) => ((g === "artist" || (g === "taste" && targetOfTaste(e) === "brand")) && ctx.local ? ORIGIN_LEAN[belongs(e.description, ctx.local)] : 0);
+      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0) + origin(e);
       const score = (e: QEntity) => (order.get(e.id) ?? 99) + lean(e);
       pools[g] = [...head].sort((a, b) => score(a) - score(b)).concat(pool.slice(10));
     }),

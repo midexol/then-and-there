@@ -62,12 +62,12 @@ async function runPerson(p) {
   const profileAnchors = [];
   for (const a of r.body.anchors) {
     out.anchors.push({ text: a.text, kind: a.kind, status: a.status, matched: a.match?.name ?? null });
-    if (a.status === "matched") profileAnchors.push({ kind: a.kind, label: a.match.name, ...(a.tag ? { tag: a.tag } : { qlooId: a.match.qlooId }) });
+    if (a.status === "matched") profileAnchors.push({ kind: a.kind, label: a.match.name, ...(a.tag ? { tag: a.tag } : { qlooId: a.match.qlooId }), ...(a.match.subtitle ? { blurb: a.match.subtitle } : {}) });
     else if (a.status === "choose" && a.candidates?.[0]) {
       // The app asks the caregiver to choose. Here the first candidate stands in, and the run says so.
       const c = a.candidates[0];
       out.notes.push(`"${a.text}" was ambiguous; used the first candidate "${c.name}"`);
-      profileAnchors.push({ kind: a.kind, label: c.name, qlooId: c.qlooId });
+      profileAnchors.push({ kind: a.kind, label: c.name, qlooId: c.qlooId, ...(c.subtitle ? { blurb: c.subtitle } : {}) });
     }
   }
   out.matchedAnchors = profileAnchors.length;

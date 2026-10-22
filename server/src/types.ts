@@ -15,7 +15,9 @@ export type ResolvedAnchor = {
   tag?: string;
 };
 
-export type ProfileAnchor = { qlooId?: string; tag?: string; kind: AnchorKind; label: string };
+/** `blurb` is Qloo's own short description of the favourite (from the look-up). It stays on our server and is used to tell
+ *  which nationality counts as "theirs"; it is never sent to Qloo or the LLM. */
+export type ProfileAnchor = { qlooId?: string; tag?: string; kind: AnchorKind; label: string; blurb?: string };
 
 export type ProfileInput = {
   birthDecade: BirthDecade;

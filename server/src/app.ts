@@ -30,7 +30,7 @@ export function parseProfile(body: unknown): ProfileInput | null {
       const kind = KINDS.find((k) => k === r.kind);
       const label = s(r.label, 80);
       if (!kind || !label) return null;
-      return { kind, label, qlooId: s(r.qlooId, 120), tag: s(r.tag, 160) };
+      return { kind, label, qlooId: s(r.qlooId, 120), tag: s(r.tag, 160), blurb: s(r.blurb, 300) };
     })
     .filter((a): a is NonNullable<typeof a> => !!a);
   return {
