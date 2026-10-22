@@ -1,7 +1,10 @@
 # Evaluation
 
 Run on **22 Oct 2026** against the real Qloo hackathon API (live mode, no mock data), through the same HTTP API the app uses.
-The raw results, with every item for all 12 people, are in [`evaluation-results.json`](evaluation-results.json).
+It was run **twice**: a first run, then a second run after three changes made because of what the first run showed (see
+[What changed between the runs](#what-changed-between-the-runs)). This page reports the **second** run, with the first alongside
+where it matters. The raw results of the second run, with every item for all 12 people, are in
+[`evaluation-results.json`](evaluation-results.json).
 
 To run it yourself (the script never sees the Qloo key; it only calls our API):
 
@@ -40,8 +43,8 @@ Twelve invented people, two each from six countries, born between the 1930s and 
 | 90% or more of dated items inside the era window | **12 of 12** | Pass (see note 2) |
 | 100% avoid-safe | **0 hits** on the caregiver's topic, **0** on the built-in hard topics | Pass |
 | 100% gentle questions | **0 of 96** questions test memory or touch health | Pass |
-| A session in under 60 seconds | **15–32 seconds** per person (median about 21) | Pass on this day (see note 3) |
-| 85% or more of items fit the region or the anchors, judged by hand | **about 59%** (57 of 96) | **Not met** |
+| A session in under 60 seconds | **13–23 seconds** per person (median about 18) | Pass on this day (see note 3) |
+| 85% or more of items fit the region or the anchors, judged by hand | **about 65%** (62 of 96), up from about 59% | **Not met** |
 
 1. "From Qloo" is checked here by the provenance fields every item carries. The guarantee itself is code: `assertQlooOnly`
    drops any item whose id never appeared in a Qloo response, and a unit test enforces it.
@@ -52,46 +55,66 @@ Twelve invented people, two each from six countries, born between the 1930s and 
 
 ## The bar we did not meet: does it fit the person?
 
-This is the one check a script can't do, so every item was read by hand. **A caveat first:** one reviewer (an AI assistant
-working from general knowledge, not a caregiver or a local expert) judged each item against the person's region, era and
-favourites. Treat the counts as a careful estimate, not a measurement. A fresh pair of eyes from each region would improve it.
+This is the one check a script can't do, so every item was read by hand, in both runs. **A caveat first:** one reviewer (an AI
+assistant working from general knowledge, not a caregiver or a local expert) judged each item against the person's region, era
+and favourites. Treat the counts as a careful estimate, not a measurement. The same reviewer made the changes being tested, so a
+fresh pair of eyes from each region would improve it.
 
 Each item was marked:
 - **Fits**: from or about that place and era, or clearly tied to the favourites, and the right kind of thing for its slot.
-- **Loose**: plausible and safe, but generic (for example a film that is well known everywhere) or only loosely tied.
+- **Loose**: plausible and safe, but generic (for example a well-known film that isn't tied to this person) or only loosely tied.
 - **Miss**: clearly the wrong place, era, audience or kind of thing.
 
-| | Fits | Loose | Miss | What stood out |
+| | Fits (first run → second) | Loose | Miss | What stood out in the second run |
 |---|---|---|---|---|
-| mx-1 Mexico City | 8 | 0 | 0 | Plaza Garibaldi, Museo Dolores Olmedo, Tajín, Vicente Fernández, and a 1957 Mexican film |
-| mx-2 Guadalajara | 7 | 1 | 0 | A cemetery museum surfaced as a place: local, but a sombre subject |
-| uk-1 Liverpool | 5 | 3 | 0 | Walker Art Gallery, FACT, The Kinks fit. A Southport chocolate shop and *The Sound of Music* are loose |
-| uk-2 London | 2 | 6 | 0 | Only Vera Lynn is clearly right. Chain restaurants, a barber, and American singers for a Vera Lynn fan |
-| ng-1 Ibadan | 7 | 1 | 0 | Local places and Fela and Femi Kuti. *Rocky* is the loose film |
-| ng-2 Lagos | 7 | 1 | 0 | Local places, Tony Allen, Femi Kuti. A British film is loose |
-| in-1 Mumbai | 3 | 4 | 1 | A bookshop appeared in a taste slot (miss). Qloo had to be asked for "Mumbai", not "Mumbai, India" (see below) |
-| in-2 Chennai | 2 | 3 | 3 | One favourite wasn't found. Three songs were Brazilian or unknown artists (miss) |
-| ph-1 Manila | 4 | 4 | 0 | Café Ysabel, Figaro, Oishi fit. Modern bands and *The Sound of Music* are loose |
-| ph-2 Cebu | 5 | 2 | 1 | Magellan's Cross and a Cebu lechon place fit. A 2020s pop group for someone born in the 1960s (miss) |
-| jp-1 Tokyo | 3 | 4 | 1 | A UK tea brand in Tokyo (miss). Western singers are loose |
-| jp-2 Osaka | 4 | 3 | 1 | Shonen Knife is Osaka. A UK tea brand again (miss) |
-| **Total** | **57** | **32** | **7** | |
+| mx-1 Mexico City | 8 → **8** | 0 | 0 | Plaza Garibaldi, Museo Dolores Olmedo, Tajín, Vicente Fernández, and a 1957 Mexican film |
+| mx-2 Guadalajara | 7 → **7** | 1 | 0 | A cemetery museum surfaced as a place: local, but a sombre subject |
+| uk-1 Liverpool | 5 → **6** | 2 | 0 | *A Hard Day's Night* is now the film. A Southport chocolate shop and a halal eatery are loose |
+| uk-2 London | 2 → **2** | 6 | 0 | Unchanged. Chain restaurants, a barber, and American singers for a Vera Lynn fan |
+| ng-1 Ibadan | 7 → **7** | 1 | 0 | Local places and Fela and Femi Kuti. The film (*Whitey*, 1980) is loose |
+| ng-2 Lagos | 7 → **7** | 1 | 0 | Local places, Tony Allen, Femi Kuti. A British film (*Kes*) is loose |
+| in-1 Mumbai | 3 → **3** | 4 | 1 | *Anand* (1971) replaced *The Sound of Music*. A bookshop still appears in a taste slot (miss) |
+| in-2 Chennai | 2 → **2** | 5 | 1 | The two Brazilian acts are gone, replaced by Indian DJs and composers (loose). One unknown artist remains (miss) |
+| ph-1 Manila | 4 → **3** | 4 | 1 | Worse: a Hungarian arthouse film (miss) and an American chain restaurant replaced a Filipino coffee chain |
+| ph-2 Cebu | 5 → **5** | 2 | 1 | A Palestinian film (*Wedding in Galilee*) is a miss. Magellan's Cross and a Cebu lechon place fit |
+| jp-1 Tokyo | 3 → **6** | 2 | 0 | A 1960 Naruse film, Yoko Ono, Calbee. The UK tea brand is gone |
+| jp-2 Osaka | 4 → **6** | 2 | 0 | Calbee, Shonen Knife, Yukihiro Takahashi. The UK tea brand is gone |
+| **Total** | **57 → 62** | **30** | **4** | |
 
-So about **59% fit**, 33% are loose and 7% are misses. If "loose but plausible" counted as fitting it would be 93%, but we
-don't think that is the honest reading of the bar.
+So about **65% fit** (up from 59%), 31% are loose and 4% are misses (down from 7). If "loose but plausible" counted as fitting it would
+be 96%, but we don't think that is the honest reading of the bar.
 
 ### What the pattern says
 
-- **It works well where Qloo's data is deep for older audiences and local places**: Mexico City, Guadalajara, Ibadan and Lagos
-  were 7 to 8 of 8. Cebu was 5 of 8.
-- **It is much weaker for London, Mumbai, Chennai, Tokyo and Osaka.** Qloo's recommendations for a 55-and-older audience in those
-  places lean toward globally popular names (American singers, UK brands, the same two or three famous films).
-- **The film slot is generic outside Mexico.** *The Sound of Music* appeared 4 times, *Rocky* 3 times. The local-film search
-  returns little for most countries, so the "best-known films of the era" fills the slot.
-- **Tastes repeat.** Mister Donut, Ahmad Tea, Figaro Coffee, Oishi and Grupo Bimbo each appeared twice.
-- **Artists have no release year,** so a modern act can be offered to someone born in the 1960s (a 2020s pop group appeared once).
+- **It works well where Qloo's data is deep for older audiences and local places**: Mexico City, Guadalajara, Ibadan and Lagos were
+  7 to 8 of 8 in both runs, and Tokyo and Osaka moved up to 6.
+- **It is still weak for London, Mumbai, Chennai and Manila.** The places and tastes there are often chain restaurants, venues and
+  shops that happen to be in the city, not things that belong to a person's world.
+- **The film fix helped some people and not others.** A search on the favourites alone gave *A Hard Day's Night* (Liverpool), *Anand*
+  (Mumbai) and a 1960 Japanese film (Tokyo). For the Philippines, Nigeria and Osaka it returned world arthouse cinema that
+  has nothing to do with the person (*Wedding in Galilee*, *Adoption*, *The Boys from Fengkuei*). That is what Qloo's taste graph connects to
+  those favourites. The filler "best-known films" search still supplies the film for Chennai.
+- **The repeats are gone across countries.** *The Sound of Music* (4 times in the first run) and *Rocky* (3) no longer appear. Items that
+  repeat now do so within one country (Mexico, the Philippines, Japan), which is correct.
+- **Songs are better matched.** Foreign acts (Brazilian psytrance for Chennai, an American pop group for Tokyo) mostly moved down, and
+  a 2020s pop group for someone born in the 1960s was removed. London still gets American singers because the whole pool is American.
+- **Places and tastes are the weakest slot.** Nothing in this round addressed them.
 
-## What the evaluation found and we fixed
+## What changed between the runs
+
+The first run (59% fit) showed three problems, so three changes were made and the whole evaluation re-run:
+
+1. **Films from the favourites, not a location filter.** The old search filtered films by country and returned the same global classics
+   (*The Godfather*, *Star Wars*) for every country. Searching on the favourites alone, with the year window, returns films from the
+   person's own world where Qloo has them. Those rise eight places over the best-known filler films, and a filler film is now described as
+   "one of the best-known films from the years they were growing up", not "chosen to go with" the favourites.
+2. **Songs and brands lean toward their world.** The favourites' own Qloo descriptions say what nationality counts as "theirs" (no
+   country list), and songs and brands described as theirs rise and those described as from elsewhere fall. An act formed after their
+   years is left out.
+3. **Repeats across countries move down.** The server remembers which countries it has offered each artist, brand and film to and ranks it
+   lower for other countries. This is kept in memory only, so results for one region can depend slightly on what was built before it.
+
+## Other things the evaluation found, and fixed
 
 1. **A session that silently came back almost empty.** The first full run gave 11 of 12 full sessions. Mumbai got only 2 items.
    Qloo's location lookup returns nothing for "Mumbai, India" (and reports success), yet "Mumbai" works. The session now
@@ -110,8 +133,11 @@ don't think that is the honest reading of the bar.
 - That this was a user study. It was not. **Three caregiver usability tests are still to do** (see the submission checklist), as
   are Lighthouse accessibility, a keyboard pass, a screen-reader pass on the stage, and a test on a real phone.
 
-## Ideas that could raise the fit rate (not done yet)
+## What could raise the fit rate further (not done)
 
-- Prefer artists whose description mentions the region, and drop modern acts for older birth decades.
-- Down-rank a brand or film that already appeared for a different region in the same run (the repeats above).
-- Use local-language search for the favourites that Qloo did not match.
+- **Places and tastes.** Prefer places that Qloo's description ties to the city's own culture (a plaza, a museum, a market) over generic
+  venues, and keep non-food shops out of the taste slot (a bookshop appeared for Mumbai).
+- **Films.** When the favourites-only film search returns cinema from a different culture, fall back to the best-known films of that
+  country's own era instead.
+- **Favourites Qloo did not match.** One Chennai favourite wasn't found; local-language search could recover some of these.
+- **A fresh pair of eyes.** Re-judge the same 96 items with someone from each region.
