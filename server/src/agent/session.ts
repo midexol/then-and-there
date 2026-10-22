@@ -84,6 +84,7 @@ function whyFor(e: QEntity, target: QlooTarget, ctx: BuildContext, warmUp: boole
       if (e.via === "insights") {
         // Found by release year, not by audience, so don't claim a 55+ audience liked it.
         const names = ctx.anchorNames.slice(0, 2).join(" and ");
+        if (e.pick === "famous") return `${e.year ? `From ${e.year}. ` : ""}One of the best-known films from the years they were growing up.`;
         return `${e.year ? `From ${e.year}. ` : ""}From the years they were growing up${names ? `, chosen to go with ${names}` : ""}.`;
       }
       return `${e.year ? `From ${e.year}. ` : ""}Often enjoyed by people 55+${like}.`;
@@ -225,8 +226,8 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
   if (slow) onSlow?.();
   const out: QEntity[] = [];
   for (let i = 0; i < Math.max(mine.length, famous.length); i++) {
-    if (mine[i]) out.push({ ...mine[i]!, via: "insights" });
-    if (famous[i]) out.push({ ...famous[i]!, via: "insights" });
+    if (mine[i]) out.push({ ...mine[i]!, via: "insights", pick: "favourites" });
+    if (famous[i]) out.push({ ...famous[i]!, via: "insights", pick: "famous" });
   }
   return out;
 }
@@ -286,6 +287,8 @@ export function composeArc(pools: Pools, ctx: BuildContext, warmUp?: QEntity): S
 }
 
 /** Rank positions to move an item by: described as theirs rises a few places, described as from elsewhere falls. */
+/** Films found from the favourites rise this many places: they belong to the person, where the best-known ones belong to everyone. */
+const FAVOURITE_FILM_LEAN = -8;
 const ORIGIN_LEAN: Record<-1 | 0 | 1, number> = { [-1]: 6, 0: 0, 1: -4 };
 
 export async function buildSession(
@@ -453,7 +456,7 @@ export async function buildSession(
       const origin = (e: QEntity) => ((g === "artist" || (g === "taste" && targetOfTaste(e) === "brand")) && ctx.local ? ORIGIN_LEAN[belongs(e.description, ctx.local)] : 0);
       // Something already offered to people in other countries is probably not specific to this one (places are exempt).
       const repeat = (e: QEntity) => (g === "place" ? 0 : repeatLean(recent.elsewhere(e.id, country)));
-      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0) + origin(e) + repeat(e);
+      const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) + (e.pick === "favourites" ? FAVOURITE_FILM_LEAN : 0) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e) : 0) + origin(e) + repeat(e);
       // Qloo ranked the first ten; the rest keep their recommendation position. Sorting the whole pool lets a nudge pass
       // over a repeated or off-theme item in favour of one further down.
       const score = (e: QEntity) => (order.get(e.id) ?? pool.indexOf(e)) + lean(e);

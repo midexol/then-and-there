@@ -16,6 +16,8 @@ export type QEntity = {
   image?: string;
   /** Set when the entity came from somewhere other than `qloo_recommend` (e.g. "insights"). */
   via?: string;
+  /** For films found by Insights: found from the favourites, or one of the best-known films of the era. */
+  pick?: "favourites" | "famous";
   /** Film and TV genres from Qloo ("Horror", "Crime", ...). Used by the safety filter. */
   genres?: string[];
 };

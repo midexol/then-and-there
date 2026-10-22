@@ -581,3 +581,26 @@ test("with no favourite Qloo can look up by id, only the best-known-films search
   assert.equal(calls.length, 1);
   assert.equal(calls[0]!.signal_location, "Liverpool, UK");
 });
+
+test("films found from the favourites come before the best-known ones, and the text says which is which", async () => {
+  const film = (id: string, name: string, year: number) => ({ entity_id: id, name, subtype: "urn:entity:movie", properties: { release_year: year }, tags: [] });
+  const inner = new MockTransport();
+  const t: QlooTransport = {
+    mode: "live",
+    call: async (tool, args) => {
+      if (tool === "qloo_insights")
+        return args.signal_location
+          ? { status: "ok" as const, results: [film("famous-1", "A Famous Film", 1959), film("famous-2", "Another Famous Film", 1960)] }
+          : { status: "ok" as const, results: [film("mine-1", "Their Kind of Film", 1958)] };
+      if (tool === "qloo_recommend" && args.target_type === "movie") return { status: "ok" as const, results: [] };
+      return inner.call(tool, args);
+    },
+  };
+  const qloo = new QlooClient(t, { minGapMs: 0 });
+  const input = await resolved(new QlooClient(new MockTransport()), "Mexico City, Mexico", "1940s", [["Pedro Infante", "music"], ["bolero", "music"], ["tamales", "food"]]);
+  const { session } = await buildSession(input, { qloo }, noop);
+  const f = session.items.find((i) => i.kind === "film")!;
+  assert.equal(f.title, "Their Kind of Film", "the film found from their favourites is chosen over the better-known ones");
+  assert.match(f.why, /chosen to go with/);
+  assert.equal(f.provenance.operation, "insights");
+});
