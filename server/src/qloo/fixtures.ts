@@ -1,0 +1,206 @@
+// Demo fixtures for MOCK mode only (no QLOO_API_KEY). Real sessions come from Qloo.
+// Shaped like Insights entities so the same normalizer handles both.
+// Three regions on three continents, plus a small global fallback.
+
+type F = { name: string; year?: number; desc?: string; tags?: string[]; rating?: string };
+export type RegionFixture = {
+  key: string;
+  match: RegExp;
+  artist: F[];
+  movie: F[];
+  place: F[];
+  brand: F[];
+};
+
+export const FIXTURES: RegionFixture[] = [
+  {
+    key: "mexico-city",
+    match: /mexico|méxico|cdmx|ciudad de m/i,
+    artist: [
+      { name: "Pedro Infante", desc: "Mexican actor and singer of rancheras and boleros", tags: ["bolero", "ranchera"] },
+      { name: "Javier Solís", desc: "Bolero ranchero singer", tags: ["bolero"] },
+      { name: "Trío Los Panchos", desc: "Romantic bolero trio", tags: ["bolero"] },
+      { name: "Agustín Lara", desc: "Composer of boleros", tags: ["bolero"] },
+      { name: "Lola Beltrán", desc: "Ranchera singer", tags: ["ranchera"] },
+      { name: "Jorge Negrete", desc: "Singing star of the golden age of Mexican cinema", tags: ["ranchera"] },
+      { name: "La Sonora Santanera", desc: "Tropical dance orchestra", tags: ["cumbia", "danzón"] },
+      { name: "Angélica María", desc: "Pop singer and actress", tags: ["balada"] },
+      { name: "Marco Antonio Muñiz", desc: "Romantic bolero singer", tags: ["bolero"] },
+      { name: "Toña la Negra", desc: "Bolero singer from Veracruz", tags: ["bolero"] },
+      { name: "César Costa", desc: "Rock and roll singer", tags: ["rock and roll"] },
+      { name: "Lucha Villa", desc: "Ranchera singer", tags: ["ranchera"] },
+    ],
+    movie: [
+      { name: "Escuela de vagabundos", year: 1955, desc: "Comedy starring Pedro Infante" },
+      { name: "Pepe el Toro", year: 1953, desc: "Drama starring Pedro Infante" },
+      { name: "El inocente", year: 1956, desc: "Romantic comedy starring Pedro Infante" },
+      { name: "Tizoc", year: 1957, desc: "Drama starring Pedro Infante and María Félix" },
+      { name: "Macario", year: 1960, desc: "Folk tale set on the Day of the Dead" },
+      { name: "La soldadera", year: 1966, desc: "A woman follows the army during the revolutionary war", tags: ["war"] },
+      { name: "El Santo contra las mujeres vampiro", year: 1962, desc: "Lucha libre adventure" },
+      { name: "Los Caifanes", year: 1967, desc: "A night out in Mexico City" },
+      { name: "Nosotros los pobres", year: 1948, desc: "Melodrama starring Pedro Infante" },
+      { name: "Mecánica nacional", year: 1972, desc: "Comedy about a road race" },
+      { name: "Viva el amor", year: 1958, desc: "Musical comedy" },
+    ],
+    place: [
+      { name: "Palacio de Bellas Artes", desc: "Concert hall and museum" },
+      { name: "Xochimilco", desc: "Canals and trajinera boats" },
+      { name: "Bosque de Chapultepec", desc: "Large city park" },
+      { name: "Café de Tacuba", desc: "Historic restaurant, open since 1912", tags: ["restaurant"] },
+      { name: "Plaza Garibaldi", desc: "Square known for mariachi" },
+      { name: "Alameda Central", desc: "Historic public park" },
+      { name: "Mercado de la Merced", desc: "Traditional market", tags: ["market"] },
+      { name: "Salón Los Ángeles", desc: "Dance hall" },
+      { name: "Coyoacán", desc: "Colonial neighbourhood" },
+      { name: "Teatro Blanquita", desc: "Variety theatre" },
+    ],
+    brand: [
+      { name: "Jarritos", desc: "Fruit-flavoured soft drinks" },
+      { name: "Chocolate Abuelita", desc: "Drinking chocolate tablets" },
+      { name: "Gansito", desc: "Snack cake" },
+      { name: "Sidral Mundet", desc: "Apple soda" },
+      { name: "Choco Milk", desc: "Chocolate milk powder" },
+      { name: "Galletas Marías Gamesa", desc: "Biscuits" },
+      { name: "Mazapán de la Rosa", desc: "Peanut sweet" },
+      { name: "Cajeta Coronado", desc: "Caramel spread" },
+    ],
+  },
+  {
+    key: "liverpool",
+    match: /liverpool|merseyside|birkenhead|wirral/i,
+    artist: [
+      { name: "The Beatles", desc: "Rock band from Liverpool", tags: ["merseybeat", "rock"] },
+      { name: "Gerry and the Pacemakers", desc: "Merseybeat band", tags: ["merseybeat"] },
+      { name: "Cilla Black", desc: "Singer from Liverpool", tags: ["pop"] },
+      { name: "The Searchers", desc: "Merseybeat band", tags: ["merseybeat"] },
+      { name: "Billy Fury", desc: "Rock and roll singer from Liverpool", tags: ["rock and roll"] },
+      { name: "Lonnie Donegan", desc: "Skiffle singer", tags: ["skiffle"] },
+      { name: "Elvis Presley", desc: "Rock and roll singer", tags: ["rock and roll"] },
+      { name: "The Hollies", desc: "Pop rock band", tags: ["pop"] },
+      { name: "Dusty Springfield", desc: "Pop and soul singer", tags: ["pop", "soul"] },
+      { name: "Cliff Richard", desc: "Pop singer", tags: ["pop"] },
+      { name: "The Merseybeats", desc: "Merseybeat band", tags: ["merseybeat"] },
+      { name: "Roy Orbison", desc: "Singer and songwriter", tags: ["rock and roll"] },
+    ],
+    movie: [
+      { name: "A Hard Day's Night", year: 1964, desc: "A day in the life of the Beatles" },
+      { name: "Ferry Cross the Mersey", year: 1965, desc: "Musical with Gerry and the Pacemakers" },
+      { name: "Help!", year: 1965, desc: "Beatles comedy adventure" },
+      { name: "Carry On Nurse", year: 1959, desc: "Hospital comedy" },
+      { name: "Goldfinger", year: 1964, desc: "James Bond adventure" },
+      { name: "The Italian Job", year: 1969, desc: "Heist comedy" },
+      { name: "Zulu", year: 1964, desc: "Battle drama set during a colonial war", tags: ["war"] },
+      { name: "Mary Poppins", year: 1964, desc: "Musical fantasy" },
+      { name: "The Sound of Music", year: 1965, desc: "Musical" },
+      { name: "Saturday Night and Sunday Morning", year: 1960, desc: "Drama about a factory worker" },
+      { name: "Kes", year: 1969, desc: "A boy and his kestrel" },
+      { name: "The Wizard of Oz", year: 1939, desc: "Musical fantasy" },
+    ],
+    place: [
+      { name: "The Cavern Club", desc: "Music club on Mathew Street" },
+      { name: "Mersey Ferry", desc: "Ferry across the river Mersey" },
+      { name: "Pier Head", desc: "Waterfront" },
+      { name: "New Brighton", desc: "Seaside resort" },
+      { name: "Anfield", desc: "Football ground" },
+      { name: "Goodison Park", desc: "Football ground" },
+      { name: "Lewis's", desc: "Department store", tags: ["shopping"] },
+      { name: "Blackpool Pleasure Beach", desc: "Seaside amusement park" },
+      { name: "Sefton Park", desc: "City park with a palm house" },
+      { name: "Liverpool Empire Theatre", desc: "Theatre" },
+    ],
+    brand: [
+      { name: "Jacob's Cream Crackers", desc: "Crackers" },
+      { name: "Vimto", desc: "Fruit cordial" },
+      { name: "Bird's Custard", desc: "Custard powder" },
+      { name: "Hovis", desc: "Bread" },
+      { name: "Typhoo", desc: "Tea" },
+      { name: "Spangles", desc: "Boiled sweets" },
+      { name: "Bovril", desc: "Beef extract drink" },
+      { name: "Fry's Chocolate Cream", desc: "Chocolate bar" },
+    ],
+  },
+  {
+    key: "ibadan",
+    match: /ibadan|oyo|nigeria|lagos|abeokuta|ogbomoso/i,
+    artist: [
+      { name: "King Sunny Adé", desc: "Jùjú musician", tags: ["juju"] },
+      { name: "Ebenezer Obey", desc: "Jùjú musician", tags: ["juju"] },
+      { name: "I. K. Dairo", desc: "Jùjú musician", tags: ["juju"] },
+      { name: "Haruna Ishola", desc: "Apala musician", tags: ["apala"] },
+      { name: "Fela Kuti", desc: "Afrobeat pioneer", tags: ["afrobeat"] },
+      { name: "Victor Olaiya", desc: "Highlife trumpeter and bandleader", tags: ["highlife"] },
+      { name: "Cardinal Rex Lawson", desc: "Highlife bandleader", tags: ["highlife"] },
+      { name: "Orlando Owoh", desc: "Highlife and toye musician", tags: ["highlife"] },
+      { name: "Christy Essien-Igbokwe", desc: "Singer and actress", tags: ["highlife"] },
+      { name: "Victor Uwaifo", desc: "Highlife guitarist", tags: ["highlife"] },
+      { name: "Prince Nico Mbarga", desc: "Highlife musician", tags: ["highlife"] },
+      { name: "Sunny Okosun", desc: "Ozzidi musician", tags: ["afro-rock"] },
+    ],
+    movie: [
+      { name: "Kongi's Harvest", year: 1970, desc: "Satire written by Wole Soyinka" },
+      { name: "Ajani Ogun", year: 1976, desc: "Yoruba-language adventure" },
+      { name: "Aiye", year: 1979, desc: "Yoruba-language drama" },
+      { name: "Bisi, Daughter of the River", year: 1977, desc: "Drama" },
+      { name: "Jaiyesimi", year: 1980, desc: "Yoruba-language drama" },
+      { name: "Enter the Dragon", year: 1973, desc: "Martial arts film" },
+      { name: "The Good, the Bad and the Ugly", year: 1966, desc: "Western", tags: ["western"] },
+      { name: "Countdown at Kusini", year: 1976, desc: "Drama" },
+      { name: "Ija Ominira", year: 1977, desc: "Yoruba-language drama about a struggle for freedom" },
+      { name: "Shaft", year: 1971, desc: "Detective film", rating: "R" },
+      { name: "Bullfrog in the Sun", year: 1971, desc: "Drama set during the civil war", tags: ["war"] },
+    ],
+    place: [
+      { name: "University of Ibadan", desc: "University" },
+      { name: "Cocoa House", desc: "Landmark tower" },
+      { name: "Bower's Tower", desc: "Hilltop monument" },
+      { name: "Dugbe Market", desc: "Market", tags: ["market"] },
+      { name: "Mapo Hall", desc: "Colonial-era hall" },
+      { name: "Agodi Gardens", desc: "Park and gardens" },
+      { name: "Liberty Stadium", desc: "Stadium" },
+      { name: "Premier Hotel", desc: "Hilltop hotel" },
+      { name: "Bodija Market", desc: "Market", tags: ["market"] },
+      { name: "Kingsway Stores", desc: "Department store", tags: ["shopping"] },
+    ],
+    brand: [
+      { name: "Milo", desc: "Chocolate malt drink" },
+      { name: "Bournvita", desc: "Chocolate malt drink" },
+      { name: "Peak Milk", desc: "Evaporated milk" },
+      { name: "Gala", desc: "Sausage roll" },
+      { name: "Cabin Biscuits", desc: "Biscuits" },
+      { name: "Lucozade", desc: "Glucose drink" },
+      { name: "Ovaltine", desc: "Malt drink" },
+      { name: "Fanta", desc: "Orange soda" },
+    ],
+  },
+];
+
+/** Fallback when a mock request names a region we have no fixture for. */
+export const GLOBAL_FIXTURE: RegionFixture = {
+  key: "global",
+  match: /$^/,
+  artist: [
+    { name: "Nat King Cole", desc: "Singer and pianist" },
+    { name: "Louis Armstrong", desc: "Jazz trumpeter and singer" },
+    { name: "Miriam Makeba", desc: "Singer" },
+    { name: "Elvis Presley", desc: "Rock and roll singer" },
+    { name: "Édith Piaf", desc: "Singer" },
+  ],
+  movie: [
+    { name: "The Sound of Music", year: 1965, desc: "Musical" },
+    { name: "Roman Holiday", year: 1953, desc: "Romantic comedy" },
+    { name: "Mary Poppins", year: 1964, desc: "Musical fantasy" },
+  ],
+  place: [],
+  brand: [
+    { name: "Coca-Cola", desc: "Soft drink" },
+    { name: "Nescafé", desc: "Instant coffee" },
+  ],
+};
+
+export const KNOWN_TAGS = [
+  "bolero", "ranchera", "mariachi", "cumbia", "danzón", "merseybeat", "skiffle", "rock and roll", "jùjú", "juju",
+  "highlife", "apala", "afrobeat", "fuji", "kundiman", "enka", "filmi", "tamales", "pozole", "mole", "jollof rice",
+  "amala", "pounded yam", "fish and chips", "scouse", "tea", "teaching", "tailoring", "sewing", "football", "farming",
+  "gardening", "cooking", "dancing", "nursing", "trading", "church choir", "westerns", "cinema",
+];
