@@ -119,12 +119,12 @@ export class QlooClient {
   }
 
   /** Calls a tool with cache + bounded retry. Throws QlooError only for `error` envelopes. */
-  async call(tool: QlooTool, args: Record<string, unknown>, callOpts: { retryOnTimeout?: boolean } = {}): Promise<QlooEnvelope> {
+  async call(tool: QlooTool, args: Record<string, unknown>, callOpts: { retryOnTimeout?: boolean; maxRetries?: number } = {}): Promise<QlooEnvelope> {
     const key = stableKey(tool, args);
     const hit = this.cache.get(key);
     if (hit) return hit;
 
-    const retries = this.opts.retries ?? (this.transport.mode === "live" ? 3 : 2);
+    const retries = callOpts.maxRetries ?? this.opts.retries ?? (this.transport.mode === "live" ? 3 : 2);
     const base = this.opts.baseDelayMs ?? 600;
     let last: QlooEnvelope | undefined;
     let timedOut = false;

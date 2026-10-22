@@ -497,3 +497,28 @@ test("a country-only region builds quickly without places and says why", async (
   assert.ok(!session.notes.some((n) => /Add another favourite/.test(n)), "must not blame the favourites");
 });
 
+test("films never hold a session back: one attempt per search, and a fixed time budget", async () => {
+  const { classicFilms } = await import("./session.js");
+  const ctx = {
+    input: { birthDecade: "1940s", region: "Liverpool, UK", anchors: [] } as unknown as ProfileInput,
+    era: eraWindow("1940s"),
+    regionShort: "Liverpool",
+    anchorNames: [],
+    signalIds: [],
+    signalTags: [],
+    seenIds: new Set<string>(),
+  };
+  // A search that errors: tried once per query (2 queries), not retried.
+  let tries = 0;
+  const failing: QlooTransport = { mode: "live", call: async () => (tries++, { status: "error" as const, error: { code: "insights_failed", retryable: true } }) };
+  const quick = new QlooClient(failing, { baseDelayMs: 1, minGapMs: 0 });
+  assert.deepEqual(await classicFilms(quick, ctx), []);
+  assert.equal(tries, 2, "two searches, one attempt each");
+
+  // A search that never answers: the budget ends the wait and the session carries on without era films.
+  const hanging: QlooTransport = { mode: "live", call: () => new Promise<never>(() => {}) };
+  const slow = new QlooClient(hanging, { timeoutMs: 400, minGapMs: 0 });
+  const t0 = Date.now();
+  assert.deepEqual(await classicFilms(slow, ctx, 60), []);
+  assert.ok(Date.now() - t0 < 300, "returned at the budget, not at the request timeout");
+});

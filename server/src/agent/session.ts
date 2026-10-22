@@ -189,17 +189,27 @@ export function assertQlooOnly(items: SessionItem[], seenIds: Set<string>): Sess
  * in the place they grew up (filter by country) and some of the best-known ones (location as a signal).
  * Local films come first. Live mode only; the mock transport has in-era films already.
  */
-export async function classicFilms(qloo: QlooClient, ctx: BuildContext): Promise<QEntity[]> {
+export const FILM_BUDGET_MS = 30_000;
+
+export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS): Promise<QEntity[]> {
   const country = ctx.input.region.split(",").pop()?.trim() || ctx.input.region;
   const base = { type: "movie", signals: ctx.signalIds, year_min: ctx.era.from, year_max: ctx.era.to, take: 15 };
   const run = async (extra: Record<string, unknown>) => {
     try {
-      return okEntities(await qloo.call("qloo_insights", { ...base, ...extra }));
+      // One attempt each. A year-filtered search that doesn't come back is slow for a reason a retry won't fix, and the
+      // retries (plus the queue behind them) once held every session back for two minutes.
+      return okEntities(await qloo.call("qloo_insights", { ...base, ...extra }, { maxRetries: 0, retryOnTimeout: false }));
     } catch {
       return [] as QEntity[]; // films are one slot of eight; a failed lookup shouldn't sink the session
     }
   };
-  const [local, famous] = await Promise.all([run({ filter_location: country }), run({ signal_location: ctx.input.region })]);
+  // Songs, places and tastes are ready in about half a minute. Films shouldn't hold the session back past a fixed
+  // budget: after it, the session is built with whatever films the plain recommend call found.
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const budget = new Promise<QEntity[][]>((resolve) => {
+    timer = setTimeout(() => resolve([[], []]), budgetMs);
+  });
+  const [local, famous] = await Promise.race([Promise.all([run({ filter_location: country }), run({ signal_location: ctx.input.region })]), budget]).finally(() => clearTimeout(timer));
   const out: QEntity[] = [];
   for (let i = 0; i < Math.max(local.length, famous.length); i++) {
     if (local[i]) out.push({ ...local[i]!, via: "insights" });

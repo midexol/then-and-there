@@ -60,3 +60,9 @@ Full schemas: `docs/qloo-mcp-tools.json`. What changed our design:
 - `qloo_rank` takes `options` (≤ 10) + `option_type` + the same signal fields. Scores from separate calls aren't comparable.
 - Envelope: `schema_version, operation, status, summary, interpretation, results, result_count, warnings, error{code,layer,retryable,recovery}, execution{transport,correlation_id,duration_ms}, provenance`.
 - The exact shape of each item in `results` is **not yet confirmed**. `server/src/qloo/normalize.ts` accepts several shapes (`id`/`entity_id`, top-level or `properties.release_year`, and so on). Fix it from `probe-out/` once the probe runs.
+
+## Era films come from Insights, with a time budget
+
+The MCP `qloo_recommend` tool can't filter by release year, so films from the listener's teenage years come from the raw `qloo insights` command with a `filter.release_year` window (`classicFilms` in `server/src/agent/session.ts`). That query can be slow or hang on Qloo's side: on one test day every Insights call ran past 110 seconds while the Qloo host itself answered in about a second.
+
+So the film step is capped. Each search gets **one attempt** (no retries, no timeout retry), and the step stops waiting after **30 seconds** (`FILM_BUDGET_MS`). If nothing came back in time, the session is built without era films and uses the plain recommend results for the film slot. Songs, places and tastes are unaffected. Before the cap, retries plus the queue behind them held a session for about two minutes.
