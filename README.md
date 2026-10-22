@@ -152,12 +152,17 @@ Cumulative layout shift on the landing is 0.006. Performance scores measured on 
 
 ## Screens
 
+Captured from the running app against live Qloo (the example people; no real names).
+
 | | |
 |---|---|
-| ![Home](docs/screens/home.png) | ![Session plan](docs/screens/plan.png) |
-| ![Stage](docs/screens/stage.png) | ![Review](docs/screens/review.png) |
+| ![Landing page](docs/screens/landing-desktop.png) | ![Building a session, live steps](docs/screens/build.png) |
+| ![Session plan](docs/screens/plan.png) | ![Stage: one item at a time](docs/screens/stage.png) |
+| ![Review](docs/screens/review.png) | ![Profile builder](docs/screens/onboarding.png) |
 
-Home · Profile builder · Building (live steps over SSE) · Session plan · Stage (full-screen, wake lock, 72px buttons) · Review · Print card (A4) · About and privacy.
+On a phone: [landing](docs/screens/landing-phone.png), [plan](docs/screens/plan-phone.png) and [stage](docs/screens/stage-phone.png). Also: [privacy page](docs/screens/privacy.png).
+
+Landing · Profile builder · Building (live steps over SSE) · Session plan · Stage (full-screen, wake lock, 72px buttons) · Review · Print card (A4) · About and privacy.
 
 ## Known limitations
 
