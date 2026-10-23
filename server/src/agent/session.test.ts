@@ -536,6 +536,22 @@ test("films never hold a session back: no repeat after a timeout, a retry after 
   assert.deepEqual(await classicFilms(new QlooClient(hanging, { timeoutMs: 400, minGapMs: 0 }), ctx, 60, () => slow2++), []);
   assert.ok(Date.now() - t0 < 300, "returned at the budget, not at the request timeout");
   assert.equal(slow2, 1);
+
+  // Slow the first time, answers the second: one retry brings the films back and nothing is reported slow.
+  let n = 0;
+  const coldThenWarm: QlooTransport = { mode: "live", call: () => (++n <= 2 ? new Promise<never>(() => {}) : Promise.resolve({ status: "ok" as const, results: [film] })) };
+  let slow3 = 0;
+  const warm = await classicFilms(new QlooClient(coldThenWarm, { timeoutMs: 100, minGapMs: 0 }), ctx, 60, () => slow3++, 2_000);
+  assert.ok(warm.length >= 1, "the retry finds films");
+  assert.equal(slow3, 0, "no slow note when the retry worked");
+
+  // Slow both times: gives up, reports slow once, and never retries more than once.
+  let n2 = 0;
+  const alwaysHangs: QlooTransport = { mode: "live", call: () => (n2++, new Promise<never>(() => {})) };
+  let slow4 = 0;
+  assert.deepEqual(await classicFilms(new QlooClient(alwaysHangs, { timeoutMs: 100, minGapMs: 0 }), ctx, 60, () => slow4++, 400), []);
+  assert.equal(n2, 4, "two searches per attempt, two attempts");
+  assert.equal(slow4, 1);
 });
 
 class UnmatchedCityCountry implements QlooTransport {

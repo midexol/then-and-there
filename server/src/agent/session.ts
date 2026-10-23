@@ -219,6 +219,8 @@ export function assertQlooOnly(items: SessionItem[], seenIds: Set<string>): Sess
 }
 
 export const FILM_BUDGET_MS = 30_000;
+/** One more try when the first film search found nothing in time (usually a cold Qloo). Kept short so a build can't stall. */
+export const FILM_RETRY_MS = 20_000;
 
 /**
  * Films from inside the era window. The MCP recommend tool can't filter by release year, and for a 55+ audience it
@@ -230,7 +232,7 @@ export const FILM_BUDGET_MS = 30_000;
  * A location *filter* on films is deliberately not used: tested, it returned the same global classics (The Godfather,
  * Star Wars) for every country. Their own favourites come first. Live mode only; the mock transport has in-era films.
  */
-export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void): Promise<QEntity[]> {
+export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void, retryMs = 0): Promise<QEntity[]> {
   const base = { type: "movie", signals: ctx.signalIds, year_min: ctx.era.from, year_max: ctx.era.to, take: 15 };
   let slow = false;
   const run = async (extra: Record<string, unknown>) => {
@@ -244,13 +246,21 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
   };
   // Songs, places and tastes are ready in about half a minute. Films shouldn't hold the session back past a fixed
   // budget: after it, the session is built with whatever films the plain recommend call found.
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const budget = new Promise<QEntity[][]>((resolve) => {
-    timer = setTimeout(() => ((slow = true), resolve([[], []])), budgetMs);
-  });
-  // Without a favourite Qloo can look up by id there is nothing to search "like", so only the filler search runs.
-  const mineSearch = ctx.signalIds.length ? run({}) : Promise.resolve([] as QEntity[]);
-  const [mine, famous] = await Promise.race([Promise.all([mineSearch, run({ signal_location: ctx.input.region })]), budget]).finally(() => clearTimeout(timer));
+  const attempt = async (ms: number) => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const budget = new Promise<QEntity[][]>((resolve) => {
+      timer = setTimeout(() => ((slow = true), resolve([[], []])), ms);
+    });
+    // Without a favourite Qloo can look up by id there is nothing to search "like", so only the filler search runs.
+    const mineSearch = ctx.signalIds.length ? run({}) : Promise.resolve([] as QEntity[]);
+    return Promise.race([Promise.all([mineSearch, run({ signal_location: ctx.input.region })]), budget]).finally(() => clearTimeout(timer));
+  };
+  let [mine, famous] = await attempt(budgetMs);
+  // A first search that found nothing because it was slow is tried once more: the second usually meets a warm Qloo.
+  if (slow && !mine.length && !famous.length && retryMs > 0) {
+    [mine, famous] = await attempt(retryMs);
+    slow = !mine.length && !famous.length; // a late timeout from the first try no longer matters once films are found
+  }
   if (slow) onSlow?.();
   const out: QEntity[] = [];
   for (let i = 0; i < Math.max(mine.length, famous.length); i++) {
@@ -384,7 +394,7 @@ export async function buildSession(
   let rejected = 0; // calls Qloo refused outright (not retryable): typically a place it can't match
   let placesTooBig = false; // the region is a whole country: Qloo timed out filtering places by it
   let filmsSlow = false; // the era-film search timed out or ran out of its budget
-  const classics = qloo.mode === "live" ? classicFilms(qloo, ctx, FILM_BUDGET_MS, () => (filmsSlow = true)) : Promise.resolve([] as QEntity[]);
+  const classics = qloo.mode === "live" ? classicFilms(qloo, ctx, FILM_BUDGET_MS, () => (filmsSlow = true), FILM_RETRY_MS) : Promise.resolve([] as QEntity[]);
   const raw = await Promise.all(
     jobs.map(async (j) => {
       try {
