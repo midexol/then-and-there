@@ -3,16 +3,17 @@ import type { ItemKind } from "@/lib/types";
 const PIN = "M74 162 C60 136 24 110 24 70 A50 50 0 1 1 124 70 C124 110 88 136 74 162 Z";
 
 /** The clock-on-a-pin mark: a place (there) and a time (then). */
-export function Logo({ size = 28, inverted = false, title }: { size?: number; inverted?: boolean; title?: string }) {
-  const pin = inverted ? "var(--ground)" : "var(--indigo)";
-  const face = inverted ? "var(--indigo-deep)" : "var(--ground)";
+export function Logo({ size = 28, inverted = false, fixedLight = false, title }: { size?: number; inverted?: boolean; fixedLight?: boolean; title?: string }) {
+  // fixedLight keeps white and gold in both themes, for the dark hero, the menu page and the footer.
+  const pin = fixedLight ? "#ffffff" : inverted ? "var(--ground)" : "var(--indigo)";
+  const face = fixedLight ? "#0e1535" : inverted ? "var(--indigo-deep)" : "var(--ground)";
   return (
     <svg width={(size * 148) / 168} height={size} viewBox="0 0 148 168" role={title ? "img" : undefined} aria-hidden={title ? undefined : true} aria-label={title}>
       <path d={PIN} fill={pin} />
       <circle cx="74" cy="70" r="34" fill={face} />
       <line x1="74" y1="70" x2="74" y2="48" stroke={pin} strokeWidth="10" strokeLinecap="round" />
       <line x1="74" y1="70" x2="58" y2="80" stroke={pin} strokeWidth="10" strokeLinecap="round" />
-      <circle cx="74" cy="70" r="7" fill="var(--gold)" />
+      <circle cx="74" cy="70" r="7" fill={fixedLight ? "#f0b440" : "var(--gold)"} />
     </svg>
   );
 }
@@ -37,11 +38,15 @@ export function WindingLogo({ size = 88, still = false }: { size?: number; still
   );
 }
 
-export function Wordmark({ size = 22, inverted = false }: { size?: number; inverted?: boolean }) {
+/** The one wordmark: pin-and-clock mark plus "then & there". `light` is white on dark in either theme. */
+export function Wordmark({ size = 22, inverted = false, light = false }: { size?: number; inverted?: boolean; light?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2" style={{ color: inverted ? "var(--ground)" : "var(--indigo)" }}>
-      <Logo size={size * 1.25} inverted={inverted} />
-      <span className="display whitespace-nowrap leading-none" style={{ fontSize: size, color: "inherit" }}>
+    <span className="inline-flex items-center" style={{ gap: size * 0.4, color: light ? "#ffffff" : inverted ? "var(--ground)" : "var(--indigo)" }}>
+      {/* The pin's round head sits on the middle of the lowercase letters; its tip drops to the descender line. */}
+      <span style={{ display: "inline-flex", transform: `translateY(${size * 0.14}px)` }}>
+        <Logo size={size * 1.7} inverted={inverted} fixedLight={light} />
+      </span>
+      <span className="display whitespace-nowrap leading-none" style={{ fontSize: size, color: "inherit", wordSpacing: "-0.08em" }}>
         then &amp; there
       </span>
     </span>

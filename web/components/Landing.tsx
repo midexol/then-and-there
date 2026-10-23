@@ -389,12 +389,7 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
             <Link href="/" aria-label="Then & There home" onClick={goHome} className="inline-flex min-h-11 items-center gap-2">
-              <svg width={30} height={34} viewBox="0 0 148 172" aria-hidden>
-                <path d={PIN} fill="#ffffff" />
-                <circle cx="74" cy="70" r="26" fill="#0e1535" />
-                <circle cx="74" cy="70" r="12" fill="#f0b440" />
-              </svg>
-              <span className="display text-[1.6rem] leading-none !text-white">then &amp; there</span>
+              <Wordmark size={26} light />
             </Link>
             <p className="mt-4 max-w-[34ch] text-[1.05rem] text-white/80">{L.footerTag}</p>
             <ButtonLink href="/new/" className="group mt-5 min-h-12 !bg-[#f0b440] px-6 !text-[#0e1535]">

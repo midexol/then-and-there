@@ -15,24 +15,6 @@ export function goHome(e: React.MouseEvent) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
-const PIN = "M74 162 C60 136 24 110 24 70 A50 50 0 1 1 124 70 C124 110 88 136 74 162 Z";
-
-/** The brand mark in fixed colours, for sitting on the dark hero and the menu page in both themes. */
-function LightWordmark() {
-  return (
-    <span className="inline-flex items-center gap-2 text-white">
-      <svg width={26} height={30} viewBox="0 0 148 168" aria-hidden>
-        <path d={PIN} fill="#ffffff" />
-        <circle cx="74" cy="70" r="34" fill="#0e1535" />
-        <line x1="74" y1="70" x2="74" y2="48" stroke="#ffffff" strokeWidth="10" strokeLinecap="round" />
-        <line x1="74" y1="70" x2="58" y2="80" stroke="#ffffff" strokeWidth="10" strokeLinecap="round" />
-        <circle cx="74" cy="70" r="7" fill="#f0b440" />
-      </svg>
-      <span className="display whitespace-nowrap text-[1.6rem] leading-none !text-white">then &amp; there</span>
-    </span>
-  );
-}
-
 /** Where the menu page leads. `id` is the landing-page element to scroll to. */
 const MENU = [
   { id: "try", label: copy.landing.navTry, hint: "Pick a decade and a place" },
@@ -133,7 +115,7 @@ function MenuPage({ visible, onClose, returnFocus }: { visible: boolean; onClose
             }}
             className="inline-flex min-h-12 items-center"
           >
-            <LightWordmark />
+            <Wordmark size={26} light />
           </Link>
           <button
             ref={closeRef}
@@ -231,7 +213,7 @@ export function SiteHeader({ landing }: { landing: boolean }) {
       >
         <div className="flex items-center justify-between gap-3 pl-5 pr-3" style={{ minHeight: HEADER_H - 20 }}>
           <Link href="/" aria-label="Then & There home" onClick={goHome} className="inline-flex min-h-12 items-center">
-            {overlay ? <LightWordmark /> : <Wordmark size={26} />}
+            {overlay ? <Wordmark size={26} light /> : <Wordmark size={26} />}
           </Link>
 
           <nav aria-label="Main" className="flex items-center gap-2">
