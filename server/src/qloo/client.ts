@@ -64,6 +64,9 @@ class Lru<V> {
     this.map.set(k, v);
     if (this.map.size > this.max) this.map.delete(this.map.keys().next().value as string);
   }
+  entries() {
+    return [...this.map.entries()];
+  }
 }
 
 function stableKey(tool: string, args: Record<string, unknown>) {
@@ -82,6 +85,8 @@ const RATE_LIMIT = /rate[_ -]?limit|429|too many/i;
 
 export class QlooClient {
   private cache = new Lru<QlooEnvelope>(500);
+  /** Saved answers for the example people. Never evicted, so a slow Qloo can't leave their sessions short. */
+  private pinned = new Map<string, QlooEnvelope>();
   public calls = 0;
   private active = 0;
   private waiters: (() => void)[] = [];
@@ -94,6 +99,16 @@ export class QlooClient {
 
   get mode() {
     return this.transport.mode;
+  }
+
+  /** Loads saved answers (see seed.ts). They answer matching requests without calling Qloo. */
+  prime(entries: Record<string, QlooEnvelope>) {
+    for (const [k, v] of Object.entries(entries)) this.pinned.set(k, v);
+  }
+
+  /** Every answer cached so far, keyed by request hash, for writing a seed file. Errors and timeouts are never cached. */
+  exportEntries(): Record<string, QlooEnvelope> {
+    return Object.fromEntries(this.cache.entries());
   }
 
   /**
@@ -121,7 +136,7 @@ export class QlooClient {
   /** Calls a tool with cache + bounded retry. Throws QlooError only for `error` envelopes. */
   async call(tool: QlooTool, args: Record<string, unknown>, callOpts: { retryOnTimeout?: boolean; timeoutMs?: number } = {}): Promise<QlooEnvelope> {
     const key = stableKey(tool, args);
-    const hit = this.cache.get(key);
+    const hit = this.pinned.get(key) ?? this.cache.get(key);
     if (hit) return hit;
 
     const retries = this.opts.retries ?? (this.transport.mode === "live" ? 3 : 2);

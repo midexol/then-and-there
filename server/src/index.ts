@@ -3,11 +3,14 @@ import { QlooClient } from "./qloo/client.js";
 import { McpTransport } from "./qloo/mcp.js";
 import { MockTransport } from "./qloo/mock.js";
 import { OpenAiCompatibleLlm } from "./agent/prompts.js";
+import { loadSeed } from "./qloo/seed.js";
+import { prewarmExamples } from "./agent/examples.js";
 
 const key = process.env.QLOO_API_KEY?.trim();
 const forceMock = process.env.QLOO_MODE === "mock";
 const transport: import("./qloo/client.js").QlooTransport = key && !forceMock ? new McpTransport(key) : new MockTransport(Number(process.env.MOCK_LATENCY_MS ?? 350));
 const qloo = new QlooClient(transport);
+if (transport.mode === "live") qloo.prime(loadSeed());
 
 const { LLM_BASE_URL, LLM_API_KEY, LLM_MODEL } = process.env;
 const llm = LLM_BASE_URL && LLM_API_KEY && LLM_MODEL ? new OpenAiCompatibleLlm(LLM_BASE_URL, LLM_API_KEY, LLM_MODEL) : null;
@@ -19,7 +22,7 @@ app.listen({ port, host: "0.0.0.0" }).then(() => {
   // The first live call starts the `qloo mcp` harness, which can take close to a minute on a slow host. Do it now,
   // in the background, so the first caregiver's lookup isn't the one that waits. Never blocks startup or crashes it.
   if (transport.mode === "live") {
-    void warmUp();
+    void warmUp().then(() => prewarmExamples(qloo, (m) => app.log.info(m)));
   }
 });
 
