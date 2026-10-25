@@ -26,4 +26,4 @@ services:
       - key: ALLOWED_ORIGIN
         value: "*"
       # Optional, for written suggested questions (any OpenAI-compatible endpoint). Add them in the Render dashboard
-      # if you want them: LLM_BASE_URL, LLM_API_KEY, LLM_MODEL. Without them the built-in questions are used.
+      # if you want them: LLM_BASE_URL, LLM_API_KEY, LLM_MODEL (Groq works: https://api.groq.com/openai/v1). Without them the built-in questions are used.

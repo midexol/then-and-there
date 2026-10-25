@@ -22,7 +22,11 @@ app.listen({ port, host: "0.0.0.0" }).then(() => {
   // The first live call starts the `qloo mcp` harness, which can take close to a minute on a slow host. Do it now,
   // in the background, so the first caregiver's lookup isn't the one that waits. Never blocks startup or crashes it.
   if (transport.mode === "live") {
-    void warmUp().then(() => prewarmExamples(qloo, (m) => app.log.info(m)));
+    // Building the examples ahead costs about forty Qloo calls on every start and competes with real visitors for the two
+  // call slots, so it is opt-in. `npm run seed-cache` is the normal way to have the examples ready.
+  void warmUp().then(async () => {
+    if (process.env.PREWARM_EXAMPLES === "1") await prewarmExamples(qloo, (m) => app.log.info(m));
+  });
   }
 });
 

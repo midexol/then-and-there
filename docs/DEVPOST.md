@@ -1,8 +1,8 @@
 # Devpost text: Then & There
 
-Paste each section into the matching Devpost field. Replace the two bracketed links once the app is deployed and the repo is public.
+Paste each section into the matching Devpost field. The live link is filled in. Make the repo public before submitting.
 
-- **Live app:** [LIVE URL]
+- **Live app:** https://then-and-there-lime.vercel.app
 - **Code:** https://github.com/midexol/then-and-there (MIT)
 
 ---

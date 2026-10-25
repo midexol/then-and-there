@@ -27,6 +27,10 @@ The Qloo key can't be rotated or regenerated, so it only ever goes into Render's
 
 **Optional language model.** To have suggested questions written by a model instead of the built-in set, add `LLM_BASE_URL`, `LLM_API_KEY` and `LLM_MODEL` in the service's Environment tab (any OpenAI-compatible endpoint). Leave them out and everything still works.
 
+For Groq, which is OpenAI-compatible: `LLM_BASE_URL=https://api.groq.com/openai/v1`, `LLM_MODEL=llama-3.3-70b-versatile` (or any chat model listed in the Groq console) and `LLM_API_KEY` set to a key from console.groq.com. Paste the key only into Render's dashboard. Only item names, the region and the era go to the model, never a nickname or personal details.
+
+**Example people.** Films come from a slow Qloo search that can time out, which leaves a session with 7 items and a note saying so. To keep the three examples reliable, run `QLOO_API_KEY=… npm run seed-cache` in `server/` on your own machine (set the key in your shell, not in a file), then commit `server/data/demo-cache.json`. The server loads it at startup. Set `PREWARM_EXAMPLES=1` on Render only if you have no seed file: it builds the examples at every start, which costs about forty Qloo calls.
+
 ## 2. Web app on Vercel
 
 Either use the Vercel dashboard or the CLI.
@@ -55,7 +59,7 @@ On the live Vercel URL:
 
 - [ ] The landing page loads and the "Try it" dial changes the years.
 - [ ] **Plan a first session** → the example people appear under "Or try it with an example".
-- [ ] Pick **Grandma Rosa**: the build screen shows real steps and a finished 8-item session in about 20 to 60 seconds.
+- [ ] Pick **Grandma Rosa**: the build screen shows real steps and a finished session of 7 or 8 items (7 when Qloo's film search is slow, with a note saying so) in about 20 to 60 seconds.
 - [ ] Open **Start session**, move through two items on a phone, then end it and open the review.
 - [ ] Browser dev tools show no CORS errors (if you see one, `ALLOWED_ORIGIN` doesn't match the page's origin exactly).
 - [ ] `https://<render-url>/api/health` still says `mode: live`.

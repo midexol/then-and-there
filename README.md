@@ -6,6 +6,8 @@ Then & There helps caregivers anywhere in the world plan a 30-minute reminiscenc
 
 Built for the **Qloo Agentic Hackathon**. It plans activities and is not medical care.
 
+**Try it:** https://then-and-there-lime.vercel.app (pick one of the example people to see a full session)
+
 ![Then & There](web/public/og.png)
 
 ## How it works
