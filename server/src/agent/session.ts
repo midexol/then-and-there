@@ -242,7 +242,7 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
     } catch (e) {
       if (e instanceof QlooError && e.timedOut) slow = true;
       // Only the kind of failure is logged, never the region or favourites, so Render's logs say why films went missing.
-      console.warn(`film search failed: ${e instanceof QlooError ? `${e.code}${e.timedOut ? " (timed out)" : ""}` : "unexpected"}`);
+      console.warn(`film search failed: ${e instanceof QlooError ? `${e.message}${e.timedOut ? " (timed out)" : ""}` : "unexpected"}`);
       return [] as QEntity[]; // films are one slot of eight; a failed lookup shouldn't sink the session
     }
   };
