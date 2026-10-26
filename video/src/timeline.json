@@ -1,0 +1,216 @@
+{
+  "fps": 30,
+  "total": 2103,
+  "scenes": [
+    {
+      "id": "hook",
+      "caption": "You want a good half hour with someone you love. Where do you even start?",
+      "from": 15,
+      "dur": 179,
+      "voStart": 18,
+      "voSeconds": 5.26
+    },
+    {
+      "id": "setup",
+      "caption": "Tell us roughly when she was born, where she grew up, and three things she loved.",
+      "from": 194,
+      "dur": 211,
+      "voStart": 197,
+      "voSeconds": 6.34
+    },
+    {
+      "id": "build",
+      "caption": "Qloo finds songs, places, tastes and films from her world.",
+      "from": 405,
+      "dur": 252,
+      "voStart": 408,
+      "voSeconds": 7.7
+    },
+    {
+      "id": "plan",
+      "caption": "Thirty minutes. Eight items. Every one from Qloo, with a reason why.",
+      "from": 657,
+      "dur": 291,
+      "voStart": 660,
+      "voSeconds": 9
+    },
+    {
+      "id": "stage",
+      "caption": "Then you sit together. One item at a time, at her pace.",
+      "from": 948,
+      "dur": 333,
+      "voStart": 951,
+      "voSeconds": 10.42
+    },
+    {
+      "id": "review",
+      "caption": "What sparked shapes the next session.",
+      "from": 1281,
+      "dur": 266,
+      "voStart": 1284,
+      "voSeconds": 8.16
+    },
+    {
+      "id": "world",
+      "caption": "Mexico City. Liverpool. Ibadan. Anywhere in the world.",
+      "from": 1547,
+      "dur": 277,
+      "voStart": 1550,
+      "voSeconds": 8.52
+    },
+    {
+      "id": "close",
+      "caption": "then & there. Bring back the world they grew up in.",
+      "from": 1824,
+      "dur": 243,
+      "voStart": 1827,
+      "voSeconds": 7.39
+    }
+  ],
+  "shots": {
+    "build-00": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-01": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-02": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-03": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-04": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-05": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-06": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-07": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-08": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-09": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-10": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-11": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-12": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-13": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-14": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-15": {
+      "w": 780,
+      "h": 1688
+    },
+    "build-16": {
+      "w": 780,
+      "h": 1688
+    },
+    "examples": {
+      "w": 780,
+      "h": 1688
+    },
+    "landing": {
+      "w": 780,
+      "h": 1688
+    },
+    "people": {
+      "w": 780,
+      "h": 1688
+    },
+    "plan-adunni-top": {
+      "w": 780,
+      "h": 1688
+    },
+    "plan-full": {
+      "w": 780,
+      "h": 8838
+    },
+    "plan-ken-top": {
+      "w": 780,
+      "h": 1688
+    },
+    "plan-next-top": {
+      "w": 780,
+      "h": 1688
+    },
+    "plan-top": {
+      "w": 780,
+      "h": 1688
+    },
+    "review-full": {
+      "w": 780,
+      "h": 3182
+    },
+    "review-top": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-1-answered": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-1": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-2-answered": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-2": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-3-answered": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-3": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-4-answered": {
+      "w": 780,
+      "h": 1688
+    },
+    "stage-4": {
+      "w": 780,
+      "h": 1688
+    },
+    "tips": {
+      "w": 780,
+      "h": 1688
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "voice": "en-US-AriaNeural",
+  "rate": "+12%",
+  "pitch": "+2Hz",
+  "scenes": [
+    { "id": "hook",   "caption": "You want a good half hour with someone you love. Where do you even start?", "text": "You want a really good half hour with someone you love. But where do you even start?" },
+    { "id": "setup",  "caption": "Tell us roughly when she was born, where she grew up, and three things she loved.", "text": "Meet Then and There. Tell it roughly when she was born, where she grew up, and three things she loved." },
+    { "id": "build",  "caption": "Qloo finds songs, places, tastes and films from her world.", "text": "Qloo does the digging. Songs, places, tastes and films from her teenage years in Mexico City, in under a minute." },
+    { "id": "plan",   "caption": "Thirty minutes. Eight items. Every one from Qloo, with a reason why.", "text": "Thirty minutes, eight items, in a gentle order. Every single one comes from Qloo, with a reason why, and a question to start the conversation." },
+    { "id": "stage",  "caption": "Then you sit together. One item at a time, at her pace.", "text": "Then you just sit together. One item at a time, full screen, at her pace. Did that spark something? Tap yes, a little, or not really." },
+    { "id": "review", "caption": "What sparked shapes the next session.", "text": "Afterwards, what sparked shapes what comes next. Pedro Infante lit her up? Next time, we lean right in." },
+    { "id": "world",  "caption": "Mexico City. Liverpool. Ibadan. Anywhere in the world.", "text": "And it works anywhere. Mexico City. Liverpool. Ibadan. Wherever they grew up." },
+    { "id": "close",  "caption": "then & there. Bring back the world they grew up in.", "text": "Then and There. Bring back the world they grew up in. Powered by Qloo. Try it now." }
+  ]
+}
