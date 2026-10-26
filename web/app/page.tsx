@@ -20,7 +20,7 @@ function PersonTile({ p }: { p: Profile }) {
       <div className="text-[1.15rem] font-semibold text-ink">{p.nickname}</div>
       <div className="mt-2 flex flex-wrap gap-2 text-[0.875rem]">
         <span className="rounded-full bg-cloth px-3 py-1 text-indigo">
-          <b>Then</b> · {era.from}–{era.to}
+          <b>Then</b> · {era.from} to {era.to}
         </span>
         <span className="rounded-full bg-cloth px-3 py-1 text-indigo">
           <b>There</b> · {p.region.split(",")[0]}

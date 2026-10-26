@@ -54,7 +54,7 @@ export function Ticket({ title, sub, year, scale = 1 }: { title: string; sub: st
         <div style={{ width: 286, height: 132, background: PAPER, borderRadius: 8, display: "flex", color: INK, WebkitMask: mask, mask }}>
           <div style={{ width: 76, borderRight: "2px dashed #CBD1E2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <div style={{ fontSize: 11, color: SOFT }}>No.</div>
-            <div style={{ ...serif, fontSize: 23, color: INDIGO }}>{year ?? "—"}</div>
+            <div style={{ ...serif, fontSize: 23, color: INDIGO }}>{year ?? ""}</div>
           </div>
           <div style={{ flex: 1, padding: "14px 18px 14px 16px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 3, minWidth: 0 }}>
             <div style={{ fontSize: 12, color: SOFT }}>Film · Admit one</div>

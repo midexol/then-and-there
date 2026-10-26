@@ -112,13 +112,13 @@ export const copy = {
     hintAdd: (n: number) => `Only matched favourites count. Add ${n === 1 ? "one more" : `${n} more`} singer, dish, film or place.`,
     build: "Build the session",
     save: "Save changes",
-    eraPreview: (from: number, to: number) => `We'll look for things from about ${from}–${to}.`,
+    eraPreview: (from: number, to: number) => `We'll look for things from about ${from} to ${to}.`,
   },
 
   kinds: { music: "Music", food: "Food", film_tv: "Films and TV", place: "Places", work_hobby: "Work and hobbies" } as Record<AnchorKind, string>,
 
   building: {
-    title: (region: string, from: number, to: number) => `Going back to ${region}, about ${from}–${to}`,
+    title: (region: string, from: number, to: number) => `Going back to ${region}, about ${from} to ${to}`,
     sub: "This usually takes under a minute.",
     slow: "Still working. Qloo is taking longer than usual.",
     taking: "Still working. A first session can take up to a minute.",

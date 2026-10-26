@@ -27,7 +27,7 @@ function PrintCard() {
               {p.nickname}
             </h1>
             <div className="text-[0.8rem] text-[#565B6B]">
-              {copy.print.title} · {regionShort(p.region)}, about {s.eraWindow.from}–{s.eraWindow.to} · {copy.print.date}: ____________
+              {copy.print.title} · {regionShort(p.region)}, about {s.eraWindow.from} to {s.eraWindow.to} · {copy.print.date}: ____________
             </div>
           </div>
           <div style={{ ["--indigo" as string]: "#24336E", ["--ground" as string]: "#FFFFFF" }}>

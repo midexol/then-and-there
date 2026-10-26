@@ -74,7 +74,7 @@ function Plan() {
             <h1 className="text-[2rem] leading-[1.15]">{p.nickname}</h1>
             <div className="mt-3 flex flex-wrap gap-2">
               <Pill label={copy.plan.then}>
-                {s.eraWindow.from}–{s.eraWindow.to}
+                {s.eraWindow.from} to {s.eraWindow.to}
               </Pill>
               <Pill label={copy.plan.there}>{regionShort(p.region)}</Pill>
               <Pill>{copy.plan.length(s.items.length)}</Pill>

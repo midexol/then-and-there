@@ -350,7 +350,7 @@ export async function buildSession(
   const lead = ctx.anchorNames[0];
   const jobs: { key: StepKey; label: string; args: Record<string, unknown> }[] = [
     { key: "songs", label: lead ? `Finding music people who love ${lead} also love` : "Finding music from their era", args: { ...base, target_type: "artist" } },
-    { key: "films", label: `Looking for films from about ${era.from}–${era.to}`, args: { ...base, target_type: "movie" } },
+    { key: "films", label: `Looking for films from about ${era.from} to ${era.to}`, args: { ...base, target_type: "movie" } },
     { key: "places", label: `Places around ${ctx.regionShort}`, args: { ...base, target_type: "place", filter_location: input.region } },
     { key: "tastes", label: `Tastes from ${ctx.regionShort}`, args: { ...base, target_type: "brand" } },
   ];
@@ -470,7 +470,7 @@ export async function buildSession(
     try {
       llmOut = await deps.llm.writeQuestions(
         items.map((i) => ({ id: i.id, kind: i.kind, title: i.title, subtitle: i.subtitle, year: i.year })),
-        { region: input.region, era: `${era.from}–${era.to}`, avoidTopics: input.avoidTopics ?? [] },
+        { region: input.region, era: `${era.from} to ${era.to}`, avoidTopics: input.avoidTopics ?? [] },
       );
     } catch {
       notes.push("Suggested questions are from our built-in set this time.");

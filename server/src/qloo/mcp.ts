@@ -96,7 +96,7 @@ export class McpTransport implements QlooTransport {
       const code = auth ? "QLOO_AUTH" : limited ? "QLOO_RATE_LIMIT" : timedOut ? "insights_timeout" : "insights_failed";
       // One short line of the command's own error, with anything key-shaped removed, so the server log says why.
       const head = out.split("\n").map((l) => l.trim()).find(Boolean)?.replace(/[A-Za-z0-9_-]{24,}/g, "…").slice(0, 160);
-      console.warn(`qloo insights failed: ${code}${head ? ` — ${head}` : ""}`);
+      console.warn(`qloo insights failed: ${code}${head ? `: ${head}` : ""}`);
       return { status: "error", error: { code, retryable: !auth, recovery: auth ? "Qloo rejected the credentials." : limited ? "Rate limited (429)." : timedOut ? "Insights request timed out." : "Insights request failed." } };
     }
   }
