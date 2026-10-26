@@ -16,6 +16,12 @@ function harnessBin() {
   return path.join(path.dirname(entry), "bin.js");
 }
 
+/** The command prints "Using signal: …" lines, then the JSON array. No array means no results; a cut-off array throws. */
+export function parseInsightsOutput(stdout: string): unknown[] {
+  const start = stdout.indexOf("[");
+  return start < 0 ? [] : (JSON.parse(stdout.slice(start)) as unknown[]);
+}
+
 export class McpTransport implements QlooTransport {
   readonly mode = "live" as const;
   private client: Client | null = null;
@@ -66,10 +72,8 @@ export class McpTransport implements QlooTransport {
     const env: NodeJS.ProcessEnv = { ...process.env, QLOO_API_KEY: this.apiKey };
     try {
       const { stdout } = await execFileAsync(process.execPath, args, { env, timeout: 25_000, maxBuffer: 8 * 1024 * 1024, windowsHide: true });
-      // The command prints "Using signal: …" before the JSON array.
-      const start = stdout.indexOf("[");
-      if (start < 0) return { status: "empty", operation: "insights", results: [] };
-      const results = JSON.parse(stdout.slice(start)) as unknown[];
+      const results = parseInsightsOutput(stdout);
+      if (!results.length && !stdout.includes("[")) return { status: "empty", operation: "insights", results: [] };
       return { status: results.length ? "ok" : "empty", operation: "insights", results, result_count: results.length };
     } catch (e) {
       // Never echo the command line: it holds ids and a place. Look only at what the command itself printed, since
@@ -78,6 +82,15 @@ export class McpTransport implements QlooTransport {
       // execFile kills the child when its time runs out. Report that as a timeout, so the client doesn't repeat a request
       // that was already too slow (each repeat is another full wait).
       const timedOut = (e as { killed?: boolean }).killed === true || (e as { code?: string }).code === "ETIMEDOUT";
+      // The command can print every result and still be killed before it exits. A complete list is a good answer.
+      if (timedOut) {
+        try {
+          const results = parseInsightsOutput(String((e as { stdout?: string }).stdout ?? ""));
+          if (results.length) return { status: "ok", operation: "insights", results, result_count: results.length };
+        } catch {
+          // Cut off in the middle of the list: a real timeout.
+        }
+      }
       const auth = !timedOut && /\b401\b|unauthori[sz]ed|api[_ ]?key/i.test(out);
       const limited = !timedOut && /\b429\b|too many requests|rate[_ -]?limit/i.test(out);
       const code = auth ? "QLOO_AUTH" : limited ? "QLOO_RATE_LIMIT" : timedOut ? "insights_timeout" : "insights_failed";
