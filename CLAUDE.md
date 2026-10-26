@@ -48,8 +48,8 @@ ALLOWED_ORIGIN=https://<vercel-app>.vercel.app
 NEXT_PUBLIC_API_URL=
 ```
 
-## Status (Oct 13)
-Steps 2 to 6 are built and pass in mock mode (11 server tests, plus a Playwright run of every screen). Next: run the probe with the real key, fix `normalize.ts` from `probe-out/`, run the 12-person evaluation, then deploy.
+## Status (Oct 26)
+Built, evaluated and deployed: the web app on Vercel and the server on Render, with 57 server tests and a 70-second demo video in `video/`. What remains is the Devpost submission.
 
 ## Build order
 1. `bash scripts/probe.sh` → review `probe-out/` → note anything surprising in `docs/PROBE_NOTES.md`

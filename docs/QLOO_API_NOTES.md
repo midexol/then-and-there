@@ -1,7 +1,6 @@
-# Qloo API notes (from the public starter kit, before key arrives)
+# Qloo API notes
 
-Source: github.com/qloo/qloo-hackathon-kit and npm `@qloo/qloo-harness` 0.1.26.
-Confirm everything here with live calls once the key arrives.
+Source: github.com/qloo/qloo-hackathon-kit and npm `@qloo/qloo-harness` 0.1.26, checked against live calls.
 
 ## How access works
 - Install: `npm install --global @qloo/qloo-harness` (Node **22.19+**). Check `qloo --version` ≥ 0.1.26.
@@ -59,7 +58,7 @@ Full schemas: `docs/qloo-mcp-tools.json`. What changed our design:
 - `qloo_describe` takes `entity` + `type` (also `locality`, `album`, `actor`…), and ambiguity comes back as `needs_input` with candidates.
 - `qloo_rank` takes `options` (≤ 10) + `option_type` + the same signal fields. Scores from separate calls aren't comparable.
 - Envelope: `schema_version, operation, status, summary, interpretation, results, result_count, warnings, error{code,layer,retryable,recovery}, execution{transport,correlation_id,duration_ms}, provenance`.
-- The exact shape of each item in `results` is **not yet confirmed**. `server/src/qloo/normalize.ts` accepts several shapes (`id`/`entity_id`, top-level or `properties.release_year`, and so on). Fix it from `probe-out/` once the probe runs.
+- The shape of each item in `results` was confirmed against live output. `server/src/qloo/normalize.ts` still reads several shapes (`id`/`entity_id`, top-level or `properties.release_year`, and so on) defensively.
 
 ## Era films come from Insights, with a time budget
 
