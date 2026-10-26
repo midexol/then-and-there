@@ -72,14 +72,18 @@ export class McpTransport implements QlooTransport {
       const results = JSON.parse(stdout.slice(start)) as unknown[];
       return { status: results.length ? "ok" : "empty", operation: "insights", results, result_count: results.length };
     } catch (e) {
-      // Never echo stderr or the command line: they could contain request details. Report only a coarse reason.
-      const text = String((e as { stdout?: string }).stdout ?? "") + String((e as { message?: string }).message ?? "");
-      const auth = /401|unauthori[sz]ed|api[_ ]?key/i.test(text);
-      const limited = /429|too many requests|rate[_ -]?limit/i.test(text);
+      // Never echo the command line: it holds ids and a place. Look only at what the command itself printed, since
+      // the error's message repeats the whole command line and an id can contain "401" by chance.
+      const out = String((e as { stdout?: string }).stdout ?? "") + String((e as { stderr?: string }).stderr ?? "");
       // execFile kills the child when its time runs out. Report that as a timeout, so the client doesn't repeat a request
       // that was already too slow (each repeat is another full wait).
       const timedOut = (e as { killed?: boolean }).killed === true || (e as { code?: string }).code === "ETIMEDOUT";
+      const auth = !timedOut && /\b401\b|unauthori[sz]ed|api[_ ]?key/i.test(out);
+      const limited = !timedOut && /\b429\b|too many requests|rate[_ -]?limit/i.test(out);
       const code = auth ? "QLOO_AUTH" : limited ? "QLOO_RATE_LIMIT" : timedOut ? "insights_timeout" : "insights_failed";
+      // One short line of the command's own error, with anything key-shaped removed, so the server log says why.
+      const head = out.split("\n").map((l) => l.trim()).find(Boolean)?.replace(/[A-Za-z0-9_-]{24,}/g, "…").slice(0, 160);
+      console.warn(`qloo insights failed: ${code}${head ? ` — ${head}` : ""}`);
       return { status: "error", error: { code, retryable: !auth, recovery: auth ? "Qloo rejected the credentials." : limited ? "Rate limited (429)." : timedOut ? "Insights request timed out." : "Insights request failed." } };
     }
   }
