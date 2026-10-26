@@ -1,9 +1,10 @@
 # Devpost text: Then & There
 
-Paste each section into the matching Devpost field. The live link is filled in. Make the repo public before submitting.
+Paste each section into the matching Devpost field.
 
 - **Live app:** https://then-and-there-lime.vercel.app
 - **Code:** https://github.com/midexol/then-and-there (MIT)
+- **Demo video:** add the YouTube link here (70 seconds, `video/out/then-and-there-demo.mp4`)
 
 ---
 
@@ -17,7 +18,7 @@ Then & There helps a caregiver plan a 30-minute session for an older person: son
 
 ## The problem
 
-When you sit with an older relative or someone you care for, it is hard to find something to do together that feels like theirs. A generic playlist or a quiz doesn't know that your grandmother grew up in Mexico City in the 1950s, that your grandfather's Liverpool had the Beatles on the radio, or that the highlife she loved in Ibadan isn't on any "oldies" list. Caregivers all over the world are guessing.
+When you sit with an older relative or someone you care for, it is hard to find something to do together that feels like theirs. A generic playlist or a quiz doesn't know that your grandmother grew up in Mexico City in the 1940s, that your grandfather's Liverpool had the Beatles on the radio, or that the highlife she loved in Ibadan isn't on any "oldies" list. Caregivers all over the world are guessing.
 
 ## What it does
 
@@ -55,7 +56,7 @@ We built an evaluation (`scripts/evaluate.mjs`, re-runnable by anyone) with 12 i
 | Films inside the era window | 12 of 12 |
 | The caregiver's avoid topics and built-in hard topics | 0 hits |
 | Suggested questions that test memory or touch health | 0 of 96 |
-| Build time | 15 to 35 seconds on a good Qloo day |
+| Build time | about 20 to 40 seconds, under a second when cached |
 | **Items that fit the person's place and favourites, judged by hand** | **about 71%, against our own 85% bar** |
 
 The honest picture: Mexico City, Guadalajara, Ibadan and Lagos were 7 to 8 of 8 items, and Tokyo and Osaka reached 6. London, Mumbai, Chennai and Manila are weaker (3 to 4 of 8), because where Qloo's data for older audiences is thin it returns generic names: American singers, chain restaurants, modern DJs. The film slot is the weakest part overall. The by-hand judgement was made by the team's AI assistant from general knowledge, not by caregivers or local experts, so it is an estimate. We say all of this in the app's notes when a place has thin data, and in `docs/EVALUATION.md`.
@@ -64,7 +65,7 @@ The honest picture: Mexico City, Guadalajara, Ibadan and Lagos were 7 to 8 of 8 
 
 - **Qloo's location lookup is picky.** "Mumbai, India" matched nothing (and reported success) while "Mumbai" worked, so a session silently came back almost empty. The evaluation caught it; sessions now retry with the city on its own and say so.
 - **Films.** A location filter on films returned the same global classics for every country. Searching on the favourites alone fixed much of it.
-- **Speed and reliability.** Some Qloo calls were slow on some days. We cap the film search, never repeat a timed-out request, and show real progress while a session builds.
+- **Speed and reliability.** Some Qloo calls were slow on some days. The film search gets about a minute, a timed-out request is never repeated, the three example people are cached, and the build screen shows real progress.
 - **Everyone's world is different.** We lean songs and brands toward the nationality of the person's own favourites (read from Qloo's own descriptions, with no country list), push down what was already offered to people in other countries, and keep out acts that began after their years.
 
 ## What we're proud of
@@ -101,10 +102,15 @@ Take these from the deployed app with the example people (no real names or crede
 6. Review screen
 7. Privacy page ("What we share, and what we never do")
 
-## A 90-second demo
+## The demo video
 
-1. (10 s) "My grandmother grew up in Mexico City in the 1950s and loves Pedro Infante and tamales." Open the landing page, pick 1940s and Mexico City, tap **Plan a session like this**.
-2. (15 s) Show three favourites matching. Point out the one that asks "Which one did you mean?".
-3. (25 s) The build screen: real steps, then 8 items. Open **Why this?** on the film and show it says what it is: found by year, with Qloo as the source.
-4. (25 s) Start the session on a phone: one item, tap **Yes** on the song, **Not really** on a place.
-5. (15 s) Review: what sparked leads the next session. Then show the same flow for Liverpool and Ibadan: three continents in under two minutes.
+70 seconds, made with Remotion from real screenshots of the live app (`video/`). The scenes, in order:
+
+1. The hook: where do you even start?
+2. Three things she loved: 1940s, Mexico City, Pedro Infante, bolero, tamales.
+3. A real build from the live app, sped up.
+4. The plan: eight items, each from Qloo, with a reason and a question.
+5. The session, one item at a time, with **Yes**, **A little** and **Not really**.
+6. The review: what sparked shapes the next session.
+7. Mexico City, Liverpool and Ibadan side by side.
+8. Close: powered by Qloo, open source, an activity planner and not medical care.
