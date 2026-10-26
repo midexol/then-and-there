@@ -1,4 +1,4 @@
-# Then & There — PRD
+# Then & There: PRD
 
 Qloo Agentic Hackathon · deadline Oct 30, 2026, 11:45 PM EDT (4:45 AM Oct 31 Lagos) · submit Oct 29
 
@@ -27,7 +27,7 @@ The core step widens a few anchors into a cohort's cultural world: the artists, 
 
 ## Scope
 **MVP**
-1. Profile form: nickname (stored locally only), decade they grew up in, region/city, 3–8 anchors (music, food, films, places, work/hobby as tags)
+1. Profile form: nickname (stored locally only), decade they grew up in, region/city, 3 to 8 anchors (music, food, films, places, work/hobby as tags)
 2. Anchor resolution: `describe`/`find_tags`, with confirm chips for ambiguous matches
 3. Expansion: parallel `recommend` calls for artist, movie/tv_show, place and brand, using signals plus demographic plus location
 4. Session plan: the agent picks about 8 items in a 30-minute arc (warm-up song → place memory → food → film → closing song), each with one conversation prompt

@@ -1,4 +1,4 @@
-# Then & There — brand
+# Then & There: brand
 
 - **Name:** Then & There (always with "&"). The wordmark is lowercase "then & there" in Young Serif.
 - **Tagline:** Bring back the world they grew up in.

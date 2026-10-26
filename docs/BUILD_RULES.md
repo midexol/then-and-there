@@ -1,6 +1,6 @@
-# Then & There — build rules from the development blueprint
+# Then & There: build rules from the development blueprint
 
-The full blueprint lives in Claude Docs ("Then & There — Full Development Blueprint"). These are the parts that change code. They override older wording in PRD.md where the two differ.
+The full blueprint lives in Claude Docs ("Then & There: Full Development Blueprint"). These are the parts that change code. They override older wording in PRD.md where the two differ.
 
 ## Evidence-driven rules
 - **Era window:** ask for the birth decade. Window = decade midpoint + 10 to + 30 years, weighted toward + 14 (the musical reminiscence bump peaks around age 14). Every item with a known `release_year` must fall inside the window; places and foods may have no year.

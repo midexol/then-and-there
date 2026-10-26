@@ -1,4 +1,4 @@
-# Then & There — Frontend spec
+# Then & There: Frontend spec
 
 The frontend is half the score ("Design: a complete, coherent product experience"). This file is the source of truth for how Then & There looks, reads and behaves. If code and this file disagree, this file wins until it is updated on purpose.
 
@@ -59,7 +59,7 @@ The direction **avoids** the warm-cream-plus-terracotta "AI default", dashboard 
 Sentence case everywhere, with no all-caps labels. Keep line length under 70 characters.
 
 ### The resist-dye motif
-One SVG pattern component, `<IndigoBand />`: a horizontal strip of resist circles and dots, generated in code (not an image), 24–32px tall, drawn in `--indigo` at 12–18% opacity on light surfaces. Use it in **exactly three places**: the top of Home, the header of a printed session card, and the edges of the Session stage. Nowhere else.
+One SVG pattern component, `<IndigoBand />`: a horizontal strip of resist circles and dots, generated in code (not an image), 24 to 32px tall, drawn in `--indigo` at 12 to 18% opacity on light surfaces. Use it in **exactly three places**: the top of Home, the header of a printed session card, and the edges of the Session stage. Nowhere else.
 
 ### Shape and spacing
 - An 8px spacing grid. Mobile gutters are 20px.
@@ -85,7 +85,7 @@ Who are we spending time with today?
 
 ### 3.2 Profile builder (a real sequence, so numbered steps are allowed)
 Three short steps, one question per screen, with a progress bar of three segments.
-1. **"What should we call them?"** A nickname, with a helper line: *"Stays on this device. Never sent anywhere."* Then **"Roughly when were they born?"** as chips from the 1920s to the 1970s, with a helper line: *"We use this to find things from their teenage and young-adult years."* After the build, show the computed window back: *"Looking for things from about 1962–1975."*
+1. **"What should we call them?"** A nickname, with a helper line: *"Stays on this device. Never sent anywhere."* Then **"Roughly when were they born?"** as chips from the 1920s to the 1970s, with a helper line: *"We use this to find things from their teenage and young-adult years."* After the build, show the computed window back: *"Looking for things from about 1962 to 1975."*
 2. **"Where did they grow up?"** A city or region anywhere in the world, with suggestions (resolved through Qloo's locality search). Helper line: *"Where they grew up, not where they live now. A grandmother from Manila who lives in London grew up in Manila."* An optional second field, **"Where do they live now?"**, adds local places they might visit.
 3. **"What did they love?"** A chip input grouped by kind: Music, Food, Films and TV, Places, Work and hobbies. Each typed anchor resolves live:
    - ✓ **Matched**: indigo chip with a check. Hover or long-press shows what Qloo matched it to ("Pedro Infante · actor and singer").
@@ -102,13 +102,13 @@ Looking for films from their era…                         ✓
 Places around Mexico City…                                ●
 Putting the session in order…
 ```
-Each line appears as its event arrives. No fake progress, no percentages. Typical length is 20–50s. If it takes longer than 60s, add: *"Still working. Qloo is taking longer than usual."*
+Each line appears as its event arrives. No fake progress, no percentages. Typical length is 20 to 50s. If it takes longer than 60s, add: *"Still working. Qloo is taking longer than usual."*
 
 ### 3.4 Session plan (the main caregiver screen)
 ```
 Grandma Rosa · 30-minute session             [Start session]  [Print card]
 
-1  Warm-up song      Amorcito corazón — Pedro Infante
+1  Warm-up song      Amorcito corazón, Pedro Infante
                      Why: often loved by people 55+ who love bolero
                      Ask: "Where were you when you first heard this?"
                      ▶ Listen on YouTube           Swap ⟳
@@ -139,7 +139,7 @@ Full-screen, `--indigo-deep` background, indigo band on the edges, one item at a
 │        [ ▶ Play on YouTube ]                 │
 │                                              │
 │  Did this spark something?                   │
-│  [  😊 Yes  ]   [  🙂 A little  ]   [  — Not really  ]   │  ← 72px buttons
+│  [  😊 Yes  ]   [  🙂 A little  ]   [  Not really  ]   │  ← 72px buttons
 │                                              │
 │  ‹ Back                 3 of 8       Next ›  │
 └──────────────────────────────────────────────┘

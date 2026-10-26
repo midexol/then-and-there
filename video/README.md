@@ -13,14 +13,14 @@ Each line is timed to the second the scene starts. The "length" column is how lo
 
 | # | On screen | Length | Voiceover |
 |---|---|---|---|
-| 1 | 0:00.5 – 0:06.5 | 5.3 s | You want a really good half hour with someone you love. But where do you even start? |
-| 2 | 0:06.5 – 0:13.5 | 6.3 s | Meet Then and There. Tell it roughly when she was born, where she grew up, and three things she loved. |
-| 3 | 0:13.5 – 0:21.9 | 7.7 s | Qloo does the digging. Songs, places, tastes and films from her teenage years in Mexico City, in under a minute. |
-| 4 | 0:21.9 – 0:31.6 | 9.0 s | Thirty minutes, eight items, in a gentle order. Every single one comes from Qloo, with a reason why, and a question to start the conversation. |
-| 5 | 0:31.6 – 0:42.7 | 10.4 s | Then you just sit together. One item at a time, full screen, at her pace. Did that spark something? Tap yes, a little, or not really. |
-| 6 | 0:42.7 – 0:51.6 | 8.2 s | Afterwards, what sparked shapes what comes next. Pedro Infante lit her up? Next time, we lean right in. |
-| 7 | 0:51.6 – 1:00.8 | 8.5 s | And it works anywhere. Mexico City. Liverpool. Ibadan. Wherever they grew up. |
-| 8 | 1:00.8 – 1:08.9 | 7.4 s | Then and There. Bring back the world they grew up in. Powered by Qloo. Try it now. |
+| 1 | 0:00.5 to 0:06.5 | 5.3 s | You want a really good half hour with someone you love. But where do you even start? |
+| 2 | 0:06.5 to 0:13.5 | 6.3 s | Meet Then and There. Tell it roughly when she was born, where she grew up, and three things she loved. |
+| 3 | 0:13.5 to 0:21.9 | 7.7 s | Qloo does the digging. Songs, places, tastes and films from her teenage years in Mexico City, in under a minute. |
+| 4 | 0:21.9 to 0:31.6 | 9.0 s | Thirty minutes, eight items, in a gentle order. Every single one comes from Qloo, with a reason why, and a question to start the conversation. |
+| 5 | 0:31.6 to 0:42.7 | 10.4 s | Then you just sit together. One item at a time, full screen, at her pace. Did that spark something? Tap yes, a little, or not really. |
+| 6 | 0:42.7 to 0:51.6 | 8.2 s | Afterwards, what sparked shapes what comes next. Pedro Infante lit her up? Next time, we lean right in. |
+| 7 | 0:51.6 to 1:00.8 | 8.5 s | And it works anywhere. Mexico City. Liverpool. Ibadan. Wherever they grew up. |
+| 8 | 1:00.8 to 1:08.9 | 7.4 s | Then and There. Bring back the world they grew up in. Powered by Qloo. Try it now. |
 
 ## Rebuild it
 

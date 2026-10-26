@@ -1,4 +1,4 @@
-# Then & There — API contract (web ⇄ server)
+# Then & There: API contract (web ⇄ server)
 
 The web app only talks to our server. The server only sends Qloo **cultural anchors, an age group and a region**. It never sends names, nicknames, birth dates or health information.
 

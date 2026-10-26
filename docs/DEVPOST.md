@@ -41,11 +41,11 @@ A small agent on a Node server (Fastify) talks to Qloo through the official `@ql
 
 The era window is the birth decade's midpoint plus 10 to 30 years, weighted toward the age where the musical "reminiscence bump" peaks. Someone born in the 1940s gets 1955 to 1975.
 
-**Provenance is enforced in code, not promised.** Every item carries where it came from, and `assertQlooOnly` drops any item whose id never appeared in a Qloo response. An optional language model may write the suggested questions, but it can only phrase items Qloo returned. Without one, built-in questions are used, and a safety check rejects anything that tests memory or touches health.
+Every item carries where it came from, and `assertQlooOnly` drops any item whose id never appeared in a Qloo response. An optional language model may write the suggested questions, but it can only phrase items Qloo returned. Without one, built-in questions are used, and a safety check rejects anything that tests memory or touches health.
 
-**Privacy by construction.** The name, birth date, notes and the topics a caregiver wants to avoid never leave the device or reach Qloo. Qloo sees favourites, an age group and a region. Profiles live in the browser's local storage.
+The name, birth date, notes and the topics a caregiver wants to avoid never leave the device or reach Qloo. Qloo sees favourites, an age group and a region. Profiles live in the browser's local storage.
 
-## Does it work? We measured it, and it falls short of our own bar
+## Does it work? We measured it
 
 We built an evaluation (`scripts/evaluate.mjs`, re-runnable by anyone) with 12 invented people: two each from Mexico, the UK, Nigeria, India, the Philippines and Japan, born between the 1930s and 1960s. We ran it against live Qloo three times, fixing what each run showed.
 
@@ -57,21 +57,21 @@ We built an evaluation (`scripts/evaluate.mjs`, re-runnable by anyone) with 12 i
 | The caregiver's avoid topics and built-in hard topics | 0 hits |
 | Suggested questions that test memory or touch health | 0 of 96 |
 | Build time | about 20 to 40 seconds, under a second when cached |
-| **Items that fit the person's place and favourites, judged by hand** | **about 71%, against our own 85% bar** |
+| Items that fit the person's place and favourites, judged by hand | about 71%, against our own 85% bar |
 
-The honest picture: Mexico City, Guadalajara, Ibadan and Lagos were 7 to 8 of 8 items, and Tokyo and Osaka reached 6. London, Mumbai, Chennai and Manila are weaker (3 to 4 of 8), because where Qloo's data for older audiences is thin it returns generic names: American singers, chain restaurants, modern DJs. The film slot is the weakest part overall. The by-hand judgement was made by the team's AI assistant from general knowledge, not by caregivers or local experts, so it is an estimate. We say all of this in the app's notes when a place has thin data, and in `docs/EVALUATION.md`.
+Mexico City, Guadalajara, Ibadan and Lagos were 7 to 8 of 8 items, and Tokyo and Osaka reached 6. London, Mumbai, Chennai and Manila are weaker (3 to 4 of 8), because where Qloo's data for older audiences is thin it returns generic names: American singers, chain restaurants, modern DJs. The film slot is the weakest part overall. The by-hand judgement was made by the team's AI assistant from general knowledge, not by caregivers or local experts, so it is an estimate. The app says so in its notes when a place has thin data, and `docs/EVALUATION.md` has the details.
 
 ## Challenges
 
-- **Qloo's location lookup is picky.** "Mumbai, India" matched nothing (and reported success) while "Mumbai" worked, so a session silently came back almost empty. The evaluation caught it; sessions now retry with the city on its own and say so.
-- **Films.** A location filter on films returned the same global classics for every country. Searching on the favourites alone fixed much of it.
-- **Speed and reliability.** Some Qloo calls were slow on some days. The film search gets about a minute, a timed-out request is never repeated, the three example people are cached, and the build screen shows real progress.
-- **Everyone's world is different.** We lean songs and brands toward the nationality of the person's own favourites (read from Qloo's own descriptions, with no country list), push down what was already offered to people in other countries, and keep out acts that began after their years.
+- Qloo's location lookup is picky. "Mumbai, India" matched nothing (and reported success) while "Mumbai" worked, so a session silently came back almost empty. The evaluation caught it; sessions now retry with the city on its own and say so.
+- Films: a location filter on films returned the same global classics for every country. Searching on the favourites alone fixed much of it.
+- Speed and reliability: some Qloo calls were slow on some days. The film search gets about a minute, a timed-out request is never repeated, the three example people are cached, and the build screen shows real progress.
+- Everyone's world is different: we lean songs and brands toward the nationality of the person's own favourites (read from Qloo's own descriptions, with no country list), push down what was already offered to people in other countries, and keep out acts that began after their years.
 
 ## What we're proud of
 
 - A reproducible evaluation that found real bugs, and the willingness to publish a result below our own bar.
-- Provenance and privacy that are enforced by tests, not by good intentions.
+- Provenance and privacy rules that tests enforce.
 - A session screen designed for a person sitting beside someone: big type, one thing at a time, an always-available **End session**, and nothing that quizzes.
 
 ## What's next

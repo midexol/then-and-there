@@ -1,4 +1,4 @@
-# Then & There — agent brief
+# Then & There: agent brief
 
 Then & There helps caregivers anywhere in the world plan reminiscence sessions for older adults. From a few cultural anchors, a Qloo-powered agent builds a 30-minute session of songs, places, foods and films likely to feel familiar, then adapts after each session.
 Entry for the **Qloo Agentic Hackathon** (Devpost). Deadline: Oct 30, 11:45 PM EDT (4:45 AM Oct 31 Lagos). **Submit Oct 29.**
@@ -49,7 +49,7 @@ NEXT_PUBLIC_API_URL=
 ```
 
 ## Status (Oct 13)
-Steps 2–6 are built and pass in mock mode (11 server tests, plus a Playwright run of every screen). Next: run the probe with the real key, fix `normalize.ts` from `probe-out/`, run the 12-person evaluation, then deploy.
+Steps 2 to 6 are built and pass in mock mode (11 server tests, plus a Playwright run of every screen). Next: run the probe with the real key, fix `normalize.ts` from `probe-out/`, run the 12-person evaluation, then deploy.
 
 ## Build order
 1. `bash scripts/probe.sh` → review `probe-out/` → note anything surprising in `docs/PROBE_NOTES.md`
