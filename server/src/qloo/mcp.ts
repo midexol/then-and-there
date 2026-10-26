@@ -16,6 +16,9 @@ function harnessBin() {
   return path.join(path.dirname(entry), "bin.js");
 }
 
+/** Insights answered in under 25 seconds in testing and took longer than that on busy days, so it gets about a minute. */
+export const INSIGHTS_TIMEOUT_MS = 55_000;
+
 /** The command prints "Using signal: …" lines, then the JSON array. No array means no results; a cut-off array throws. */
 export function parseInsightsOutput(stdout: string): unknown[] {
   const start = stdout.indexOf("[");
@@ -71,7 +74,7 @@ export class McpTransport implements QlooTransport {
     if (Object.keys(params).length) args.push("--params", JSON.stringify(params));
     const env: NodeJS.ProcessEnv = { ...process.env, QLOO_API_KEY: this.apiKey };
     try {
-      const { stdout } = await execFileAsync(process.execPath, args, { env, timeout: 25_000, maxBuffer: 8 * 1024 * 1024, windowsHide: true });
+      const { stdout } = await execFileAsync(process.execPath, args, { env, timeout: INSIGHTS_TIMEOUT_MS, maxBuffer: 8 * 1024 * 1024, windowsHide: true });
       const results = parseInsightsOutput(stdout);
       if (!results.length && !stdout.includes("[")) return { status: "empty", operation: "insights", results: [] };
       return { status: results.length ? "ok" : "empty", operation: "insights", results, result_count: results.length };

@@ -218,9 +218,9 @@ export function assertQlooOnly(items: SessionItem[], seenIds: Set<string>): Sess
   return items.filter((i) => i.provenance.source === "qloo" && seenIds.has(i.provenance.qlooId));
 }
 
-export const FILM_BUDGET_MS = 30_000;
-/** One more try when the first film search found nothing in time (usually a cold Qloo). Kept short so a build can't stall. */
-export const FILM_RETRY_MS = 20_000;
+export const FILM_BUDGET_MS = 60_000;
+/** A second film search after a slow first one. Off: Insights was timing out at 25 s and fails the same way again, so the wait goes into the first try. */
+export const FILM_RETRY_MS = 0;
 
 /**
  * Films from inside the era window. The MCP recommend tool can't filter by release year, and for a 55+ audience it
@@ -232,13 +232,13 @@ export const FILM_RETRY_MS = 20_000;
  * A location *filter* on films is deliberately not used: tested, it returned the same global classics (The Godfather,
  * Star Wars) for every country. Their own favourites come first. Live mode only; the mock transport has in-era films.
  */
-export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void, retryMs = 0): Promise<QEntity[]> {
+export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void, retryMs = 0, callTimeoutMs?: number): Promise<QEntity[]> {
   const base = { type: "movie", signals: ctx.signalIds, year_min: ctx.era.from, year_max: ctx.era.to, take: 15 };
   let slow = false;
   const run = async (extra: Record<string, unknown>) => {
     try {
       // A search that times out is not repeated (a retry costs another full wait). A rate limit still is, after its pause.
-      return okEntities(await qloo.call("qloo_insights", { ...base, ...extra }, { retryOnTimeout: false }));
+      return okEntities(await qloo.call("qloo_insights", { ...base, ...extra }, { retryOnTimeout: false, timeoutMs: callTimeoutMs }));
     } catch (e) {
       if (e instanceof QlooError && e.timedOut) slow = true;
       // Only the kind of failure is logged, never the region or favourites, so Render's logs say why films went missing.
@@ -396,7 +396,7 @@ export async function buildSession(
   let rejected = 0; // calls Qloo refused outright (not retryable): typically a place it can't match
   let placesTooBig = false; // the region is a whole country: Qloo timed out filtering places by it
   let filmsSlow = false; // the era-film search timed out or ran out of its budget
-  const classics = qloo.mode === "live" ? classicFilms(qloo, ctx, FILM_BUDGET_MS, () => (filmsSlow = true), FILM_RETRY_MS) : Promise.resolve([] as QEntity[]);
+  const classics = qloo.mode === "live" ? classicFilms(qloo, ctx, FILM_BUDGET_MS, () => (filmsSlow = true), FILM_RETRY_MS, FILM_BUDGET_MS - 2_000) : Promise.resolve([] as QEntity[]);
   const raw = await Promise.all(
     jobs.map(async (j) => {
       try {
