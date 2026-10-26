@@ -1,6 +1,5 @@
 "use client";
 // Keepsakes: one physical-feeling object per kind of item, drawn in code (no images, no real logos).
-// They keep their own paper/ink colours in dark mode, like real objects would.
 import type { CSSProperties, ReactNode } from "react";
 import type { ItemKind, SessionItem } from "@/lib/types";
 

@@ -1,7 +1,4 @@
-// Where does an artist or a brand come from, and does it belong to the listener's world? Answered from Qloo's own
-// description of the thing, so no country or nationality is hard-coded: the listener's own favourites teach us what
-// "theirs" looks like (their descriptions say "Mexican singer", "Japanese singer", ...), and the region adds its own names.
-// These are soft signals that nudge a ranking. They never drop an item on their own, except `emergedAfter`.
+// Where does an artist or a brand come from, and does it belong to the listener's world?
 import { fold } from "./safety.js";
 import type { EraWindow } from "../types.js";
 
@@ -67,10 +64,7 @@ export function belongs(text: string | undefined, hints: LocalHints): 1 | 0 | -1
   return demonym || basedIn ? -1 : 0;
 }
 
-/**
- * An artist that began after the era window closed can't be part of what they grew up with: "formed in 2019", or "born"
- * within a decade of the window's end. Only artists are tested; a brand can be a taste from home without being old.
- */
+/** An artist that began after the era window closed can't be part of what they grew up with: "formed in 2019", or "born" within a decade of the window's end. */
 export function emergedAfter(text: string | undefined, era: EraWindow): boolean {
   if (!text) return false;
   const m = /\b(formed|founded|established|born|debuted|launched|started|since)\b[^.]{0,90}?\b((?:19|20)\d{2})\b/i.exec(text);

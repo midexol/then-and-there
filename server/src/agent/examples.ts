@@ -4,10 +4,7 @@ import { resolveAnchor } from "./resolve.js";
 import { buildSession } from "./session.js";
 import type { AnchorKind, ProfileInput, Session } from "../types.js";
 
-/**
- * The example people on the web's home screen (web/lib/store.ts), without their nicknames: a nickname never reaches
- * the server. Keep the decade, region and anchors identical to the web's list, or the saved answers won't match.
- */
+/** The example people on the web's home screen (web/lib/store.ts), without their nicknames: a nickname never reaches the server. */
 export const EXAMPLE_PROFILES: { birthDecade: ProfileInput["birthDecade"]; region: string; anchors: [string, AnchorKind][] }[] = [
   { birthDecade: "1940s", region: "Mexico City, Mexico", anchors: [["Pedro Infante", "music"], ["bolero", "music"], ["tamales", "food"]] },
   { birthDecade: "1940s", region: "Liverpool, UK", anchors: [["The Beatles", "music"], ["Cilla Black", "music"], ["tea", "food"]] },
@@ -28,10 +25,7 @@ export async function exampleInput(qloo: QlooClient, ex: (typeof EXAMPLE_PROFILE
 
 export const hasFilm = (s: Session) => s.items.some((i) => i.kind === "film");
 
-/**
- * Builds an example session up to `tries` times until it has a film, so every answer it needs is cached. Uses its own
- * "recently served" record so these builds don't change what real visitors are offered. Returns whether it got a film.
- */
+/** Builds an example session up to `tries` times until it has a film, so every answer it needs is cached. */
 export async function buildExample(qloo: QlooClient, ex: (typeof EXAMPLE_PROFILES)[number], tries = 3): Promise<boolean> {
   for (let i = 0; i < tries; i++) {
     try {

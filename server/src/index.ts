@@ -19,21 +19,16 @@ const app = buildApp({ qloo, llm, allowedOrigin: process.env.ALLOWED_ORIGIN ?? "
 const port = Number(process.env.PORT ?? 8787);
 app.listen({ port, host: "0.0.0.0" }).then(() => {
   app.log.info(`Then & There API on :${port} · Qloo ${transport.mode} · LLM ${llm ? llm.model : "templates"}`);
-  // The first live call starts the `qloo mcp` harness, which can take close to a minute on a slow host. Do it now,
-  // in the background, so the first caregiver's lookup isn't the one that waits. Never blocks startup or crashes it.
+  // The first live call starts the `qloo mcp` harness, which can take close to a minute on a slow host.
   if (transport.mode === "live") {
-    // Building the examples ahead costs about forty Qloo calls on every start and competes with real visitors for the two
-  // call slots, so it is opt-in. `npm run seed-cache` is the normal way to have the examples ready.
+    // Building the examples ahead costs about forty Qloo calls on every start and competes with real visitors for the two call slots, so it is opt-in.
   void warmUp().then(async () => {
     if (process.env.PREWARM_EXAMPLES === "1") await prewarmExamples(qloo, (m) => app.log.info(m));
   });
   }
 });
 
-/**
- * A cold harness can take about a minute to answer its first call, longer than a normal call is allowed, so the warm-up
- * gets two minutes per try and up to three tries, ten seconds apart. Failing every try only means the first request pays.
- */
+/** A cold harness can take about a minute to answer its first call, longer than a normal call is allowed, so the warm-up gets two minutes per try and up to three tries, ten seconds apart. */
 async function warmUp() {
   const t0 = Date.now();
   for (let attempt = 1; attempt <= 3; attempt++) {

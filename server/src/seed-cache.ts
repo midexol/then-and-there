@@ -1,8 +1,4 @@
-/**
- * Refreshes data/demo-cache.json from live Qloo: `QLOO_API_KEY=... npm run seed-cache`. Builds each example person
- * until it has a film, then saves every useful Qloo answer from those builds. Commit the file. It writes nothing if
- * any example comes back without films, so a bad day at Qloo can't be saved as the demo.
- */
+/** Refreshes data/demo-cache.json from live Qloo (needs QLOO_API_KEY in the shell). */
 import { QlooClient } from "./qloo/client.js";
 import { McpTransport } from "./qloo/mcp.js";
 import { writeSeed, SEED_PATH } from "./qloo/seed.js";

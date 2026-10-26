@@ -10,8 +10,7 @@ const DESCRIBE_TYPE: Partial<Record<AnchorKind, string[]>> = {
   place: ["place", "locality"],
 };
 
-// find_tags returns many tags with the same name ("Amala" as a cuisine, a popular food item, ...), so prefer the
-// most useful tag type for what was typed. Qloo tag ids look like urn:tag:<type>:<scope>:<slug>.
+// find_tags returns many tags with the same name ("Amala" as a cuisine, a popular food item, ...), so prefer the most useful tag type for what was typed.
 const TAG_PREFERENCE: Partial<Record<AnchorKind, string[]>> = {
   music: ["genre:music", "genre:qloo", "genre", "subgenre", "style", "influence"],
   food: ["popular_food_item", "cuisine", "specialty_dish", "product_category"],
@@ -27,11 +26,7 @@ function toCandidate(e: QEntity): Candidate {
   return { qlooId: e.id, name: e.name, type: readableType(e.type), subtitle: clip(bits.join(" · "), 90) || undefined };
 }
 
-/**
- * The best tag for what was typed: an exact name match, most useful type first. Without an exact match, accept a
- * tag whose name contains (or is contained in) the text. Never the first result by default: "amala" used to
- * match "Mala".
- */
+/** The best tag for what was typed: an exact name match, most useful type first. */
 export function pickTag(tags: { id: string; name: string }[], text: string, prefer: string[] = []): { id: string; name: string } | null {
   const want = fold(text.trim());
   if (!want) return null;

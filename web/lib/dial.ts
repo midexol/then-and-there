@@ -1,5 +1,4 @@
-// Illustrative examples for the landing-page time dial only. Real sessions come from Qloo.
-// Artists and films change with the decade; places and tastes are rotated from a small set.
+// Illustrative examples for the landing-page time dial only.
 import type { KeepsakeData } from "@/components/keepsakes";
 import type { BirthDecade } from "./types";
 

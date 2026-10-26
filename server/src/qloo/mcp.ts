@@ -1,5 +1,4 @@
 // Live transport: spawns `qloo mcp` (from @qloo/qloo-harness) and talks MCP over stdio.
-// The key is passed only through the child's environment. It never appears in args or logs.
 import { execFile } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -79,11 +78,9 @@ export class McpTransport implements QlooTransport {
       if (!results.length && !stdout.includes("[")) return { status: "empty", operation: "insights", results: [] };
       return { status: results.length ? "ok" : "empty", operation: "insights", results, result_count: results.length };
     } catch (e) {
-      // Never echo the command line: it holds ids and a place. Look only at what the command itself printed, since
-      // the error's message repeats the whole command line and an id can contain "401" by chance.
+      // Never echo the command line: it holds ids and a place.
       const out = String((e as { stdout?: string }).stdout ?? "") + String((e as { stderr?: string }).stderr ?? "");
-      // execFile kills the child when its time runs out. Report that as a timeout, so the client doesn't repeat a request
-      // that was already too slow (each repeat is another full wait).
+      // execFile kills the child when its time runs out.
       const timedOut = (e as { killed?: boolean }).killed === true || (e as { code?: string }).code === "ETIMEDOUT";
       // The command can print every result and still be killed before it exits. A complete list is a good answer.
       if (timedOut) {

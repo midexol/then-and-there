@@ -95,8 +95,7 @@ export const copy = {
     add: "Add",
     resolving: "Looking it up…",
     choose: "Which one did you mean?",
-    // Qloo's concept search (genres, foods) works on English names, so a favourite typed in another script is
-    // likely to miss even when the thing is well known. Say so, rather than leaving the caregiver guessing.
+    // Qloo's concept search (genres, foods) works on English names, so a favourite typed in another script is likely to miss even when the thing is well known.
     notFound: (t: string) =>
       `Qloo doesn't know “${t}”.${/\p{L}/u.test(t.replace(/\p{Script=Latin}/gu, "")) ? " Its search works best with English names, so try the English name for this one." : ""} It's kept as a note for you.`,
     lookupFailed: "Couldn't look this up. Tap to try again.",

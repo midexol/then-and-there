@@ -1,8 +1,4 @@
-// Things that turn up for everyone aren't specific to anyone. Qloo's audience data is thin for some places, so the same
-// globally famous names (a film, a snack brand, an American singer) come back for people in very different countries.
-// This remembers, in memory only, which countries each Qloo item was recently offered for, and lets the ranking move an
-// item down a little for every *other* country it has already been offered to. Places are exempt: they are local by nature.
-// It is a nudge, not a ban: if an item is the only good option, it still gets picked.
+// Things that turn up for everyone aren't specific to anyone.
 import { fold } from "./safety.js";
 
 /** "Mumbai, India" → "india". With no comma, the whole region. */

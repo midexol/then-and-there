@@ -1,5 +1,4 @@
-// The one door to Qloo. Every Qloo call in the app goes through `QlooClient.call`.
-// Real mode talks to `qloo mcp` over stdio; mock mode answers from fixtures.
+// The one door to Qloo.
 
 export type QlooStatus = "ok" | "empty" | "needs_input" | "partial" | "degraded" | "error";
 
@@ -25,8 +24,7 @@ export type QlooTool =
   | "qloo_find_tags"
   | "qloo_where_popular"
   | "qloo_entity_tags"
-  // Raw Insights through the harness's `qloo insights` command. Only this path can filter by release year,
-  // which the MCP recommend tool can't. Live mode only: the mock transport answers "empty".
+  // Raw Insights through the harness's `qloo insights` command.
   | "qloo_insights";
 
 export interface QlooTransport {
@@ -111,10 +109,7 @@ export class QlooClient {
     return Object.fromEntries(this.cache.entries());
   }
 
-  /**
-   * Live Qloo answers 429 when a session fires a burst of calls (4 recommends, 2 insights, then 4 ranks).
-   * Cap concurrency and space out request starts. Mock mode is unthrottled.
-   */
+  /** Live Qloo answers 429 when a session fires a burst of calls (4 recommends, 2 insights, then 4 ranks). */
   private async throttled<T>(fn: () => Promise<T>): Promise<T> {
     const live = this.transport.mode === "live";
     const max = this.opts.maxConcurrent ?? (live ? 2 : Infinity);
@@ -157,9 +152,7 @@ export class QlooClient {
         return env;
       }
       last = env;
-      // A timeout often means the request itself is too heavy (e.g. a whole-country place filter), and repeating it
-      // multiplies the wait. So: one retry at most (a cold harness can be slow on its first call), none if the caller
-      // knows the request is heavy.
+      // A timeout often means the request itself is too heavy, so it is not retried.
       if (/timeout/i.test(env.error?.code ?? "")) {
         timedOut = true;
         if (callOpts.retryOnTimeout === false || timeoutRetried) break;

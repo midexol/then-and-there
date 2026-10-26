@@ -1,9 +1,6 @@
 import type { BirthDecade, EraWindow } from "../types.js";
 
-/**
- * Era window from the birth decade: midpoint + 10 to midpoint + 30, peak at midpoint + 14
- * (the musical reminiscence bump peaks around age 14).
- */
+/** Era window from the birth decade: midpoint + 10 to midpoint + 30, peak at midpoint + 14 (the musical reminiscence bump peaks around age 14). */
 export function eraWindow(decade: BirthDecade): EraWindow {
   const start = parseInt(decade.slice(0, 4), 10);
   const mid = start + 5;

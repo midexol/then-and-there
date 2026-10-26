@@ -24,13 +24,10 @@ export function matchesAny(text: string, topics: string[]): boolean {
   return topics.some((t) => hits(text, t));
 }
 
-// Qloo's own genre labels. Plot-theme tags catch most unsuitable films, but a film with thin tags would slip
-// through, so the genre is checked too. This only ever removes films, never adds them.
+// Qloo's own genre labels.
 const UNSAFE_GENRES = /^(horror|war|crime|thriller)$/i;
 
-// Qloo tags nearly every film with its plot themes, so words like "death" and "war" appear on gentle comedies and
-// family films too (The Jungle Book, a Cantinflas comedy). These few are "soft": they only block a film that isn't
-// plainly gentle. Everything else in BUILT_IN_AVOID stays hard, and so does anything the caregiver listed.
+// Qloo tags nearly every film with its plot themes, so words like "death" and "war" appear on gentle comedies and family films too (The Jungle Book, a Cantinflas comedy).
 const SOFT_TOPICS = ["death", "dying", "war", "wars", "battle"];
 const HARD_TOPICS = BUILT_IN_AVOID.filter((t) => !SOFT_TOPICS.includes(t));
 const GENTLE_GENRES = /^(comedy|family|animation|musical|romance)$/i;

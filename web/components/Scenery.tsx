@@ -1,5 +1,4 @@
-// Original illustrated scenery for the landing page: a sunrise over landmarks from several regions, drawn in the
-// brand's indigo and gold. Fixed colours on purpose: the hero and footer are dark in light and dark themes alike.
+// Original illustrated scenery for the landing page: a sunrise over landmarks from several regions, drawn in the brand's indigo and gold.
 
 /** Silhouettes along a baseline at y=430 in a 1440-wide scene. Fill and stroke are set by the caller. */
 export function Landmarks({ fill }: { fill: string }) {

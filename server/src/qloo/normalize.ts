@@ -1,6 +1,4 @@
 // Turns Qloo envelope `results` into a flat entity list.
-// The per-item shape is not yet confirmed by a live probe, so this accepts the shapes
-// the harness and Insights API are known to use. Tighten it once probe-out/ is in.
 import type { QlooEnvelope } from "./client.js";
 
 export type QEntity = {

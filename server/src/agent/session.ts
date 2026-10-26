@@ -1,5 +1,4 @@
 // The session agent: era window → expand → filter → rank → compose → questions.
-// Every item in a session is built from an entity that Qloo returned; `assertQlooOnly` enforces it.
 import { randomUUID } from "node:crypto";
 import { QlooError, type QlooClient, type QlooEnvelope } from "../qloo/client.js";
 import { clip, entities, type QEntity } from "../qloo/normalize.js";
@@ -97,22 +96,16 @@ function whyFor(e: QEntity, target: QlooTarget, ctx: BuildContext, warmUp: boole
 
 const targetOfTaste = (e: QEntity): QlooTarget => (e.type?.includes("place") ? "place" : "brand");
 
-// A taste slot should be something you can eat or drink. Qloo's brand and place results carry no tags, only a
-// description, so classify on name + description. Alcohol isn't excluded (beer is part of real food culture) but
-// goes last, so it only appears when nothing else is available.
+// A taste slot should be something you can eat or drink.
 const FOOD_BRAND =
   /\b(food|foods|drink|drinks|beverages?|snacks?|candy|candies|sweets?|chocolates?|breads?|bakery|bakeries|biscuits?|cookies?|cakes?|pastr(?:y|ies)|sauces?|seasonings?|spices?|condiments?|soda|soft drinks?|juices?|coffee|tea|milk|dairy|cheese|yogh?urt|ice cream|cereals?|noodles?|rice|flour|crisps|chips|confection\w*|brewer\w*|brewing|malt|jam|honey|tortillas?|salsa|chili|chilli|tequila|beer|wine|liquor|spirits|whisk(?:e)?y|rum|vodka|grocery|supermarket|tacos?|pizza|burgers?)\b/i;
-// A place counts as somewhere to eat only if that is what it IS: checked against the name and the start of the
-// description, not anywhere in it. "Warehouse-style event space with eclectic food" and "estate with picnic areas"
-// are not food places. All text is accent-folded first, so "Café" and "Caffè" match.
+// A place counts as somewhere to eat only if that is what it IS: checked against the name and the start of the description, not anywhere in it.
 const FOOD_LEAD =
   /\b(restaurants?|cafes?|caffe|cafeteria|eatery|bakery|bakeries|patisserie|diner|tearoom|tea ?house|tea room|chip shop|canteen|taqueria|pizz(?:a|eria)|ice cream|coffee shop|bistro|brasserie|grill|buka|kitchen|street food|chocolate shop|juice bar|food court|gelato|sweet shop|confectioner\w*)\b/i;
 const ALCOHOL = /\b(beers?|lager|wine|tequila|whisk(?:e)?y|vodka|rum|liquor|spirits|brandy|gin|breweries|brewery|brewing|cider|alcohol\w*|cantina|pub)\b/i;
 const textOf = (e: QEntity) => fold([e.name, e.description ?? "", ...e.tags].join(" | "));
 
-// A reminiscence place is somewhere you'd have gone: a plaza, museum, market, park, theatre. Hotels and nightlife
-// sink to the bottom rather than being dropped, so a thin result still fills the slot. Only the name and the start
-// of the description are checked, so a museum that mentions a hotel nearby isn't demoted.
+// A reminiscence place is somewhere you'd have gone: a plaza, museum, market, park, theatre.
 const LODGING = /\b(hotels?|hostels?|motels?|resorts?|inns?|lodg\w+|suites?|guest ?house|bed and breakfast|b&b|halls? of residence|residence|dormitor\w+|student housing|apartments?)\b/i;
 const LANDMARK =
   /\b(plazas?|squares?|parks?|gardens?|museo|museums?|mercado|markets?|cathedral|church|basilica|palace|castle|galler(?:y|ies)|theat(?:re|er)s?|cinema|stadium|beach|lake|river|monument|historic|landmark|library|promenade|pier|zoo|bandstand|temple|mosque|shrine|cultural cent(?:re|er)|town hall|concert hall)\b/i;
@@ -121,10 +114,7 @@ const NIGHTLIFE = /\b(pubs?|bars?|nightclub|club|casino|lounge|mall|shopping)\b/
 const HERITAGE = /\b(temples?|shrines?|mosques?|synagogues?|bazaars?|souks?|forts?|heritage|botanical|aquarium|opera|concert hall|cultural|arts? cent(?:re|er)|exhibitions?|waterfront|old town|ruins?)\b/i;
 // Somewhere you use, not somewhere you go to remember: a barber, a banquet hall, an event venue.
 const NOT_A_PLACE_TO_GO = /\b(barbers?|hair ?salons?|salons?|spa|banquets?|catering|function rooms?|event (?:venue|space|hall)s?|wedding venue|conference|gym|fitness|clinic|bank|showroom|workshop|office)\b/i;
-/**
- * Lower is better. Added to the rank position when a place pool is sorted. Somewhere you'd have gone to see comes first,
- * then restaurants and cafés (which also fill the taste slots), then nightlife, then venues and services, then hotels.
- */
+/** Lower is better. */
 export function placeLean(e: QEntity): number {
   const t = fold(`${e.name} ${(e.description ?? "").slice(0, 90)}`);
   if (LODGING.test(t)) return 8;
@@ -147,11 +137,7 @@ export function isFoodPlace(e: QEntity): boolean {
 }
 const NOT_FOOD_LEAD = /\b(book ?stores?|book ?shops?|bookshop|publishers?|publishing|barbers?|salons?|boutiques?|clothing|pharmacy|gym|fitness|clinic|bank|supermarket|hypermarket|galler(?:y|ies)|museum)\b/i;
 const isAlcohol = (e: QEntity) => ALCOHOL.test(textOf(e));
-/**
- * Alcohol after everything else, even after food places. Otherwise: cooking described as theirs rises and cooking from
- * elsewhere falls (an Italian pizzeria in Mumbai isn't a taste from home), and a brand that existed in their young
- * years rises over one founded after them.
- */
+/** Alcohol after everything else, even after food places. */
 function tasteLean(e: QEntity, ctx: BuildContext): number {
   if (isAlcohol(e)) return 100;
   let lean = 0;
@@ -172,11 +158,7 @@ export function tastePool(brands: QEntity[], places: QEntity[]): QEntity[] {
   return [...foodish.filter((e) => !isAlcohol(e)), ...foodish.filter(isAlcohol)];
 }
 
-/**
- * Splits Qloo's place results between the two kinds of slot. When a region has few places (Ibadan returns nine,
- * five of them hotels), the cafés and restaurants would all go to the taste slots and the place slots would get
- * hotels. So the two best places are reserved for the place slots first; the tastes take what is left.
- */
+/** Splits Qloo's place results between the two kinds of slot. */
 export function allocatePlaces(brands: QEntity[], places: QEntity[], ctx: BuildContext, taken: Set<string>): { taste: QEntity[]; place: QEntity[] } {
   const byLean = [...places].sort((a, b) => placeLean(a) - placeLean(b));
   const reserved = new Set(byLean.filter((p) => placeLean(p) < 8 && entityIsSafe(p, ctx.input.avoidTopics ?? [])).slice(0, 2).map((p) => p.id));
@@ -222,16 +204,7 @@ export const FILM_BUDGET_MS = 60_000;
 /** A second film search after a slow first one. Off: Insights was timing out at 25 s and fails the same way again, so the wait goes into the first try. */
 export const FILM_RETRY_MS = 0;
 
-/**
- * Films from inside the era window. The MCP recommend tool can't filter by release year, and for a 55+ audience it
- * returns only recent hits, so films come from Insights with a year filter instead. Two searches, mixed together:
- *  - the favourites alone ("films like what they love, from those years"), which finds films that belong to their
- *    world: in testing it returned Sholay and Mughal-E-Azam for a Mumbai favourite list, A Hard Day's Night for a
- *    Liverpool one, and Japanese films from the 1950s and 60s for a Tokyo one;
- *  - the best-known films of the era in their place (location as a signal), as filler.
- * A location *filter* on films is deliberately not used: tested, it returned the same global classics (The Godfather,
- * Star Wars) for every country. Their own favourites come first. Live mode only; the mock transport has in-era films.
- */
+/** Films from inside the era window. */
 export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs = FILM_BUDGET_MS, onSlow?: () => void, retryMs = 0, callTimeoutMs?: number): Promise<QEntity[]> {
   const base = { type: "movie", signals: ctx.signalIds, year_min: ctx.era.from, year_max: ctx.era.to, take: 15 };
   let slow = false;
@@ -246,8 +219,7 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
       return [] as QEntity[]; // films are one slot of eight; a failed lookup shouldn't sink the session
     }
   };
-  // Songs, places and tastes are ready in about half a minute. Films shouldn't hold the session back past a fixed
-  // budget: after it, the session is built with whatever films the plain recommend call found.
+  // Songs, places and tastes are ready in about half a minute.
   const attempt = async (ms: number) => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     const budget = new Promise<QEntity[][]>((resolve) => {
@@ -272,13 +244,7 @@ export async function classicFilms(qloo: QlooClient, ctx: BuildContext, budgetMs
   return out;
 }
 
-/**
- * Place recommendations, hard-filtered to the region. For a whole country that filter is too heavy for Qloo and
- * times out (Mexico and Japan do; Nigeria doesn't). Loosening the query doesn't help: the same search without the
- * hard filter, or with a food tag, also runs past a minute. So wait once (no retry), and on a timeout carry on without
- * places instead of stalling the whole session, and say why through `onTooBig`. Only a timeout does this: an error
- * or an empty answer means something else (an unknown place, an outage) and is handled as before.
- */
+/** Place recommendations, hard-filtered to the region. */
 export async function recommendPlaces(qloo: QlooClient, args: Record<string, unknown>, onTooBig: () => void): Promise<QlooEnvelope> {
   try {
     return await qloo.call("qloo_recommend", args, { retryOnTimeout: false });
@@ -344,7 +310,6 @@ export async function buildSession(
   const step = (key: StepKey, state: "start" | "done", extra: { label?: string; count?: number } = {}) =>
     emit({ event: "step", data: { key, state, ...extra } });
 
-  // --- resolve: confirm anchors with Qloo and pick a warm-up favourite --------------------
   step("resolve", "start", { label: "Matching their favourites" });
   const anchorIds = input.anchors.map((a) => a.qlooId).filter((x): x is string => !!x && !isTag(x));
   const anchorTags = input.anchors.map((a) => a.tag ?? (a.qlooId && isTag(a.qlooId) ? a.qlooId : undefined)).filter((x): x is string => !!x);
@@ -376,7 +341,6 @@ export async function buildSession(
   }
   step("resolve", "done", { count: input.anchors.length });
 
-  // --- expand: four recommend calls in parallel, 3× what we need ---------------------------
   const base: Record<string, unknown> = { demographic: DEMOGRAPHIC, signal_location: input.region, limit: 20, explain: true };
   if (ctx.signalIds.length) base.signals = ctx.signalIds;
   if (ctx.signalTags.length) {
@@ -424,9 +388,7 @@ export async function buildSession(
   }
   let [artistsRaw, moviesRaw, placesRaw, brandsRaw] = raw as [QEntity[], QEntity[], QEntity[], QEntity[]];
 
-  // Qloo's location lookup knows some places only by a shorter name: "Mumbai, India" matches nothing (status ok, zero
-  // results) while "Mumbai" works. If every located search came back empty, try the city on its own, say so, and use
-  // that name from here on. Not a list of places: it applies to any "City, Country" the lookup can't match.
+  // Qloo's location lookup knows some places only by a shorter name: "Mumbai, India" matches nothing (status ok, zero results) while "Mumbai" works.
   const city = input.region.split(",")[0]?.trim();
   if (city && city !== input.region.trim() && !artistsRaw.length && !placesRaw.length && !brandsRaw.length) {
     const retryJobs = jobs; // songs, films, places, tastes
@@ -452,7 +414,6 @@ export async function buildSession(
     }
   }
 
-  // --- filter ------------------------------------------------------------------------------
   const taken = new Set<string>(warmUp ? [warmUp.id, fold(warmUp.name)] : []);
   for (const a of input.anchors) if (a.qlooId) taken.add(a.qlooId);
   // Tastes are food and drink brands, then places to eat; the two best places are held back for the place slots.
@@ -465,7 +426,6 @@ export async function buildSession(
     place,
   };
 
-  // --- rank: Qloo rank against the same profile, then a soft pull toward the peak year ------
   step("rank", "start", { label: "Choosing the strongest matches" });
   const optionType: Record<Group, string> = { artist: "artist", movie: "movie", place: "place", taste: "brand" };
   await Promise.all(
@@ -490,22 +450,18 @@ export async function buildSession(
           notes.push("Ranking was skipped for one group; results are in Qloo's recommendation order.");
         }
       }
-      // Qloo's rank order, nudged by what suits a reminiscence session: films near the peak year, places you'd
-      // have gone, and alcohol last. Without the nudge, ranking would undo the earlier ordering.
-      // Artists and brands also lean toward what is described as theirs and away from what is described as from elsewhere.
+      // Qloo's rank order, nudged by what suits a reminiscence session: films near the peak year, places you'd have gone, and alcohol last.
       const origin = (e: QEntity) => ((g === "artist" || (g === "taste" && targetOfTaste(e) === "brand")) && ctx.local ? ORIGIN_LEAN[belongs(e.description, ctx.local)] : 0);
       // Something already offered to people in other countries is probably not specific to this one (places are exempt).
       const repeat = (e: QEntity) => (g === "place" ? 0 : repeatLean(recent.elsewhere(e.id, country)));
       const lean = (e: QEntity) => (g === "movie" ? eraDistance(e.year, era) + (e.pick === "favourites" ? FAVOURITE_FILM_LEAN : 0) : g === "place" ? placeLean(e) : g === "taste" ? tasteLean(e, ctx) : 0) + origin(e) + repeat(e);
-      // Qloo ranked the first ten; the rest keep their recommendation position. Sorting the whole pool lets a nudge pass
-      // over a repeated or off-theme item in favour of one further down.
+      // Qloo ranked the first ten; the rest keep their recommendation position.
       const score = (e: QEntity) => (order.get(e.id) ?? pool.indexOf(e)) + lean(e);
       pools[g] = [...pool].sort((a, b) => score(a) - score(b));
     }),
   );
   step("rank", "done");
 
-  // --- compose -----------------------------------------------------------------------------
   step("compose", "start", { label: "Putting the session in order" });
   let items = assertQlooOnly(composeArc(pools, ctx, warmUp), seenIds);
 
@@ -538,8 +494,7 @@ export async function buildSession(
   }
   if (qloo.mode === "mock") notes.push("Demo data: this server is running without a Qloo key.");
 
-  // Remember what was offered, so the same generic names rank lower for people in other countries. The favourite they
-  // chose themselves isn't "offered", and places are local by nature.
+  // Remember what was offered, so the same generic names rank lower for people in other countries.
   recent.record(items.filter((i) => i.provenance.operation !== "describe" && i.kind !== "place" && i.provenance.qlooType !== "place").map((i) => i.provenance.qlooId), country);
 
   const session: Session = { id: randomUUID(), createdAt: new Date().toISOString(), eraWindow: era, items, notes: uniq(notes) };

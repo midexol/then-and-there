@@ -69,8 +69,7 @@ export default function Home() {
     router.push(`/build/?p=${p.id}`);
   };
 
-  // The landing is what the static HTML contains and what a first-time visitor sees at once. Someone with saved people
-  // sees their list as soon as the browser has read them, instead of the whole page popping in after a blank first paint.
+  // The landing is what the static HTML contains and what a first-time visitor sees at once.
   const landing = !hydrated || profiles.length === 0;
   return (
     <div className="relative overflow-x-clip">

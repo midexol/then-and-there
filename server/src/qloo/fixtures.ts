@@ -1,6 +1,4 @@
-// Demo fixtures for MOCK mode only (no QLOO_API_KEY). Real sessions come from Qloo.
-// Shaped like Insights entities so the same normalizer handles both.
-// Three regions on three continents, plus a small global fallback.
+// Demo fixtures for MOCK mode only (no QLOO_API_KEY).
 
 type F = { name: string; year?: number; desc?: string; tags?: string[]; rating?: string };
 export type RegionFixture = {
