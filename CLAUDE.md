@@ -49,7 +49,7 @@ NEXT_PUBLIC_API_URL=
 ```
 
 ## Status (Oct 26)
-Built, evaluated and deployed: the web app on Vercel and the server on Render, with 57 server tests and a 70-second demo video in `video/`. What remains is the Devpost submission.
+Built, evaluated and deployed: the web app on Vercel and the server on Render, with 57 server tests. The Devpost entry is submitted.
 
 ## Build order
 1. `bash scripts/probe.sh` → review `probe-out/` → note anything surprising in `docs/PROBE_NOTES.md`
