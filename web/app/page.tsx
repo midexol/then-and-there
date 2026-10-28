@@ -6,6 +6,7 @@ import { IndigoBand } from "@/components/brand";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Notice, Page } from "@/components/ui";
 import { Ambient, ClosingCta, Hero, Landing, PrivacyStrip, SiteFooter } from "@/components/Landing";
+import { ScrollStory } from "@/components/ScrollStory";
 import { health } from "@/lib/api";
 import { copy } from "@/lib/copy";
 import { EXAMPLES, eraFor, profileFromExample, relativeDay, saveProfile, useHydrated, useProfiles } from "@/lib/store";
@@ -77,6 +78,7 @@ export default function Home() {
       {landing && <Ambient />}
       <SiteHeader landing={landing} />
       {landing && <Hero />}
+      {landing && <ScrollStory />}
       <Page narrow={false} className={`relative ${landing ? "max-w-6xl" : "max-w-4xl"}`}>
         {mode === "mock" && (
           <div className="mt-4">

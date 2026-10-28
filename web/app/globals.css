@@ -255,3 +255,43 @@ html { scroll-padding-top: 88px; }
 
 /* The big faint wordmark in the footer is decoration, so it is drawn here and is not text in the page. */
 .footer-watermark::before { content: "then & there"; color: rgba(255, 255, 255, 0.08); }
+
+
+/* ---- Landing hero: the sun is the clock. --hp (0 to 1) comes from the hero's scroll position. ---- */
+.hero-scene { --hp: 0; }
+.hs-layer, .hs-hand, .hs-ring { transform-box: view-box; transform-origin: 720px 430px; will-change: transform; }
+.hs-sun { transform: translateY(calc(var(--hp) * -70px)); }
+.hs-ring { transform: rotate(calc(var(--hp) * -90deg)); }
+.hs-minute { transform: rotate(calc(var(--hp) * -720deg)); }
+.hs-hour { transform: rotate(calc(-60deg + var(--hp) * -60deg)); }
+.hs-far { transform: translateY(calc(var(--hp) * 36px)); }
+.hs-mid { transform: translateY(calc(var(--hp) * 18px)); }
+.hs-near { transform: translateY(calc(var(--hp) * 6px)); }
+@media (prefers-reduced-motion: reduce) {
+  .hs-sun, .hs-ring, .hs-far, .hs-mid, .hs-near, .hs-minute { transform: none; }
+  .hs-hour { transform: rotate(-60deg); }
+}
+
+
+/* ---- Landing scroll story (components/ScrollStory.tsx). The stage's custom properties are written each frame. ---- */
+.story { height: 520vh; }
+.story-stage { --o1: 1; --o2: 0; --o3: 0; --o4: 0; --dawn: 0; --c0: 1; --c1: 1; --c2: 1; --l2: 0; --min: 0; --hr: -60; --d0: 0; --d1: 0; --d2: 0; --d3: 0; --yes: 0; }
+.story-cap { transform: translateY(calc((1 - var(--k)) * 16px)); will-change: opacity, transform; }
+.story-vis { will-change: opacity; }
+.st-dawn { opacity: var(--dawn); }
+.st-stars { opacity: calc(1 - var(--dawn)); }
+.st-chip { opacity: calc(0.35 + var(--c) * 0.65); }
+.st-check { opacity: var(--c); transform: scale(calc(0.8 + var(--c) * 0.2)); transform-origin: right center; }
+.st-hour, .st-minute { transform-box: view-box; transform-origin: 74px 70px; }
+.st-hour { transform: rotate(calc(var(--hr) * 1deg)); }
+.st-minute { transform: rotate(calc(var(--min) * 1deg)); }
+.st-bump { opacity: var(--l2); }
+.st-window { opacity: calc(var(--l2) * 1.6 - 0.6); }
+.st-card { opacity: var(--d); transform: translateY(calc((1 - var(--d)) * -60px)) rotate(calc(var(--r) - (1 - var(--d)) * 14deg)) scale(calc(0.92 + var(--d) * 0.08)); }
+.st-thread { transform: scaleX(var(--yes)); }
+.st-yes-on { opacity: var(--yes); }
+.st-yes-off { opacity: calc(1 - var(--yes)); }
+@media (prefers-reduced-motion: reduce) {
+  .story-cap { transform: none; }
+  .st-card { transform: rotate(var(--r)); }
+}

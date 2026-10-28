@@ -18,7 +18,7 @@ export function goHome(e: React.MouseEvent) {
 /** Where the menu page leads. `id` is the landing-page element to scroll to. */
 const MENU = [
   { id: "try", label: copy.landing.navTry, hint: "Pick a decade and a place" },
-  { id: "how-it-works", label: copy.landing.howLink, hint: "Three simple steps" },
+  { id: "how-it-works", label: copy.landing.howLink, hint: "Four short steps" },
   { id: "why", label: copy.landing.menuWhy, hint: "The reminiscence bump" },
   { id: "examples", label: copy.landing.navExamples, hint: "Three people, three continents" },
   { id: "priv", label: copy.landing.menuPrivacy, hint: "What we share, and what we never do" },

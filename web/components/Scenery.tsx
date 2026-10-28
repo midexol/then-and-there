@@ -109,21 +109,36 @@ export function HeroScene() {
       {stars.map(([x, y, r], i) => (
         <circle key={i} cx={x} cy={y} r={r} fill="#ffffff" opacity={0.7} />
       ))}
-      <circle cx="720" cy="430" r="300" fill="url(#glow)" />
-      <circle cx="720" cy="430" r="215" fill="none" stroke="#f0b440" strokeOpacity="0.35" strokeWidth="1.5" strokeDasharray="2 9" strokeLinecap="round" />
-      <circle cx="720" cy="430" r="170" fill="none" stroke="#f0b440" strokeOpacity="0.5" strokeWidth="2" />
-      <circle cx="720" cy="430" r="125" fill="none" stroke="#f0b440" strokeOpacity="0.6" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
-      <circle cx="720" cy="430" r="92" fill="#f0b440" />
+      {/* The sun is the brand's clock face. As the page scrolls it rises and its hands wind backwards (--hp, 0 to 1, set by Hero). */}
+      <g className="hs-layer hs-sun">
+        <circle cx="720" cy="430" r="300" fill="url(#glow)" />
+        <circle cx="720" cy="430" r="215" fill="none" stroke="#f0b440" strokeOpacity="0.35" strokeWidth="1.5" strokeDasharray="2 9" strokeLinecap="round" />
+        <g className="hs-ring">
+          <circle cx="720" cy="430" r="170" fill="none" stroke="#f0b440" strokeOpacity="0.5" strokeWidth="2" />
+        </g>
+        <circle cx="720" cy="430" r="125" fill="none" stroke="#f0b440" strokeOpacity="0.6" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
+        <circle cx="720" cy="430" r="92" fill="#f0b440" />
+        {Array.from({ length: 12 }, (_, i) => (
+          <circle key={i} cx={720 + 74 * Math.sin((i * Math.PI) / 6)} cy={430 - 74 * Math.cos((i * Math.PI) / 6)} r={i % 3 === 0 ? 4.5 : 2.4} fill="#24336e" opacity="0.55" />
+        ))}
+        <g className="hs-hand hs-hour">
+          <line x1="720" y1="430" x2="720" y2="388" stroke="#24336e" strokeWidth="11" strokeLinecap="round" />
+        </g>
+        <g className="hs-hand hs-minute">
+          <line x1="720" y1="430" x2="720" y2="366" stroke="#24336e" strokeWidth="7" strokeLinecap="round" />
+        </g>
+        <circle cx="720" cy="430" r="8" fill="#0e1535" />
+      </g>
 
       {/* far: landmarks on a long, low ridge */}
-      <g>
+      <g className="hs-layer hs-far">
         <Landmarks fill="#98a6f2" />
-        <path d="M0 430 Q180 410 360 428 T720 432 T1080 426 T1440 430 V470 H0 Z" fill="#98a6f2" />
+        <path d="M0 430 Q180 410 360 428 T720 432 T1080 426 T1440 430 V560 H0 Z" fill="#98a6f2" />
       </g>
       {/* middle hills */}
-      <path d="M0 470 Q220 430 460 462 T900 458 T1440 452 V560 H0 Z" fill="#26327a" />
+      <path className="hs-layer hs-mid" d="M0 470 Q220 430 460 462 T900 458 T1440 452 V600 H0 Z" fill="#26327a" />
       {/* near hills */}
-      <path d="M0 505 Q260 470 520 500 T1040 496 T1440 488 V560 H0 Z" fill="#18215a" />
+      <path className="hs-layer hs-near" d="M0 505 Q260 470 520 500 T1040 496 T1440 488 V600 H0 Z" fill="#18215a" />
       {/* foreground */}
       <path d="M0 536 Q300 512 640 532 T1440 524 V560 H0 Z" fill="#0e1535" />
     </svg>
