@@ -97,10 +97,37 @@ function Chip({ on, onClick, children, dashed }: { on: boolean; onClick: () => v
 
 const HERO_SCENE_H = "clamp(280px, 38.9vw, 900px)";
 
+/** Writes the hero's scroll progress (0 at the top, 1 once it has scrolled away) into --hp for the scene to read. */
+function useHeroProgress() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const on = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const p = Math.min(1, Math.max(0, window.scrollY / Math.max(1, el.offsetHeight)));
+        el.style.setProperty("--hp", p.toFixed(4));
+      });
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
+  }, []);
+  return ref;
+}
+
 export function Hero() {
   const L = copy.landing;
+  const ref = useHeroProgress();
   return (
-    <section id="top" aria-labelledby="hero" className="relative isolate overflow-hidden bg-[#0e1535] text-center">
+    <section ref={ref} id="top" aria-labelledby="hero" className="hero-scene relative isolate overflow-hidden bg-[#0e1535] text-center">
       <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-5 pt-36 pb-6 md:pt-[12.5rem] md:pb-8">
         <h1 id="hero" className="rise text-[1.7rem] leading-[1.1] !text-white md:text-[2.4rem]">
           {L.headline}
@@ -317,43 +344,7 @@ export function MovingBand() {
 }
 
 export function Landing() {
-  const L = copy.landing;
-  return (
-    <>
-      <TimeDial />
-
-      <section aria-labelledby="how" id="how-it-works" className="mt-14 scroll-mt-24 md:mt-20">
-        <h2 id="how" className="text-[1.3rem] md:text-[1.5rem]">
-          {L.stepsTitle}
-        </h2>
-        <ol className="mt-5 grid gap-6 md:grid-cols-3">
-          {L.steps.map((s, i) => (
-            <li key={s.title} className="flex gap-4 md:flex-col md:gap-3">
-              <span aria-hidden className="display flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-indigo text-[1.2rem] text-on-indigo">
-                {i + 1}
-              </span>
-              <span>
-                <span className="block font-semibold text-ink">{s.title}</span>
-                <span className="mt-1 block text-[0.95rem] text-ink-soft">{s.body}</span>
-              </span>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section aria-labelledby="why" className="mt-12 grid items-center gap-6 rounded-[22px] bg-cloth p-6 md:mt-16 md:grid-cols-[auto_1fr] md:gap-10 md:p-10">
-        <div className="display text-[3.8rem] leading-none text-indigo md:text-[5.5rem]" aria-hidden>
-          14
-        </div>
-        <div>
-          <h2 id="why" className="text-[1.2rem] md:text-[1.45rem]">
-            {L.whyTitle}
-          </h2>
-          <p className="mt-3 max-w-[72ch] text-[1.05rem] md:text-[1.15rem]">{L.whyBody}</p>
-        </div>
-      </section>
-    </>
-  );
+  return <TimeDial />;
 }
 
 export function ClosingCta() {

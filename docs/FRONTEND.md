@@ -216,3 +216,14 @@ Short and plain: what Then & There sends to Qloo (cultural anchors, age group, r
   - **The clock hands wind backwards** on the Building screen and stop on error.
   - **Swap**: the old card dims, then the new one fades in.
   - A pulsing gold dot marks steps in progress.
+
+## 10. Added Oct 28: the landing as a scroll film
+- **Hero:** the sunrise is the brand clock. As the hero scrolls away, the sun rises, its hands wind backwards and the land layers move at different speeds (`--hp`, set in `Hero`). Off under `prefers-reduced-motion`.
+- **How it works** is now a pinned scroll story (`web/components/ScrollStory.tsx`) that replaces the three-step list and the "14" panel:
+  1. Tell us a little: the example's profile card, favourites matched one by one.
+  2. We wind the clock back: the clock pin winds back from today to their years, over a timeline with the reminiscence bump.
+  3. Qloo finds their world: resist-dye dots gather into four keepsakes (illustrative, and labelled so).
+  4. Sit together: the stage on a phone, with Yes lighting up and the gold thread drawing.
+- One scroll progress value drives every beat. The same skyline sits under all four while the sky turns from tonight to the morning of their youth.
+- **Follow an example** switches the whole story between the three example people, so it stays global.
+- Menu targets keep working: `#how-it-works` is the story, `#why` lands on beat 2.
